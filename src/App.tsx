@@ -2,6 +2,7 @@ import { useState, type ReactElement } from 'react';
 import { TabBar } from './components/TabBar';
 import { EMPTY_FILTER, type FilterState } from './lib/filters';
 import { navigate, tabOf, useRoute } from './lib/route';
+import { ItemDetailScreen } from './screens/ItemDetailScreen';
 import { ItemFormScreen } from './screens/ItemFormScreen';
 import { WardrobeScreen } from './screens/WardrobeScreen';
 
@@ -17,6 +18,9 @@ export default function App() {
 
   let screen: ReactElement;
   switch (route.name) {
+    case 'item':
+      screen = <ItemDetailScreen key={route.id} itemId={route.id} />;
+      break;
     case 'itemNew':
       screen = <ItemFormScreen key="new" initialFile={draftPhoto} />;
       break;
