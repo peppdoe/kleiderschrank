@@ -7,6 +7,7 @@ import { ItemFormScreen } from './screens/ItemFormScreen';
 import { OutfitDetailScreen } from './screens/OutfitDetailScreen';
 import { OutfitEditorScreen } from './screens/OutfitEditorScreen';
 import { OutfitsScreen } from './screens/OutfitsScreen';
+import { SettingsScreen } from './screens/SettingsScreen';
 import { WardrobeScreen } from './screens/WardrobeScreen';
 
 export default function App() {
@@ -41,6 +42,9 @@ export default function App() {
       break;
     case 'outfitEdit':
       screen = <OutfitEditorScreen key={`edit-${route.id}`} outfitId={route.id} />;
+      break;
+    case 'settings':
+      screen = <SettingsScreen />;
       break;
     default:
       screen = <WardrobeScreen filter={wardrobeFilter} onFilterChange={setWardrobeFilter} onPickPhoto={startNewItem} />;

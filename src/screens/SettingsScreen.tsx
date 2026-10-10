@@ -1,0 +1,127 @@
+import { useLiveQuery } from 'dexie-react-hooks';
+import { useEffect, useState } from 'react';
+import { FilePicker } from '../components/FilePicker';
+import { countItems } from '../db/items';
+import { META_LAST_BACKUP, META_PERSIST, getMeta, setMeta } from '../db/meta';
+import { countOutfits } from '../db/outfits';
+import { backupFileName, exportBackup, importBackup } from '../lib/backup';
+import { plural } from '../lib/describe';
+import { userMessage } from '../lib/errors';
+import { readFileText, shareOrDownload } from '../lib/files';
+import { makeThumb } from '../lib/image';
+import { isStandalone, storageUsageMB } from '../lib/storage';
+
+type Message = { kind: 'ok' | 'error'; text: string };
+
+function formatUsage(mb: number): string {
+  return mb < 1 ? '< 1 MB' : `${Math.round(mb)} MB`;
+}
+
+export function SettingsScreen() {
+  const itemCount = useLiveQuery(countItems, []);
+  const outfitCount = useLiveQuery(countOutfits, []);
+  const lastBackup = useLiveQuery(async () => (await getMeta(META_LAST_BACKUP)) ?? null, []);
+  const persist = useLiveQuery(async () => (await getMeta(META_PERSIST)) ?? null, []);
+  const [usage, setUsage] = useState<number>();
+  const [prepared, setPrepared] = useState<{ json: string; fileName: string } | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState<Message | null>(null);
+
+  useEffect(() => {
+    storageUsageMB().then(setUsage).catch(() => setUsage(undefined));
+  }, [itemCount]);
+
+  async function prepare() {
+    setBusy(true);
+    setMessage(null);
+    try {
+      setPrepared({ json: await exportBackup(), fileName: backupFileName() });
+    } catch (e) {
+      setMessage({ kind: 'error', text: userMessage(e) });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  // Muss ohne vorheriges await laufen, sonst verweigert Safari das Teilen-Menü.
+  async function share() {
+    if (!prepared) return;
+    try {
+      const result = await shareOrDownload(prepared.json, prepared.fileName);
+      if (result === 'cancelled') return;
+      await setMeta(META_LAST_BACKUP, new Date().toISOString());
+      setPrepared(null);
+      setMessage({ kind: 'ok', text: result === 'shared' ? 'Backup gesichert.' : 'Backup heruntergeladen.' });
+    } catch (e) {
+      setMessage({ kind: 'error', text: userMessage(e) });
+    }
+  }
+
+  async function importFile(file: File) {
+    if (!window.confirm('Backup einspielen? Alle aktuellen Teile und Outfits werden dabei ersetzt.')) return;
+    setBusy(true);
+    setMessage(null);
+    try {
+      const result = await importBackup(await readFileText(file), makeThumb);
+      setMessage({
+        kind: 'ok',
+        text: `Backup eingespielt: ${plural(result.items, 'Teil', 'Teile')}, ${plural(result.outfits, 'Outfit', 'Outfits')}.`,
+      });
+    } catch (e) {
+      setMessage({ kind: 'error', text: userMessage(e) });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const showInstallHint = !isStandalone() || persist === 'false';
+
+  return (
+    <section className="screen-content">
+      <header className="screen-header">
+        <h1>Einstellungen</h1>
+      </header>
+
+      <div className="section">
+        <h2>Backup</h2>
+        <p>
+          {lastBackup
+            ? `Letztes Backup: ${new Date(lastBackup).toLocaleDateString('de-DE')}`
+            : lastBackup === null ? 'Noch kein Backup' : ''}
+        </p>
+        {prepared ? (
+          <>
+            <button type="button" className="button button--primary" onClick={share}>Backup sichern</button>
+            <p className="notice">Tipp: Wähle „In Dateien sichern“ → iCloud Drive.</p>
+          </>
+        ) : (
+          <button type="button" className="button" disabled={busy} onClick={prepare}>Backup erstellen</button>
+        )}
+        <FilePicker className="button" label="Backup einspielen" accept="application/json,.json" onPick={importFile}>
+          Backup einspielen
+        </FilePicker>
+        {message && (
+          <p className={message.kind === 'ok' ? 'success' : 'error'} role={message.kind === 'ok' ? 'status' : 'alert'}>
+            {message.text}
+          </p>
+        )}
+      </div>
+
+      <div className="section">
+        <h2>Speicher</h2>
+        {itemCount !== undefined && outfitCount !== undefined && (
+          <p>
+            {`${plural(itemCount, 'Teil', 'Teile')} · ${plural(outfitCount, 'Outfit', 'Outfits')}`}
+            {usage !== undefined && ` · ${formatUsage(usage)}`}
+          </p>
+        )}
+        {showInstallHint && (
+          <p className="notice">
+            Tipp: Füge die App zum Home-Bildschirm hinzu (Safari → Teilen → „Zum Home-Bildschirm“), damit deine Daten
+            dauerhaft gespeichert bleiben. Mach trotzdem regelmäßig ein Backup.
+          </p>
+        )}
+      </div>
+    </section>
+  );
+}
