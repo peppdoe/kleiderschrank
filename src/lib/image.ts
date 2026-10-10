@@ -21,7 +21,8 @@ type Source = ImageBitmap | HTMLImageElement;
 async function decode(blob: Blob): Promise<Source> {
   if (typeof createImageBitmap === 'function') {
     try {
-      return await createImageBitmap(blob);
+      // iOS-Fotos tragen die Drehung nur als EXIF-Angabe; ausdrücklich anwenden lassen.
+      return await createImageBitmap(blob, { imageOrientation: 'from-image' });
     } catch {
       // Fallback unten
     }

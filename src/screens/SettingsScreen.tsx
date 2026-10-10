@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FilePicker } from '../components/FilePicker';
+import { InstallNotice } from '../components/InstallNotice';
 import { countItems } from '../db/items';
 import { META_LAST_BACKUP, META_PERSIST, getMeta, setMeta } from '../db/meta';
 import { countOutfits } from '../db/outfits';
@@ -26,6 +27,7 @@ export function SettingsScreen() {
   const [prepared, setPrepared] = useState<{ json: string; fileName: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<Message | null>(null);
+  const sharingRef = useRef(false);
 
   useEffect(() => {
     storageUsageMB().then(setUsage).catch(() => setUsage(undefined));
@@ -45,7 +47,8 @@ export function SettingsScreen() {
 
   // Muss ohne vorheriges await laufen, sonst verweigert Safari das Teilen-Menü.
   async function share() {
-    if (!prepared) return;
+    if (!prepared || sharingRef.current) return;
+    sharingRef.current = true;
     try {
       const result = await shareOrDownload(prepared.json, prepared.fileName);
       if (result === 'cancelled') return;
@@ -54,6 +57,8 @@ export function SettingsScreen() {
       setMessage({ kind: 'ok', text: result === 'shared' ? 'Backup gesichert.' : 'Backup heruntergeladen.' });
     } catch (e) {
       setMessage({ kind: 'error', text: userMessage(e) });
+    } finally {
+      sharingRef.current = false;
     }
   }
 
@@ -74,7 +79,7 @@ export function SettingsScreen() {
     }
   }
 
-  const showInstallHint = !isStandalone() || persist === 'false';
+  const standalone = isStandalone();
 
   return (
     <section className="screen-content">
@@ -115,10 +120,10 @@ export function SettingsScreen() {
             {usage !== undefined && ` · ${formatUsage(usage)}`}
           </p>
         )}
-        {showInstallHint && (
+        {!standalone && <InstallNotice />}
+        {standalone && persist === 'false' && (
           <p className="notice">
-            Tipp: Füge die App zum Home-Bildschirm hinzu (Safari → Teilen → „Zum Home-Bildschirm“), damit deine Daten
-            dauerhaft gespeichert bleiben. Mach trotzdem regelmäßig ein Backup.
+            Das iPhone hat dauerhaften Speicher nicht zugesagt. Mach deshalb besonders regelmäßig ein Backup.
           </p>
         )}
       </div>

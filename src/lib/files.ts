@@ -7,7 +7,9 @@ export async function shareOrDownload(content: string, fileName: string): Promis
       await navigator.share({ files: [file], title: 'Kleiderschrank-Backup' });
       return 'shared';
     } catch (error) {
-      if ((error as Error).name === 'AbortError') return 'cancelled';
+      const name = (error as Error).name;
+      // InvalidStateError: Das Teilen-Menü ist schon offen (z. B. Doppeltipp) – nichts wurde gesichert.
+      if (name === 'AbortError' || name === 'InvalidStateError') return 'cancelled';
       // z. B. NotAllowedError → auf Download ausweichen
     }
   }

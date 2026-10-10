@@ -104,3 +104,4 @@ h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; color: 
 .section h2 { margin: 0; }
 .section p { margin: 0; }
 .notice { font-size: 14px; color: var(--muted); }
+.banner--static { cursor: default; margin: 0 0 12px; }

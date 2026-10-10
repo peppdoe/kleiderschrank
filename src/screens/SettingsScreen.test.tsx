@@ -50,6 +50,20 @@ describe('Einstellungen', () => {
     expect(await screen.findByText(/^Letztes Backup: /)).toBeInTheDocument();
   });
 
+  it('opens the share sheet only once on a double tap', async () => {
+    let finish: (value: 'shared') => void = () => {};
+    vi.mocked(shareOrDownload).mockClear();
+    vi.mocked(shareOrDownload).mockImplementationOnce(() => new Promise((resolve) => { finish = resolve; }));
+    await seedItem();
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole('button', { name: 'Backup erstellen' }));
+    await user.dblClick(await screen.findByRole('button', { name: 'Backup sichern' }));
+    expect(shareOrDownload).toHaveBeenCalledTimes(1);
+    finish('shared');
+    expect(await screen.findByRole('status')).toHaveTextContent('Backup gesichert.');
+  });
+
   it('does not remember a cancelled share', async () => {
     vi.mocked(shareOrDownload).mockResolvedValueOnce('cancelled');
     await seedItem();

@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { FilePicker } from '../components/FilePicker';
 import { FilterBar } from '../components/FilterBar';
+import { InstallNotice } from '../components/InstallNotice';
 import { ItemGrid } from '../components/ItemGrid';
 import { listItems } from '../db/items';
 import { META_LAST_BACKUP, getMeta } from '../db/meta';
@@ -8,6 +9,7 @@ import { needsBackupReminder } from '../lib/backupReminder';
 import { plural } from '../lib/describe';
 import { EMPTY_FILTER, applyFilter, type FilterState } from '../lib/filters';
 import { navigate } from '../lib/route';
+import { isStandalone } from '../lib/storage';
 
 interface WardrobeScreenProps {
   filter: FilterState;
@@ -28,6 +30,8 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto }: Wardrobe
         <h1>Schrank</h1>
         <span className="muted">{plural(items.length, 'Teil', 'Teile')}</span>
       </header>
+
+      {!isStandalone() && <InstallNotice />}
 
       {lastBackup !== undefined && needsBackupReminder(lastBackup ?? undefined, items.length) && (
         <button type="button" className="banner" onClick={() => navigate('/settings')}>
