@@ -3,11 +3,11 @@ import { describeOutfitSeasons, outfitSeasons } from '../lib/today';
 import { Icon } from './Icon';
 
 /** Pflegesymbole + Satz, wann ein Outfit unter „Heute“ erscheint. Ohne vorhandene Teile nichts. */
-export function OutfitSeasons({ itemIds, items }: { itemIds: readonly string[]; items: readonly Item[] }) {
+export function OutfitSeasons({ itemIds, items, as: Tag = 'p', id: elementId }: { itemIds: readonly string[]; items: readonly Item[]; as?: 'p' | 'span'; id?: string }) {
   if (!itemIds.some((id) => items.some((item) => item.id === id))) return null;
   const seasons = outfitSeasons(itemIds, items);
   return (
-    <p className="outfit-seasons">
+    <Tag className="outfit-seasons" id={elementId}>
       {seasons.length > 0 && (
         <span className="outfit-seasons__marks">
           {seasons.map((id) => (
@@ -16,6 +16,6 @@ export function OutfitSeasons({ itemIds, items }: { itemIds: readonly string[]; 
         </span>
       )}
       <span>{describeOutfitSeasons(seasons)}</span>
-    </p>
+    </Tag>
   );
 }

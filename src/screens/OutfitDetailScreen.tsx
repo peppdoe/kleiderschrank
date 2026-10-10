@@ -38,11 +38,12 @@ export function OutfitDetailScreen({ outfitId }: { outfitId: string }) {
           Outfits
         </a>
       </header>
-      <div className="outfit-head">
-        <h1 className="detail-title">{outfit.name}</h1>
-        <span className="section-meta">{plural(items.length, 'Teil', 'Teile')}</span>
+      {/* Das eingenähte Etikett des Outfits: Name, Anzahl, wann es unter „Heute“ erscheint */}
+      <div className="care-label care-label--outfit">
+        <h1 className="care-label__title">{outfit.name}</h1>
+        <p className="care-label__kind">{plural(items.length, 'Teil', 'Teile')}</p>
+        <OutfitSeasons itemIds={outfit.itemIds} items={items} />
       </div>
-      <OutfitSeasons itemIds={outfit.itemIds} items={items} />
       {items.length === 0 ? (
         <p className="muted">Keine Teile mehr – alle Teile dieses Outfits wurden gelöscht.</p>
       ) : (

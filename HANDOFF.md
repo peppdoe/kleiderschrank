@@ -57,10 +57,10 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 3. Aktueller Stand
 
-- **Branch `feature/pflegeetikett`:** 17 Commits vor `main`. Er enthält die komplette neue Gestaltung, alle Verbesserungen aus zwei Kritik-Runden und die Saison-Anzeige für Outfits.
+- **Branch `feature/pflegeetikett`:** 18 Commits vor `main`. Er enthält die komplette neue Gestaltung, alle Verbesserungen aus zwei Kritik-Runden , die Saison-Anzeige für Outfits und die weitergetragene Etikett-Welt (Punkt 2).
 - **`main` / Live-App:** noch der alte Stand (Commit `603d641`, schlichter iOS-Look). **Der Branch ist nicht gemergt und nicht gepusht**, auf Wunsch des Nutzers.
 - **Qualität:**
-  - 172 Tests grün, Build sauber.
+  - 174 Tests grün, Build sauber.
   - `impeccable detect --json src index.html` meldet 0 Befunde.
   - Der letzte Finish-Review endete mit **ship**. Er hat aber nur die letzten Korrekturen bewertet, keine komplett neue Gesamtprüfung.
 - **Design-Kritik:** 22/40 (Ausgangsstand) → 26/40 (nach dem ersten Umbau). Die zweite Runde ist umgesetzt, aber noch nicht neu bewertet.
@@ -73,7 +73,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 1. **Nutzer schaut sich das Design an und gibt Rückmeldung.** Wünsche umsetzen, dabei die Regeln aus `DESIGN.md` einhalten.
    - Erledigt (11.10.): Outfits zeigen, in welchen Saisons sie unter „Heute“ erscheinen (Liste, Detail, live im Editor; `lib/today.ts` `outfitSeasons`, `components/OutfitSeasons.tsx`). Bewusst **keine** eigene Saison-Auswahl für Outfits: Die Saison ergibt sich aus den Teilen, ein Sonderfall wird über die Saisons des Teils gelöst. Falls Lena bei der Abnahme doch selbst festlegen will, als optionales Feld nachrüsten (Backup v1 bleibt kompatibel).
-2. **Optional: Gestaltungswelt weitertragen.** Der Reviewer nannte das als Idee, nicht als Fehler:
+2. **Erledigt (11.10.): Gestaltungswelt weitertragen.** Outfit-Namen als gewebtes Etikett in der Liste, Outfit-Detail als eingenähtes Etikett, Live-Vorschau des Namensbands unter dem Namensfeld in den Einstellungen. Finish-Review: alle vier Befunde behoben. Ursprüngliche Idee: Der Reviewer nannte das als Idee, nicht als Fehler:
    - Outfit-Liste: Namen als gewebtes Etikett (Pflegesymbole pro Outfit sind erledigt).
    - Outfit-Detailansicht: wie die Teil-Detailansicht als Etikett.
    - Einstellungen: das Namensband dort zeigen, wo Lena ihren Namen einträgt.
@@ -118,7 +118,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 - Node 24: `C:\Program Files\nodejs`. In Bash bei Bedarf `export PATH="/c/Program Files/nodejs:$PATH"`.
 - GitHub CLI: `C:\Program Files\GitHub CLI`, angemeldet als `peppdoe` (Scopes: repo, workflow).
 - Impeccable-CLI: `C:/Users/harin/.claude/plugins/cache/impeccable/impeccable/4.5.2/skills/impeccable/scripts/impeccable` (z. B. `detect --json src index.html`).
-- Review-Screenshots in exakter Größe: ein Hilfsskript steuert Edge headless über das DevTools-Protokoll. Es lag im Scratchpad der alten Sitzung und ist **nicht** im Repo. Bei Bedarf neu schreiben: Edge unter `C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe`, `--headless=new --remote-debugging-port`, `Emulation.setDeviceMetricsOverride` 375×812 bzw. 1280×800, `Page.captureScreenshot`. Demo-Daten im Browser über `await import('/kleiderschrank/src/db/items.ts')` anlegen.
+- Review-Screenshots in exakter Größe: ein Hilfsskript steuert Edge headless über das DevTools-Protokoll. Es lag im Scratchpad der alten Sitzung und ist **nicht** im Repo. Liegt jetzt im Repo: `node scripts/capture-review.mjs .impeccable/review` (Dev-Server muss laufen; legt in einem frischen Edge-Profil Demo-Daten an und nimmt Schrank, Outfits, Outfit-Detail und Einstellungen hell/dunkel auf). Technik: Edge unter `C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe`, `--headless=new --remote-debugging-port`, `Emulation.setDeviceMetricsOverride` 375×812 bzw. 1280×800, `Page.captureScreenshot`. Demo-Daten im Browser über `await import('/kleiderschrank/src/db/items.ts')` anlegen.
 
 ---
 

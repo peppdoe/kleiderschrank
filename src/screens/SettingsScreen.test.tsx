@@ -170,4 +170,13 @@ describe('Einstellungen', () => {
     await waitFor(async () => expect(await getMeta(META_USER_NAME)).toBe('Lena'));
     expect(await screen.findByText('Gespeichert')).toBeInTheDocument();
   });
+
+  it('previews the greeting band while the name is typed', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    const preview = await screen.findByRole('group', { name: 'Vorschau der Begrüßung' });
+    expect(within(preview).queryByText(/Mia/)).not.toBeInTheDocument();
+    await user.type(await screen.findByLabelText('Dein Name'), 'Mia');
+    expect(within(preview).getByText(/, Mia$/)).toBeInTheDocument();
+  });
 });

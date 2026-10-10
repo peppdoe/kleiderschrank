@@ -75,6 +75,14 @@ describe('Outfits', () => {
     expect(screen.getByText(/Erscheint nie unter/)).toBeInTheDocument();
   });
 
+  it('names each outfit card by its name and describes it by its seasons', async () => {
+    const coat = await seedItem({ category: 'jacket', seasons: ['winter'] });
+    await createOutfit('Winterlook', [coat]);
+    open('/outfits');
+    const card = await screen.findByRole('button', { name: 'Winterlook' });
+    expect(card).toHaveAccessibleDescription('Erscheint im Winter');
+  });
+
   it('shows the seasons on the outfit detail', async () => {
     const coat = await seedItem({ category: 'jacket', seasons: ['winter'] });
     const id = await createOutfit('Winterlook', [coat]);

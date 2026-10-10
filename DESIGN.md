@@ -55,11 +55,6 @@ typography:
     fontWeight: 500
     lineHeight: 1.1
     letterSpacing: "-0.01em"
-  headline:
-    fontFamily: "'Jost Variable', 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "28px"
-    fontWeight: 500
-    lineHeight: 1.45
   label-title:
     fontFamily: "'Jost Variable', 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
     fontSize: "26px"
@@ -242,7 +237,7 @@ The ground is a cool porcelain, never cream, with white surfaces and hairline na
 The system refuses the iOS-settings grey grid: no pill chips, no emoji tabs, no grey-filled list rows.
 
 **Key Characteristics:**
-- Navy woven fabric with an inset dashed stitch as the only branded surface: the name band on the wardrobe, the care label on an item.
+- Navy woven fabric with an inset dashed stitch as the only branded surface: the name band on the wardrobe (and its preview in the settings), the care label on a piece or an outfit, the small woven name label of each outfit in the list.
 - Kraft swing tags (notched left edge, punched hole) for every filter and selectable choice.
 - Thread red reserved for the one primary action, the active tab, destructive actions, errors and the focus/caret affordance.
 - One 1.5px round-capped stroke system for all pictograms.
@@ -295,8 +290,7 @@ The `garment-*` colors are data, not interface: each names a clothing color Lena
 
 ### Hierarchy
 - **Display** (500, 30px, 1.1, -0.01em): the greeting in the name band and page titles.
-- **Headline** (500, 28px): outfit detail title.
-- **Label Title** (500, 26px, 1.15): the piece's name on its care label; one step under Headline so it sits inside the stitch.
+- **Label Title** (500, 26px, 1.15): the name on a care label (a piece or an outfit) and in the name-band preview in the settings; one step under Display so it sits inside the stitch.
 - **Title** (500, 22px): sheet titles.
 - **Title Small** (500, 20px): centered form headers ("Neues Teil", "Neues Outfit").
 - **Body** (400, 17px, 1.45): base size; buttons, text buttons and link rows at 500, primary at 600. Outfit card names at 500.
@@ -332,7 +326,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 `--shadow` is `rgba(31, 42, 68, 0.22)` in light and `rgba(0, 0, 0, 0.45)` in dark.
 
 ### Named Rules
-**The Four Lifts Rule.** Only the name band, the add button, the toast and sheets cast shadows. The care label is sewn into the page and stays flat, as do cards, tiles, chips, rows and buttons; inset shadows are used only for focus, the tag hole and swatch rings.
+**The Four Lifts Rule.** Only the name band, the add button, the toast and sheets cast shadows. The care label, the outfit name label and the name-band preview in the settings are sewn into the page and stay flat, as do cards, tiles, chips, rows and buttons; inset shadows are used only for focus, the tag hole and swatch rings.
 
 ## Shapes
 
@@ -351,9 +345,11 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - Navy band, 4px corners, 18px/22px padding, centered; inset 1.5px dashed stitch 7px from the edge.
 - Contents: greeting at Display, one rotating line at 17px (0.92 opacity, single line, ellipsis), date meta at Caption (0.78 opacity).
 - **Motion, the stitch-in:** whenever the greeting line changes it reveals left to right with `clip-path: inset(0 100% 0 0)` to `inset(0 0 0 0)`, 900ms, `cubic-bezier(0.16, 1, 0.3, 1)`, 150ms delay. Disabled under `prefers-reduced-motion`. This is the system's one expressive motion moment.
+- **Preview (settings):** below the name field in "Persönlich" (input first, then result; the caps label never sits directly above the greeting) the band repeats as a live preview of the greeting (title updates while Lena types; fixed first line, no date). Same size as the real band, title at Display, so a long name wraps exactly as it will on the wardrobe; flat (no lift), no stitch-in. A group named "Vorschau der Begrüßung", not a heading.
 
-### Care Label (item detail)
+### Care Label (item and outfit detail)
 - The piece's own sewn-in label under its photo: the band's woven navy and inset stitch, 4px corners, 18px/20px/20px padding, 10px gaps, flat (no lift).
+- **Outfit:** the same label opens the outfit detail, between the back link and the photo grid (4px above, 18px below): name at Label Title, the piece count as the 15px kind line, then the Outfit Seasons Line in band ink at 0.9 opacity with 22px pictograms.
 - Name at Label Title; category below at 15px, 0.8 opacity, pulled up 6px; a color line with 16px garment swatches ringed in `band-stitch`; seasons as 22px care pictograms with 15px names, wrapping at 14px gaps; the note at 15px, 0.9 opacity, preserving line breaks.
 
 ### Season Row ("Heute" control)
@@ -394,7 +390,11 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 ### Outfit Seasons Line
 - Says when an outfit shows up under "Heute". The seasons are derived from its pieces (every piece with seasons must include the season; pieces without seasons always fit); outfits have no season of their own.
 - One line: 18px ink care pictograms of the matching seasons, 4px apart, then a 15px muted sentence: "Erscheint im Herbst und Winter", "Erscheint das ganze Jahr", or, when the pieces share no season, "Erscheint nie unter „Heute“: Die Teile haben keine gemeinsame Saison." The conflict stays muted, not red; it is a hint, not an error.
-- Sits under the name in the outfit list, under the title on the outfit detail, and in the editor under the selection strip and under the preview on the naming step, updating live. Hidden when no pieces remain.
+- Sits under the name label in the outfit list, inside the care label on the outfit detail, and in the editor under the selection strip and under the preview on the naming step, updating live. Hidden when no pieces remain.
+
+### Outfit Name Label (outfit list)
+- Each outfit's name sits under its preview as a small woven label: band navy, band-ink 17px/500 text, 7px/16px/8px padding, 4px corners, a 1.5px dashed `band-stitch` stitch inset 4px, sized to its text (wraps anywhere when long). Flat. The whole card stays one button, named by the label and described by the seasons line.
+- The "Heute" strip on the wardrobe keeps plain outfit names on purpose: the name band directly above is the first viewport's only navy surface.
 
 ### Link Rows (outfit references)
 - References to other screens are rows, not tags: full-width 48px rows between 1px `line` rules (top rule on the list), 17px ink text, an 18px muted chevron at the right. No fill, no card.

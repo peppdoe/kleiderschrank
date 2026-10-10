@@ -29,10 +29,16 @@ export function OutfitsScreen() {
         <ul className="outfit-list">
           {outfits.map((outfit) => (
             <li key={outfit.id}>
-              <button type="button" className="outfit-card" onClick={() => navigate(`/outfit/${outfit.id}`)}>
+              <button
+                type="button"
+                className="outfit-card"
+                aria-labelledby={`outfit-name-${outfit.id}`}
+                aria-describedby={`outfit-seasons-${outfit.id}`}
+                onClick={() => navigate(`/outfit/${outfit.id}`)}
+              >
                 <OutfitPreview itemIds={outfit.itemIds} />
-                <span className="outfit-card__name">{outfit.name}</span>
-                <OutfitSeasons itemIds={outfit.itemIds} items={items} />
+                <span className="outfit-card__name" id={`outfit-name-${outfit.id}`}>{outfit.name}</span>
+                <OutfitSeasons itemIds={outfit.itemIds} items={items} as="span" id={`outfit-seasons-${outfit.id}`} />
               </button>
             </li>
           ))}

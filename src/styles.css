@@ -83,11 +83,15 @@ p { margin: 0; }
   box-shadow: 0 6px 18px var(--shadow);
 }
 .label-band::before { content: ''; position: absolute; inset: 7px; border: 1.5px dashed var(--band-stitch); border-radius: 2px; pointer-events: none; }
-.label-band__title { font-size: 30px; line-height: 1.1; margin: 0 0 4px; letter-spacing: -0.01em; }
+.label-band__title { font-size: 30px; line-height: 1.1; margin: 0 0 4px; letter-spacing: -0.01em; overflow-wrap: anywhere; }
 .label-band__line { font-size: 17px; opacity: 0.92; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; animation: stitch-in 900ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both; }
 .label-band__meta { margin-top: 8px; font-size: 13px; opacity: 0.78; }
 @keyframes stitch-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 @media (prefers-reduced-motion: reduce) { .label-band__line { animation: none; } }
+/* Vorschau in den Einstellungen: flach eingenäht, ohne Datum und ohne Einnähen-Animation */
+.label-band--preview { box-shadow: none; }
+.label-band--preview .label-band__title { font-weight: 500; }
+.label-band--preview .label-band__line { animation: none; }
 
 /* Saisons als Pflegesymbole */
 .care-symbols { display: flex; justify-content: center; gap: 12px; margin: 14px 0 0; }
@@ -223,7 +227,6 @@ p { margin: 0; }
 .action-bar__count { font-size: 17px; font-weight: 500; font-variant-numeric: tabular-nums; }
 
 /* Details */
-.detail-title { font-size: 28px; margin: 18px 0 6px; }
 .details { display: grid; grid-template-columns: auto 1fr; gap: 8px 18px; margin: 12px 0 0; }
 .details dt { color: var(--muted); }
 .details dd { margin: 0; white-space: pre-wrap; }
@@ -238,11 +241,12 @@ p { margin: 0; }
 .outfit-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
 .outfit-list { gap: 22px; }
 .outfit-card { width: 100%; text-align: left; background: none; border: none; padding: 0; color: var(--ink); display: flex; flex-direction: column; gap: 8px; cursor: pointer; }
-.outfit-card__name { font-size: 17px; font-weight: 500; }
+/* Name des Outfits als kleines gewebtes Etikett, eingenäht wie das Namensband */
+.outfit-card__name { position: relative; align-self: flex-start; max-width: 100%; padding: 7px 16px 8px; background: var(--band); color: var(--band-ink); border-radius: 4px; font-size: 17px; font-weight: 500; overflow-wrap: anywhere; }
+.outfit-card__name::before { content: ''; position: absolute; inset: 4px; border: 1.5px dashed var(--band-stitch); border-radius: 2px; pointer-events: none; }
 .outfit-preview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
 .outfit-preview__cell { aspect-ratio: 3 / 4; border-radius: 4px; overflow: hidden; }
 .outfit-preview__more { display: flex; align-items: center; justify-content: center; background: var(--kraft-soft); color: var(--kraft-ink); font-weight: 600; }
-.detail-title ~ .section-title { display: block; margin: 28px 0 10px; }
 .text-button--center { align-self: center; }
 @media (prefers-color-scheme: dark) { .swing-tag:not(.swing-tag--active) .swing-tag__count { color: var(--ground); } .outfit-preview__more { color: #eee2d2; } }
 
@@ -267,13 +271,14 @@ p { margin: 0; }
 .link-rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
 .link-row { width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 2px; background: none; border: none; border-bottom: 1px solid var(--line); color: var(--ink); font-size: 17px; text-align: left; cursor: pointer; }
 .link-row__chevron { transform: rotate(180deg); color: var(--muted); }
-.outfit-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-
 /* Wann ein Outfit unter „Heute“ erscheint: Pflegesymbole + Satz */
 .outfit-seasons { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 15px; color: var(--muted); }
 .outfit-seasons__marks { flex: none; display: inline-flex; gap: 4px; color: var(--ink); }
-.outfit-card .outfit-seasons { margin-top: -4px; }
-.outfit-head + .outfit-seasons { margin: 6px 0 18px; }
+.outfit-card .outfit-seasons { margin-top: -2px; }
+.care-label--outfit { margin: 4px 0 18px; }
+.care-label .outfit-seasons { gap: 10px; color: var(--band-ink); opacity: 0.9; }
+.care-label .outfit-seasons__marks { gap: 6px; color: inherit; }
+.care-label .outfit-seasons__marks svg { width: 22px; height: 22px; }
 .form > .outfit-seasons { margin: 0 0 14px; }
 .form > .outfit-preview + .outfit-seasons { margin-top: 10px; }
 

@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from 'react';
 import { FilePicker } from '../components/FilePicker';
 import { ImportSheet } from '../components/ImportSheet';
 import { InstallNotice } from '../components/InstallNotice';
+import { LabelBand } from '../components/LabelBand';
 import { countItems } from '../db/items';
 import { META_LAST_BACKUP, META_PERSIST, META_USER_NAME, getMeta, setMeta } from '../db/meta';
 import { countOutfits } from '../db/outfits';
 import { backupFileName, exportBackup, importBackup, parseBackup, type ParsedBackup } from '../lib/backup';
 import { plural } from '../lib/describe';
+import { greetingFor } from '../lib/greeting';
 import { userMessage } from '../lib/errors';
 import { readFileText, shareOrDownload } from '../lib/files';
 import { makeThumb } from '../lib/image';
@@ -120,6 +122,8 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
   }
 
   const standalone = isStandalone();
+  // Vorschau mit festem Spruch, damit beim Tippen nur der Name wechselt.
+  const preview = greetingFor({ name: nameDraft ?? storedName ?? '', now: new Date(), pick: 0 });
 
   return (
     <section className="screen-content">
@@ -150,6 +154,7 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
             }}
           />
         </label>
+        <LabelBand title={preview.title} line={preview.line} preview />
       </div>
 
       <div className="section">
