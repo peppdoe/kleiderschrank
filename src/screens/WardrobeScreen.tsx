@@ -106,13 +106,13 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
       <div className="section-head section-head--start">
         <h2 className="section-title">Schrank</h2>
         <span className="section-meta">
-          {visible.length !== items.length
-            ? `${visible.length} von ${items.length} ${items.length === 1 ? 'Teil' : 'Teilen'}`
-            : plural(items.length, 'Teil', 'Teile')}
+          <span>
+            {visible.length !== items.length
+              ? `${visible.length} von ${items.length} ${items.length === 1 ? 'Teil' : 'Teilen'}`
+              : plural(items.length, 'Teil', 'Teile')}
+          </span>
+          {filter.seasons.length > 0 && <span> · {filter.seasons.map((id) => labelOf(SEASONS, id)).join(', ')}</span>}
         </span>
-        {filter.seasons.length > 0 && (
-          <span className="section-meta">· {filter.seasons.map((id) => labelOf(SEASONS, id)).join(', ')}</span>
-        )}
       </div>
 
       {items.length === 0 ? (
