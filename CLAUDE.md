@@ -46,6 +46,9 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
 - **Fadenrot nur für:** die eine Hauptaktion (Hinzufügen, Speichern, Backup erstellen), den aktiven Tab, zerstörerische Aktionen, Fehler und Fokus. Nichts anderes wird rot.
 - Keine Karten um Fotos/Outfits, keine Pillen-Chips, keine Emojis als Symbole (eigene SVGs in `components/Icon.tsx`), keine Kicker-/Eyebrow-Zeile über Überschriften.
 - In Formularen keine Tab-Leiste; Aktionen sitzen in einer festen Leiste unten (Daumenreichweite).
+- **Saison-Reihe = „Heute“-Regler:** Die aktuelle Saison ist beim Öffnen vorausgewählt (`App.tsx`) und filtert Schrank und „Heute“; Einfachauswahl über `chooseSeason`. Das Filter-Panel im Schrank hat bewusst keine Saison-Gruppe und setzt die Saison nie zurück. Teile ohne Saison gelten als ganzjährig (`lib/filters.ts`).
+- Rückfragen laufen über Bodenblätter (`components/Sheet.tsx`, `ConfirmSheet.tsx`), nie über `window.confirm`. Abbrechen mit ungespeicherten Änderungen fragt nach („Änderungen verwerfen?“).
+- Neues Teil passt nicht zum aktiven Filter → Filter wird gelöst, das Teil markiert und „Teil gespeichert“ angezeigt.
 - Name für die Begrüßung: Meta-Schlüssel `userName` (Einstellungen). Grußsprüche nennen nie konkrete Kleidungsstücke (Test erzwingt das).
 - Vorschaubilder sind 3:4 (360×480); ältere quadratische werden per `object-fit: cover` angezeigt.
 - Design-Prüfungen: `/impeccable critique` bzw. `impeccable detect --json src index.html`; Review-Aufnahmen landen in `.impeccable/review/` (nicht versioniert).

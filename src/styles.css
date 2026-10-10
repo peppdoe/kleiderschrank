@@ -102,7 +102,6 @@ p { margin: 0; }
 /* Ruhige Hinweise */
 .notice-line { display: flex; align-items: center; gap: 4px; margin-top: 14px; padding: 0 0 0 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); font-size: 15px; color: var(--muted); }
 .notice-line p { flex: 1; }
-.notice-line p { font-size: 14px; }
 .quiet-link { display: block; min-height: 44px; padding: 0; margin-top: 4px; background: none; border: none; color: var(--muted); font-size: 15px; text-align: left; text-decoration: underline; text-decoration-style: dashed; text-underline-offset: 4px; cursor: pointer; }
 .icon-button { flex: none; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: none; border: none; border-radius: 50%; color: var(--muted); cursor: pointer; }
 
@@ -120,7 +119,7 @@ p { margin: 0; }
 .today__row::-webkit-scrollbar { display: none; }
 .today__row li { flex: none; scroll-snap-align: start; }
 .today__strip { width: 196px; display: flex; flex-direction: column; gap: 6px; padding: 0; text-align: left; background: none; border: none; color: var(--ink); cursor: pointer; }
-.today__name { font-size: 16px; font-weight: 500; }
+.today__name { font-size: 17px; font-weight: 500; }
 
 /* Karton-Anhänger: Filter und aktive Filter */
 .tag-row { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
@@ -248,7 +247,7 @@ p { margin: 0; }
 @media (prefers-color-scheme: dark) { .swing-tag:not(.swing-tag--active) .swing-tag__count { color: var(--ground); } .outfit-preview__more { color: #eee2d2; } }
 
 /* Hinweise unter Feldern */
-.field-hint { margin-top: 6px; font-size: 14px; color: var(--muted); }
+.field-hint { margin-top: 6px; font-size: 15px; color: var(--muted); }
 .field-saved { margin-left: 10px; font-size: 13px; color: var(--success); }
 
 /* Eingenähtes Etikett in der Detailansicht */
