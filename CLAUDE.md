@@ -35,7 +35,7 @@ src/lib/       constants (Kategorien/Farben/Saisons), filters, backup, backupRem
                greeting (Begrüßung + Saison nach Monat), today (Outfits zur Saison)
 src/components/  ChipGroup, FilterBar, FilterSheet, FilterTags, ItemGrid, ItemPhoto, FilePicker,
                TabBar, NotFound, OutfitPreview, InstallNotice, ErrorBoundary, LabelBand,
-               SeasonSymbols, ImportSheet, Icon (eigene SVG-Symbole, keine Emojis)
+               SeasonSymbols, ImportSheet, OutfitSeasons, Icon (eigene SVG-Symbole, keine Emojis)
 src/screens/   Wardrobe, ItemForm, ItemDetail, Outfits, OutfitEditor, OutfitDetail, Settings
 src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
 ```

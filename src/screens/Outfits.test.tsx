@@ -62,6 +62,39 @@ describe('Outfits', () => {
     expect(screen.getByText('Keine Teile mehr')).toBeInTheDocument();
   });
 
+  it('shows in which seasons each outfit appears', async () => {
+    const coat = await seedItem({ category: 'jacket', seasons: ['autumn', 'winter'] });
+    const jeans = await seedItem({ category: 'pants' });
+    const sandals = await seedItem({ category: 'shoes', seasons: ['summer'] });
+    await createOutfit('Herbstspaziergang', [coat, jeans]);
+    await createOutfit('Basic', [jeans]);
+    await createOutfit('Durcheinander', [coat, sandals]);
+    open('/outfits');
+    expect(await screen.findByText('Erscheint im Herbst und Winter')).toBeInTheDocument();
+    expect(screen.getByText('Erscheint das ganze Jahr')).toBeInTheDocument();
+    expect(screen.getByText(/Erscheint nie unter/)).toBeInTheDocument();
+  });
+
+  it('shows the seasons on the outfit detail', async () => {
+    const coat = await seedItem({ category: 'jacket', seasons: ['winter'] });
+    const id = await createOutfit('Winterlook', [coat]);
+    open(`/outfit/${id}`);
+    expect(await screen.findByText('Erscheint im Winter')).toBeInTheDocument();
+  });
+
+  it('updates the seasons live while picking pieces', async () => {
+    await seedItem({ category: 'top', colors: ['blue'], seasons: ['spring', 'summer'] });
+    await seedItem({ category: 'shoes', colors: ['white'], seasons: ['summer'] });
+    const user = userEvent.setup();
+    open('/outfit/new');
+    await user.click(await screen.findByRole('button', { name: 'Oberteil, Blau' }));
+    expect(screen.getByText('Erscheint im Frühling und Sommer')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Schuhe, Weiß' }));
+    expect(screen.getByText('Erscheint im Sommer')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Weiter' }));
+    expect(screen.getByText('Erscheint im Sommer')).toBeInTheDocument();
+  });
+
   it('renames an outfit', async () => {
     const a = await seedItem();
     const id = await createOutfit('Alt', [a]);

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Outfit } from '../db/schema';
 import { makeItem } from '../test/factories';
-import { outfitsForSeason } from './today';
+import { describeOutfitSeasons, outfitSeasons, outfitsForSeason } from './today';
 
 const stamp = '2026-01-01T00:00:00.000Z';
 const outfit = (id: string, itemIds: string[]): Outfit => ({ id, name: id, itemIds, createdAt: stamp, updatedAt: stamp });
@@ -27,5 +27,40 @@ describe('outfitsForSeason', () => {
 
   it('ignores deleted pieces when judging the season', () => {
     expect(outfitsForSeason([outfit('mix', ['coat', 'gone'])], items, 'winter').map((o) => o.id)).toEqual(['mix']);
+  });
+});
+
+describe('outfitSeasons', () => {
+  it('lists the seasons all seasonal pieces share, in calendar order', () => {
+    const scarf = makeItem({ id: 'scarf', seasons: ['winter', 'spring', 'autumn'] });
+    expect(outfitSeasons(['scarf', 'coat', 'jeans'], [...items, scarf])).toEqual(['autumn', 'winter']);
+  });
+
+  it('is the whole year when no piece names a season', () => {
+    expect(outfitSeasons(['jeans'], items)).toEqual(['spring', 'summer', 'autumn', 'winter']);
+  });
+
+  it('is empty when the pieces share no season', () => {
+    expect(outfitSeasons(['coat', 'sandals'], items)).toEqual([]);
+  });
+
+  it('is empty without remaining pieces', () => {
+    expect(outfitSeasons(['gone'], items)).toEqual([]);
+  });
+});
+
+describe('describeOutfitSeasons', () => {
+  it('names one or more seasons', () => {
+    expect(describeOutfitSeasons(['summer'])).toBe('Erscheint im Sommer');
+    expect(describeOutfitSeasons(['autumn', 'winter'])).toBe('Erscheint im Herbst und Winter');
+    expect(describeOutfitSeasons(['spring', 'summer', 'autumn'])).toBe('Erscheint im Frühling, Sommer und Herbst');
+  });
+
+  it('says the whole year for all four seasons', () => {
+    expect(describeOutfitSeasons(['spring', 'summer', 'autumn', 'winter'])).toBe('Erscheint das ganze Jahr');
+  });
+
+  it('explains when the outfit never shows up', () => {
+    expect(describeOutfitSeasons([])).toBe('Erscheint nie unter „Heute“: Die Teile haben keine gemeinsame Saison.');
   });
 });

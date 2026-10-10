@@ -1,12 +1,15 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Icon } from '../components/Icon';
 import { OutfitPreview } from '../components/OutfitPreview';
+import { OutfitSeasons } from '../components/OutfitSeasons';
+import { listItems } from '../db/items';
 import { listOutfits } from '../db/outfits';
 import { navigate } from '../lib/route';
 
 export function OutfitsScreen() {
   const outfits = useLiveQuery(listOutfits, []);
-  if (!outfits) return null;
+  const items = useLiveQuery(listItems, []);
+  if (!outfits || !items) return null;
 
   return (
     <section className="screen-content">
@@ -29,6 +32,7 @@ export function OutfitsScreen() {
               <button type="button" className="outfit-card" onClick={() => navigate(`/outfit/${outfit.id}`)}>
                 <OutfitPreview itemIds={outfit.itemIds} />
                 <span className="outfit-card__name">{outfit.name}</span>
+                <OutfitSeasons itemIds={outfit.itemIds} items={items} />
               </button>
             </li>
           ))}

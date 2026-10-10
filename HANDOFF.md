@@ -57,10 +57,10 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 3. Aktueller Stand
 
-- **Branch `feature/pflegeetikett`:** 16 Commits vor `main`, Arbeitsverzeichnis sauber. Er enthält die komplette neue Gestaltung und alle Verbesserungen aus zwei Kritik-Runden.
+- **Branch `feature/pflegeetikett`:** 17 Commits vor `main`. Er enthält die komplette neue Gestaltung, alle Verbesserungen aus zwei Kritik-Runden und die Saison-Anzeige für Outfits.
 - **`main` / Live-App:** noch der alte Stand (Commit `603d641`, schlichter iOS-Look). **Der Branch ist nicht gemergt und nicht gepusht**, auf Wunsch des Nutzers.
 - **Qualität:**
-  - 162 Tests grün, Build sauber.
+  - 172 Tests grün, Build sauber.
   - `impeccable detect --json src index.html` meldet 0 Befunde.
   - Der letzte Finish-Review endete mit **ship**. Er hat aber nur die letzten Korrekturen bewertet, keine komplett neue Gesamtprüfung.
 - **Design-Kritik:** 22/40 (Ausgangsstand) → 26/40 (nach dem ersten Umbau). Die zweite Runde ist umgesetzt, aber noch nicht neu bewertet.
@@ -71,9 +71,10 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 4. Offene Aufgaben (in Reihenfolge)
 
-1. **Nutzer schaut sich das Design an und gibt Rückmeldung.** Er testet gerade im Browser-Fenster. Wünsche umsetzen, dabei die Regeln aus `DESIGN.md` einhalten.
+1. **Nutzer schaut sich das Design an und gibt Rückmeldung.** Wünsche umsetzen, dabei die Regeln aus `DESIGN.md` einhalten.
+   - Erledigt (11.10.): Outfits zeigen, in welchen Saisons sie unter „Heute“ erscheinen (Liste, Detail, live im Editor; `lib/today.ts` `outfitSeasons`, `components/OutfitSeasons.tsx`). Bewusst **keine** eigene Saison-Auswahl für Outfits: Die Saison ergibt sich aus den Teilen, ein Sonderfall wird über die Saisons des Teils gelöst. Falls Lena bei der Abnahme doch selbst festlegen will, als optionales Feld nachrüsten (Backup v1 bleibt kompatibel).
 2. **Optional: Gestaltungswelt weitertragen.** Der Reviewer nannte das als Idee, nicht als Fehler:
-   - Outfit-Liste: Namen als gewebtes Etikett, Pflegesymbole pro Outfit.
+   - Outfit-Liste: Namen als gewebtes Etikett (Pflegesymbole pro Outfit sind erledigt).
    - Outfit-Detailansicht: wie die Teil-Detailansicht als Etikett.
    - Einstellungen: das Namensband dort zeigen, wo Lena ihren Namen einträgt.
 3. **Optional: neue Kritik** mit `/impeccable critique`, um zu messen, wo die App nach Runde 2 steht (zuletzt 26/40).

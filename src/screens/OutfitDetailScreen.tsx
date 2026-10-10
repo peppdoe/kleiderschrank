@@ -4,6 +4,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Icon } from '../components/Icon';
 import { ItemGrid } from '../components/ItemGrid';
 import { NotFound } from '../components/NotFound';
+import { OutfitSeasons } from '../components/OutfitSeasons';
 import { getItemsByIds } from '../db/items';
 import { deleteOutfit, getOutfit } from '../db/outfits';
 import { plural } from '../lib/describe';
@@ -41,6 +42,7 @@ export function OutfitDetailScreen({ outfitId }: { outfitId: string }) {
         <h1 className="detail-title">{outfit.name}</h1>
         <span className="section-meta">{plural(items.length, 'Teil', 'Teile')}</span>
       </div>
+      <OutfitSeasons itemIds={outfit.itemIds} items={items} />
       {items.length === 0 ? (
         <p className="muted">Keine Teile mehr – alle Teile dieses Outfits wurden gelöscht.</p>
       ) : (

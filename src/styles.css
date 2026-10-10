@@ -269,6 +269,14 @@ p { margin: 0; }
 .link-row__chevron { transform: rotate(180deg); color: var(--muted); }
 .outfit-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 
+/* Wann ein Outfit unter „Heute“ erscheint: Pflegesymbole + Satz */
+.outfit-seasons { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 15px; color: var(--muted); }
+.outfit-seasons__marks { flex: none; display: inline-flex; gap: 4px; color: var(--ink); }
+.outfit-card .outfit-seasons { margin-top: -4px; }
+.outfit-head + .outfit-seasons { margin: 6px 0 18px; }
+.form > .outfit-seasons { margin: 0 0 14px; }
+.form > .outfit-preview + .outfit-seasons { margin-top: 10px; }
+
 /* Auswahl im Outfit-Editor bleibt sichtbar */
 .selection-strip { list-style: none; margin: 0 0 14px; padding: 0; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
 .selection-strip__item { position: relative; display: block; width: 48px; aspect-ratio: 3 / 4; padding: 0; border: none; border-radius: 4px; overflow: hidden; background: var(--chip); cursor: pointer; }

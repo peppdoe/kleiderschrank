@@ -7,6 +7,7 @@ import { ItemGrid, tileLabel } from '../components/ItemGrid';
 import { ItemPhoto } from '../components/ItemPhoto';
 import { NotFound } from '../components/NotFound';
 import { OutfitPreview } from '../components/OutfitPreview';
+import { OutfitSeasons } from '../components/OutfitSeasons';
 import { listItems } from '../db/items';
 import { createOutfit, getOutfit, updateOutfit } from '../db/outfits';
 import { userMessage } from '../lib/errors';
@@ -86,6 +87,7 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
           <h1 className="form-header__title">{outfitId ? 'Outfit bearbeiten' : 'Neues Outfit'}</h1>
         </header>
         <OutfitPreview itemIds={selected} />
+        <OutfitSeasons itemIds={selected} items={items} />
         <label className="field">
           <span className="section-title">Name des Outfits</span>
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="z. B. Büro-Look" autoFocus />
@@ -135,6 +137,7 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
               ))}
             </ul>
           )}
+          <OutfitSeasons itemIds={selected} items={items} />
           <ItemGrid
             items={visible}
             selectedIds={selected}

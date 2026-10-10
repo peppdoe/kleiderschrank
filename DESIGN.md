@@ -391,6 +391,11 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 ### Selection Strip (outfit editor)
 - Above the pick grid, the chosen pieces stay visible as a sideways row of 48px-wide 3:4 thumbnails, 4px corners, 6px apart, chip fill. Each is a button that removes the piece, marked by an 18px ink circle with a ground-colored cross top right. The split action bar below counts "N ausgewählt".
 
+### Outfit Seasons Line
+- Says when an outfit shows up under "Heute". The seasons are derived from its pieces (every piece with seasons must include the season; pieces without seasons always fit); outfits have no season of their own.
+- One line: 18px ink care pictograms of the matching seasons, 4px apart, then a 15px muted sentence: "Erscheint im Herbst und Winter", "Erscheint das ganze Jahr", or, when the pieces share no season, "Erscheint nie unter „Heute“: Die Teile haben keine gemeinsame Saison." The conflict stays muted, not red; it is a hint, not an error.
+- Sits under the name in the outfit list, under the title on the outfit detail, and in the editor under the selection strip and under the preview on the naming step, updating live. Hidden when no pieces remain.
+
 ### Link Rows (outfit references)
 - References to other screens are rows, not tags: full-width 48px rows between 1px `line` rules (top rule on the list), 17px ink text, an 18px muted chevron at the right. No fill, no card.
 
