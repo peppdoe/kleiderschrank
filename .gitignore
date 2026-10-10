@@ -2,3 +2,9 @@ node_modules/
 dist/
 *.log
 .DS_Store
+
+# Impeccable: Laufzeit- und Prüfdateien (nur lokal)
+.impeccable/questions/
+.impeccable/live/
+.impeccable/review/
+.impeccable/config.local.json

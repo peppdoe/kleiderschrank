@@ -7,6 +7,8 @@ Offline-fähige Web-App (PWA) für Lenas iPhone: Kleidungsstücke per Foto erfas
 - Spec: `docs/superpowers/specs/2026-10-10-kleiderschrank-app-design.md`
 - Plan (umgesetzt): `docs/superpowers/plans/2026-10-10-kleiderschrank-app.md`
 - Anleitung für Lena + iPhone-Abnahme-Checkliste: `README.md`
+- Produktbeschreibung (Nutzerin, Zweck, Prinzipien): `PRODUCT.md`
+- Gestaltungssystem „Pflegeetikett“ (Farben, Schrift, Komponenten, Regeln): `DESIGN.md` + `.impeccable/design.json`; Gestaltungsauftrag: `.impeccable/surfaces/src.md`
 
 ## Befehle
 
@@ -29,12 +31,24 @@ Vite 5 · React 18 · TypeScript (strict) · Dexie 4 (IndexedDB) + `dexie-react-
 ```
 src/db/        schema.ts (Dexie-Tabellen items/photos/outfits/meta), items.ts, outfits.ts, meta.ts
 src/lib/       constants (Kategorien/Farben/Saisons), filters, backup, backupReminder, image,
-               errors, storage, files, route (Hash-Routing), id, describe, useObjectUrl
-src/components/  ChipGroup, FilterBar, ItemGrid, ItemPhoto, FilePicker, TabBar, NotFound,
-               OutfitPreview, InstallNotice, ErrorBoundary
+               errors, storage, files, route (Hash-Routing), id, describe, useObjectUrl,
+               greeting (Begrüßung + Saison nach Monat), today (Outfits zur Saison)
+src/components/  ChipGroup, FilterBar, FilterSheet, FilterTags, ItemGrid, ItemPhoto, FilePicker,
+               TabBar, NotFound, OutfitPreview, InstallNotice, ErrorBoundary, LabelBand,
+               SeasonSymbols, ImportSheet, Icon (eigene SVG-Symbole, keine Emojis)
 src/screens/   Wardrobe, ItemForm, ItemDetail, Outfits, OutfitEditor, OutfitDetail, Settings
 src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
 ```
+
+## Gestaltung (vor UI-Änderungen `DESIGN.md` lesen)
+
+- Welt „Pflegeetikett“: flaches navyblaues Namensband mit gestrichelter Naht (Begrüßung mit Namen + wechselnder Spruch), Saisons als Pflegesymbole, Auswahl und Filter als Karton-Anhänger mit Lochung, Porzellan-Grund `#f5f6f8` (nie Creme).
+- **Fadenrot nur für:** die eine Hauptaktion (Hinzufügen, Speichern, Backup erstellen), den aktiven Tab, zerstörerische Aktionen, Fehler und Fokus. Nichts anderes wird rot.
+- Keine Karten um Fotos/Outfits, keine Pillen-Chips, keine Emojis als Symbole (eigene SVGs in `components/Icon.tsx`), keine Kicker-/Eyebrow-Zeile über Überschriften.
+- In Formularen keine Tab-Leiste; Aktionen sitzen in einer festen Leiste unten (Daumenreichweite).
+- Name für die Begrüßung: Meta-Schlüssel `userName` (Einstellungen). Grußsprüche nennen nie konkrete Kleidungsstücke (Test erzwingt das).
+- Vorschaubilder sind 3:4 (360×480); ältere quadratische werden per `object-fit: cover` angezeigt.
+- Design-Prüfungen: `/impeccable critique` bzw. `impeccable detect --json src index.html`; Review-Aufnahmen landen in `.impeccable/review/` (nicht versioniert).
 
 ## Regeln
 
