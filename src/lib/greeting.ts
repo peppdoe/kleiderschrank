@@ -7,7 +7,7 @@ export const GREETING_LINES: Record<'general' | SeasonId, readonly string[]> = {
     'Worauf hast du heute Lust?',
     'Lieblingsteil oder was Neues?',
     'Dein Schrank wartet schon.',
-    'Ein Tag für dein Lieblingsteil?',
+    'Tag für dein Lieblingsteil?',
     'Zeit für ein neues Outfit?',
     'Schlicht oder mutig heute?',
   ],
