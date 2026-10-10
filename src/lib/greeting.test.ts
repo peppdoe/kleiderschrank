@@ -52,6 +52,11 @@ describe('greetingFor', () => {
 });
 
 describe('greeting lines', () => {
+  it('fit on one line of the name band (at most 30 characters)', () => {
+    const tooLong = Object.values(GREETING_LINES).flat().filter((line) => line.length > 30);
+    expect(tooLong).toEqual([]);
+  });
+
   it('never assume a specific garment Lena may not own', () => {
     const all = Object.values(GREETING_LINES).flat();
     expect(all.some((line) => /Lederjacke|Sommerkleid/.test(line))).toBe(false);

@@ -7,6 +7,15 @@ export function describeItem(item: Pick<Item, 'category' | 'colors'>): string {
   return colors.length > 0 ? `${category}, ${colors.join(', ')}` : category;
 }
 
+const TITLE_MAX = 40;
+
+/** Name eines Teils: erste Zeile der Notiz (gekürzt), sonst die Kategorie. */
+export function itemTitle(item: Pick<Item, 'category' | 'note'>): string {
+  const first = item.note.split('\n')[0].trim();
+  if (!first) return labelOf(CATEGORIES, item.category);
+  return first.length > TITLE_MAX ? `${first.slice(0, TITLE_MAX - 1)}…` : first;
+}
+
 export function plural(n: number, one: string, many: string): string {
   return `${n} ${n === 1 ? one : many}`;
 }

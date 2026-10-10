@@ -28,8 +28,12 @@ describe('filters', () => {
     expect(matchesFilter(redSummerTop, { ...EMPTY_FILTER, colors: ['white'] })).toBe(true);
   });
 
-  it('excludes items without seasons when a season is selected', () => {
-    expect(matchesFilter(blackPants, { ...EMPTY_FILTER, seasons: ['winter'] })).toBe(false);
+  it('keeps items without seasons when a season is selected, because they are year-round', () => {
+    expect(matchesFilter(blackPants, { ...EMPTY_FILTER, seasons: ['winter'] })).toBe(true);
+  });
+
+  it('still excludes items tagged only for other seasons', () => {
+    expect(matchesFilter(redSummerTop, { ...EMPTY_FILTER, seasons: ['winter'] })).toBe(false);
   });
 
   it('returns an empty list when nothing matches', () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { describeItem, plural } from './describe';
+import { describeItem, itemTitle, plural } from './describe';
 
 describe('describeItem', () => {
   it('names category and colours', () => {
@@ -8,6 +8,17 @@ describe('describeItem', () => {
 
   it('names only the category when there are no colours', () => {
     expect(describeItem({ category: 'shoes', colors: [] })).toBe('Schuhe');
+  });
+});
+
+describe('itemTitle', () => {
+  it('uses the first line of the note as the name of the piece', () => {
+    expect(itemTitle({ category: 'pants', note: 'Lieblingsjeans\nvon Mama' })).toBe('Lieblingsjeans');
+  });
+
+  it('falls back to the category and shortens very long notes', () => {
+    expect(itemTitle({ category: 'bag', note: '' })).toBe('Tasche');
+    expect(itemTitle({ category: 'bag', note: 'x'.repeat(60) })).toBe(`${'x'.repeat(39)}…`);
   });
 });
 

@@ -1,18 +1,19 @@
 import type { SeasonId } from './constants';
 
+// Höchstens 30 Zeichen: der Spruch muss auf eine Zeile des Namensbands passen.
 export const GREETING_LINES: Record<'general' | SeasonId, readonly string[]> = {
   general: [
     'Was darf es heute sein?',
     'Worauf hast du heute Lust?',
-    'Lieblingsteil oder mal was Neues?',
-    'Dein Schrank wartet schon auf dich.',
-    'Heute ist ein guter Tag für dein Lieblingsteil.',
+    'Lieblingsteil oder was Neues?',
+    'Dein Schrank wartet schon.',
+    'Ein Tag für dein Lieblingsteil?',
     'Zeit für ein neues Outfit?',
-    'Schlicht oder ein bisschen mutig heute?',
+    'Schlicht oder mutig heute?',
   ],
-  spring: ['Zeit für leichte Jacken?', 'Frühling: Farbe darf wieder raus.', 'Übergangsjacke oder schon ohne?'],
+  spring: ['Zeit für leichte Jacken?', 'Farbe darf wieder raus.', 'Übergangsjacke oder ohne?'],
   summer: ['Sonnenbrille nicht vergessen.', 'Leicht und luftig heute?', 'Heute darf es luftig sein.'],
-  autumn: ['Herbstzeit: Zeit für Lagen und Strick?', 'Zeit für Jacke und Schal?', 'Gemütlich oder schick in den Herbst?'],
+  autumn: ['Zeit für Lagen und Strick?', 'Zeit für Jacke und Schal?', 'Gemütlich oder schick?'],
   winter: ['Schal und Mütze bereit?', 'Warm eingepackt heute?', 'Zeit für den dicken Pulli?'],
 };
 

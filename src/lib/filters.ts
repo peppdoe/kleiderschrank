@@ -16,7 +16,8 @@ export function isFilterActive(filter: FilterState): boolean {
 export function matchesFilter(item: Item, filter: FilterState): boolean {
   if (filter.categories.length > 0 && !filter.categories.includes(item.category)) return false;
   if (filter.colors.length > 0 && !item.colors.some((c) => filter.colors.includes(c))) return false;
-  if (filter.seasons.length > 0 && !item.seasons.some((s) => filter.seasons.includes(s))) return false;
+  // Teile ohne Saison sind ganzjährig und passen zu jeder Saison.
+  if (filter.seasons.length > 0 && item.seasons.length > 0 && !item.seasons.some((s) => filter.seasons.includes(s))) return false;
   return true;
 }
 

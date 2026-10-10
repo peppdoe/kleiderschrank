@@ -9,7 +9,8 @@ export type Route =
   | { name: 'outfitNew' }
   | { name: 'outfit'; id: string }
   | { name: 'outfitEdit'; id: string }
-  | { name: 'settings' };
+  | { name: 'settings' }
+  | { name: 'settingsBackup' };
 
 export type TabId = 'wardrobe' | 'outfits' | 'settings';
 
@@ -29,6 +30,7 @@ export function parseRoute(hash: string): Route {
   if (section === 'outfit' && id && !action) return { name: 'outfit', id };
   if (section === 'outfit' && id && action === 'edit' && parts.length === 3) return { name: 'outfitEdit', id };
   if (section === 'settings' && !id) return { name: 'settings' };
+  if (section === 'settings' && id === 'backup' && !action) return { name: 'settingsBackup' };
   return { name: 'wardrobe' };
 }
 
@@ -40,6 +42,7 @@ export function tabOf(route: Route): TabId {
     case 'outfitEdit':
       return 'outfits';
     case 'settings':
+    case 'settingsBackup':
       return 'settings';
     default:
       return 'wardrobe';
