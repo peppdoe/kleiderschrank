@@ -16,6 +16,7 @@ interface BackupFile {
 }
 
 export interface ParsedBackup {
+  exportedAt: string;
   items: Item[];
   outfits: Outfit[];
   photos: { itemId: string; full: Blob }[];
@@ -121,7 +122,8 @@ export function parseBackup(text: string): ParsedBackup {
   const outfits = raw.outfits.map((o) => parseOutfit(o, itemIds));
   if (new Set(outfits.map((o) => o.id)).size !== outfits.length) return fail('doppelte Outfit-IDs');
 
-  return { items, outfits, photos: [...photos].map(([itemId, full]) => ({ itemId, full })) };
+  const exportedAt = isText(raw.exportedAt) ? raw.exportedAt : '';
+  return { exportedAt, items, outfits, photos: [...photos].map(([itemId, full]) => ({ itemId, full })) };
 }
 
 export async function importBackup(

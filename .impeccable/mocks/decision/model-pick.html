@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=390">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:#f7f5f0;color:#1f2a44;font:15px/1.4 'Jost',system-ui,sans-serif}
+.label{margin:52px 22px 0;background:#1f2a44;color:#f7f5f0;padding:18px 20px 20px;border-radius:2px;position:relative;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.label:before{content:"";position:absolute;inset:6px;border:1.5px dashed rgba(247,245,240,.45);border-radius:1px}
+.name{font:500 12px 'Jost';letter-spacing:.32em;text-transform:uppercase;opacity:.8;text-align:center}
+.greet{font:500 27px/1.15 'Jost';text-align:center;margin:10px 0 4px}
+.sub{text-align:center;font-size:13px;opacity:.75;letter-spacing:.04em}
+.care{display:flex;justify-content:center;gap:14px;margin:18px 0 0}
+.care i{width:44px;height:44px;border:1.5px solid #1f2a44;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:18px}
+.care i.on{background:#1f2a44;color:#f7f5f0}
+.row{margin:22px 22px 10px;display:flex;justify-content:space-between;align-items:baseline}
+.row h2{font:600 13px 'Jost';letter-spacing:.2em;text-transform:uppercase}
+.row span{font-size:13px;color:#7d8aa6}
+.tags{display:flex;gap:10px;margin:0 22px 14px}
+.tag{background:#c9a27a;color:#1f2a44;padding:10px 14px 10px 22px;border-radius:3px 10px 10px 3px;font:500 14px 'Jost';position:relative}
+.tag:before{content:"";position:absolute;left:8px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#f7f5f0}
+.tag.off{background:transparent;border:1.5px solid #c9a27a}
+.outfit{margin:0 22px 16px;display:flex;gap:6px}
+.outfit i{flex:1;aspect-ratio:3/4;border-radius:3px}
+.grid{margin:0 22px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.grid div{aspect-ratio:3/4;background:#ebe6dc;display:flex;align-items:center;justify-content:center;border-radius:3px}
+.grid div i{width:56%;height:68%;border-radius:10px}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:84px;background:#f7f5f0;border-top:1px solid #d8d2c6;display:flex;padding-top:12px}
+.tabs span{flex:1;text-align:center;font:500 12px 'Jost';letter-spacing:.14em;text-transform:uppercase;color:#7d8aa6}
+.tabs span.on{color:#b8322a}
+.fab{position:absolute;right:22px;bottom:100px;width:60px;height:60px;border-radius:50%;background:#b8322a;color:#fff;font:300 34px/60px 'Jost';text-align:center}
+</style></head><body>
+<div class="label">
+  <div class="name">Lenas Kleiderschrank</div>
+  <div class="greet">Guten Morgen, Lena</div>
+  <div class="sub">Herbstzeit – Zeit für deine Lederjacke?</div>
+</div>
+<div class="care"><i>✿</i><i>☀</i><i class="on">❦</i><i>❄</i></div>
+<div class="row"><h2>Heute</h2><span>3 Outfits für den Herbst</span></div>
+<div class="outfit"><i style="background:#3a9d4f"></i><i style="background:#1c1c1e"></i><i style="background:#8b5a2b"></i><i style="background:#ffffff;border:1px solid #ddd"></i></div>
+<div class="row"><h2>Schrank</h2><span>48 Teile</span></div>
+<div class="tags"><span class="tag">Herbst</span><span class="tag off">Filter</span></div>
+<div class="grid">
+  <div><i style="background:#2f6fdb"></i></div><div><i style="background:#1c1c1e"></i></div><div><i style="background:#8b5a2b"></i></div>
+  <div><i style="background:#e0262f"></i></div><div><i style="background:#3a9d4f"></i></div><div><i style="background:#8e8e93"></i></div>
+</div>
+<div class="fab">+</div>
+<div class="tabs"><span class="on">Schrank</span><span>Outfits</span><span>Einstellungen</span></div>
+</body></html>

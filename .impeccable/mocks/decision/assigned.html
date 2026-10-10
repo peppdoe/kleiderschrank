@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=390">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;700&family=Courier+Prime:wght@700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:#fbfaf6;color:#23201d;font:15px/1.35 -apple-system,system-ui,sans-serif}
+.ticket{margin:54px 14px 0;background:#f4b8c5;border-radius:6px;padding:16px 18px 20px;position:relative}
+.ticket:after{content:"";position:absolute;left:10px;right:10px;bottom:-1px;border-bottom:2px dashed rgba(35,32,29,.35)}
+.head{display:flex;justify-content:space-between;font:700 11px 'Archivo Narrow';letter-spacing:.12em;text-transform:uppercase}
+.no{font:700 15px 'Courier Prime';color:#d2352b;letter-spacing:.06em}
+.greet{font:700 30px/1.08 'Archivo Narrow';margin:12px 0 6px;letter-spacing:-.01em}
+.meta{font:500 13px 'Archivo Narrow';letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+.stubs{display:flex;gap:10px;margin:22px 14px 0;overflow:hidden}
+.stub{flex:none;width:150px;background:#f6df6e;border-radius:5px;padding:10px;position:relative}
+.stub.b{background:#b9d3f0}
+.stub:before{content:"";position:absolute;top:0;bottom:0;left:-1px;border-left:2px dashed rgba(35,32,29,.3)}
+.stub .k{font:700 10px 'Archivo Narrow';letter-spacing:.12em;text-transform:uppercase;display:flex;justify-content:space-between}
+.stub .k span:last-child{font-family:'Courier Prime';color:#d2352b}
+.stub h3{font:700 18px 'Archivo Narrow';margin:6px 0 8px}
+.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.strip i{display:block;aspect-ratio:1;border-radius:3px}
+.sec{margin:24px 16px 10px;display:flex;justify-content:space-between;align-items:baseline}
+.sec h2{font:700 13px 'Archivo Narrow';letter-spacing:.14em;text-transform:uppercase}
+.sec span{font:700 13px 'Archivo Narrow';color:#6a6560}
+.filter{margin:0 16px 12px;display:flex;gap:8px}
+.filter b{font:500 14px 'Archivo Narrow';border:1.5px solid #23201d;border-radius:22px;padding:10px 14px;white-space:nowrap}
+.filter b.on{background:#23201d;color:#fbfaf6}
+.grid{margin:0 16px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.grid div{aspect-ratio:3/4;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.grid div i{width:58%;height:70%;border-radius:10px;display:block}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:84px;background:#23201d;color:#fbfaf6;display:flex;padding-top:12px}
+.tabs span{flex:1;text-align:center;font:700 12px 'Archivo Narrow';letter-spacing:.1em;text-transform:uppercase;opacity:.6}
+.tabs span.on{opacity:1;color:#f4b8c5}
+.fab{position:absolute;right:18px;bottom:100px;width:62px;height:62px;border-radius:50%;background:#d2352b;color:#fff;font:400 34px/62px system-ui;text-align:center}
+</style></head><body>
+<div class="ticket">
+  <div class="head"><span>Lenas Kleiderschrank · Annahme</span><span class="no">Nr. 0042</span></div>
+  <div class="greet">Guten Morgen, Lena.<br>Was darf's heute sein?</div>
+  <div class="meta">Freitag, 10. Oktober · Herbst · 12 Teile passen</div>
+</div>
+<div class="stubs">
+  <div class="stub"><div class="k"><span>Outfit</span><span>N° 03</span></div><h3>Herbstspaziergang</h3>
+    <div class="strip"><i style="background:#3a9d4f"></i><i style="background:#1c1c1e"></i><i style="background:#8b5a2b"></i></div></div>
+  <div class="stub b"><div class="k"><span>Outfit</span><span>N° 01</span></div><h3>Büro-Look</h3>
+    <div class="strip"><i style="background:#f2f2f2"></i><i style="background:#8e8e93"></i><i style="background:#ffffff"></i></div></div>
+  <div class="stub"><div class="k"><span>Outfit</span><span>N° 02</span></div><h3>Sommerfest</h3></div>
+</div>
+<div class="sec"><h2>Mein Schrank</h2><span>48 Teile</span></div>
+<div class="filter"><b class="on">Filter · Herbst ×</b><b>Oberteile 14</b><b>Hosen 9</b><b>Schuhe 7</b></div>
+<div class="grid">
+  <div style="background:#efe9e2"><i style="background:#2f6fdb"></i></div>
+  <div style="background:#efe9e2"><i style="background:#1c1c1e"></i></div>
+  <div style="background:#efe9e2"><i style="background:#8b5a2b"></i></div>
+  <div style="background:#efe9e2"><i style="background:#e0262f"></i></div>
+  <div style="background:#efe9e2"><i style="background:#3a9d4f"></i></div>
+  <div style="background:#efe9e2"><i style="background:#8e8e93"></i></div>
+</div>
+<div class="fab">+</div>
+<div class="tabs"><span class="on">Schrank</span><span>Outfits</span><span>Einstellungen</span></div>
+</body></html>

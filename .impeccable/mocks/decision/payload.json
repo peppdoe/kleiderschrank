@@ -1,0 +1,117 @@
+{
+  "title": "Welche Welt soll Lenas Kleiderschrank bekommen?",
+  "question": "Ausgelost wurde der Abholschein. Behalten, eine Alternative nehmen oder neu würfeln.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Abholschein",
+      "kicker": "THE ROLL",
+      "lineage": "Annahme- und Abholscheine der Reinigung und Änderungsschneiderei",
+      "thesis": "Jedes Teil bekommt seinen Schein; morgens reißt Lena den Schein für heute ab.",
+      "palette": ["#f4b8c5", "#f6df6e", "#b9d3f0", "#23201d", "#d2352b", "#fbfaf6"],
+      "materials": ["Durchschreibepapier in Scheinfarben", "Perforation mit Stanzkerben", "Nummernstempel in Rot"],
+      "viewport": "Oben ein rosa Schein mit Perforation: Begrüßung, Datum, Saison und Schein-Nr.; darunter heutige Outfits als Abreiß-Stubs, dann das Fotoraster mit einer Filterzeile; Tab-Leiste unten.",
+      "risk": "Kann nach Erledigung und Dienstleistung klingen, wenn die Nummern dominieren statt der Kleidung.",
+      "raised": [
+        { "from": "challenger-star-atlas", "raise": "Eine feste Größenrampe trägt die Hierarchie: heutiger Schein groß, Outfits mittel, Teile klein, keine Zwischengrößen." },
+        { "from": "challenger-metro", "raise": "Keine Rahmen um Fotos: das Papiermaterial lebt nur im Schein und in den Stubs, das Raster ist pur." },
+        { "from": "challenger-acetate", "raise": "Die Kategorie-Zeile zeigt Mengen (Oberteile 24 · Hosen 9), so ist der Umfang des Schranks auf einen Blick lesbar." },
+        { "from": "challenger-darkroom", "raise": "Fotos werden nie gestempelt oder überlagert; Nummern stehen neben der Kleidung, nicht darauf." }
+      ],
+      "html": ".impeccable/mocks/decision/assigned.html",
+      "htmlFrame": "390x844"
+    },
+    {
+      "id": "model-pick",
+      "label": "Pflegeetikett",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "eingewebte Namens- und Pflegeetiketten, Hängeanhänger aus Karton",
+      "thesis": "Die App ist genäht wie das Etikett in Lenas Kleidung: ein gewebtes Namensband und Pflegesymbole.",
+      "palette": ["#1f2a44", "#f7f5f0", "#c9a27a", "#b8322a", "#7d8aa6"],
+      "materials": ["gewebtes Satinband mit Steppnaht", "Karton-Anhänger mit Öse", "Pflegesymbol-Piktogramme"],
+      "viewport": "Ein marineblaues Namensband „Lenas Kleiderschrank“ mit wechselndem Gruß; Saisons als Pflegesymbole; Filter als kleine Anhänger; Fotoraster darunter.",
+      "risk": "Vertraut-boutiquehaft; dies ist auch die Richtung, auf der die meisten Entwürfe in dieser Kategorie landen.",
+      "html": ".impeccable/mocks/decision/model-pick.html",
+      "htmlFrame": "390x844"
+    },
+    {
+      "id": "challenger-character-catalog",
+      "label": "Figuren-Katalog",
+      "verdict": "competitive",
+      "lineage": "Merch-Katalogseite mit Figuren-Steckbriefen",
+      "thesis": "Jedes Teil als Figur mit Namensschild und einem Satz Persönlichkeit: der Notiz.",
+      "palette": ["#fde4ec", "#e3f1ff", "#fff3c4", "#2b2b3a", "#ff7aa2"],
+      "materials": ["Pastellflächen", "weiße Konturlinie um jedes Foto", "Bänder in Figurenfarbe"],
+      "viewport": "Ganze Zellen im Raster, je Foto mit weißer Kontur, Namensschild (Kategorie, Farbe) und der Notiz als Einzeiler.",
+      "case": "Gewinnt an Wärme und Wiedererkennung, verliert an Klarheit bei 100+ Teilen und im schnellen Morgen.",
+      "risk": "Kippt ins Niedliche; Kleidung ist kein Maskottchen.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-character-goods-catalog-hero.webp",
+      "html": ".impeccable/mocks/decision/challenger-character-catalog.html",
+      "htmlFrame": "390x844"
+    },
+    {
+      "id": "challenger-wayfinding",
+      "label": "Wegweiser-Gelb",
+      "verdict": "competitive",
+      "lineage": "gelbe Flughafen-Beschilderung",
+      "thesis": "Morgens zeigt die App nur die nächste Entscheidung, monumental und eindeutig.",
+      "palette": ["#ffd200", "#111111", "#ffffff", "#2a2a2a"],
+      "materials": ["gelbe Schildbänder", "weiße Piktogramme auf schwarzen Quadraten"],
+      "viewport": "Ein gelbes Band „Heute · Herbst · 3 Outfits passen“ in großer Schrift, darunter die Outfits als Richtungsschilder.",
+      "case": "Hält bei der Klarheit mit (eine Entscheidung pro Bildschirm), verliert bei der Identifikation: Flughafen ist nicht Lenas Welt.",
+      "risk": "Wirkt nüchtern-technisch statt persönlich.",
+      "hero": "https://impeccable.style/worlds/cards/wayfinding-cartography-signage-terminal-yellow-wayfinding-hero.webp",
+      "html": ".impeccable/mocks/decision/challenger-wayfinding.html",
+      "htmlFrame": "390x844"
+    },
+    {
+      "id": "challenger-star-atlas", "label": "Sternenatlas", "verdict": "declined",
+      "lineage": "Himmelsatlas mit Helligkeitsklassen",
+      "thesis": "Teile als Sterne, Größe nach Bedeutung.", "palette": ["#0f1a33", "#f2f2f2", "#d9483b"],
+      "materials": ["Kartenraster", "Punktgrößen"], "viewport": "Nachtblaue Karte mit Punkten.",
+      "case": "Lena identifiziert sich nicht mit Sternkarten; Fotos würden zu Punkten.", "risk": "Verliert die Kleidung.",
+      "kept": "Eine feste Größenrampe trägt die Hierarchie.",
+      "hero": "https://impeccable.style/worlds/cards/notation-diagram-systems-star-atlas-hero.webp"
+    },
+    {
+      "id": "challenger-metro", "label": "Metro-Kacheln", "verdict": "declined",
+      "lineage": "Kachel-Oberfläche mit Riesentypo",
+      "thesis": "Typo statt Chrome.", "palette": ["#000000", "#00aba9", "#ffffff"],
+      "materials": ["flache Kacheln"], "viewport": "Schwarze Panorama-Kacheln.",
+      "case": "Kalt und angeschnitten statt warm und persönlich; Fotos konkurrieren mit Riesentypo.", "risk": "Verliert Wärme.",
+      "kept": "Kein Chrome um die Fotos.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-metro-typographic-tiles-hero.webp"
+    },
+    {
+      "id": "challenger-acetate", "label": "Handbuch mit Registern", "verdict": "declined",
+      "lineage": "Software-Handbuch mit Acetat-Blättern",
+      "thesis": "Registerleiste nach Umfang.", "palette": ["#e8722c", "#f2c230", "#f4f1ea"],
+      "materials": ["Acetat", "Registerkarton"], "viewport": "Registerleiste am Rand.",
+      "case": "Handbuch-Ernst passt nicht zum Morgen vor dem Schrank.", "risk": "Zu technisch.",
+      "kept": "Register zeigen den Umfang jeder Kategorie.",
+      "hero": "https://impeccable.style/worlds/cards/rw-manual-acetate-tab-board-hero.webp"
+    },
+    {
+      "id": "challenger-darkroom", "label": "Dunkelkammer-Protokoll", "verdict": "declined",
+      "lineage": "Belichtungsprotokoll mit Zonenkeil",
+      "thesis": "Schraffuren als Zustand.", "palette": ["#1b1b1b", "#d4d4d4", "#c2187a"],
+      "materials": ["Transparentpapier", "Schraffur"], "viewport": "Überlappende Blätter.",
+      "case": "Fachsprache und Schraffur überdecken die Fotos; keine Identifikation.", "risk": "Unlesbar für den Alltag.",
+      "kept": "Fotos werden nie überlagert.",
+      "hero": "https://impeccable.style/worlds/cards/operate-b-exposure-record-zone-sheets-hero.webp"
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "canon": true,
+  "canonCard": {
+    "label": "Der Kategorie-Standard",
+    "thesis": "Eine Kleiderschrank-App, wie die bekannten Apps sie machen, sauber umgesetzt.",
+    "palette": ["#ffffff", "#111111", "#8e8e93", "#e86a8a"],
+    "materials": ["iOS-Systemschrift", "Großer Titel", "Fotoraster"],
+    "viewport": "Großer Titel, Segment-Leiste für Kategorien, Fotoraster, Tab-Leiste.",
+    "risk": "Bewusst nicht von anderen Apps unterscheidbar.",
+    "html": ".impeccable/mocks/decision/canon.html",
+    "htmlFrame": "390x844"
+  },
+  "steer": true
+}

@@ -3,7 +3,7 @@ import { createItem } from '../db/items';
 import { createOutfit } from '../db/outfits';
 import { db, type Item } from '../db/schema';
 import { fakePhoto } from '../test/factories';
-import { BackupError, backupFileName, exportBackup, importBackup } from './backup';
+import { BackupError, backupFileName, exportBackup, importBackup, parseBackup } from './backup';
 
 const fakeThumb = async (full: Blob) => new Blob([`thumb-of-${await full.text()}`], { type: 'image/jpeg' });
 const byId = (a: Item, b: Item) => a.id.localeCompare(b.id);
@@ -40,6 +40,14 @@ describe('export + import', () => {
     expect(await db.outfits.toArray()).toEqual(outfitsBefore);
     expect(await (await db.photos.get(a))!.full.text()).toBe('a-full');
     expect(await (await db.photos.get(b))!.thumb.text()).toBe('thumb-of-b-full');
+  });
+
+  it('reports when a backup was made, for the import confirmation', async () => {
+    await seedWardrobe();
+    const parsed = parseBackup(await exportBackup(new Date('2026-10-03T08:00:00.000Z')));
+    expect(parsed.exportedAt).toBe('2026-10-03T08:00:00.000Z');
+    expect(parsed.items).toHaveLength(2);
+    expect(parsed.outfits).toHaveLength(1);
   });
 
   it('writes the agreed header', async () => {

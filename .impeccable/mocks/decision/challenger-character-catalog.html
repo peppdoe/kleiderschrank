@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=390">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:#fde4ec;color:#2b2b3a;font:15px/1.35 system-ui,sans-serif}
+h1{margin:56px 18px 4px;font:700 32px/1.05 'Baloo 2'}
+.sub{margin:0 18px 16px;font:500 15px 'Baloo 2';color:#7a5566}
+.chips{display:flex;gap:8px;margin:0 18px 16px}
+.chips b{font:500 14px 'Baloo 2';background:#fff;border-radius:22px;padding:10px 16px}
+.chips b.on{background:#ff7aa2;color:#fff}
+.roster{margin:0 18px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cell{background:#fff;border-radius:18px;padding:10px 10px 12px}
+.cell .pic{aspect-ratio:1;border-radius:14px;display:flex;align-items:center;justify-content:center;border:4px solid #fff;box-shadow:0 0 0 2px #f3c7d6}
+.cell .pic i{width:54%;height:68%;border-radius:14px}
+.cell .plate{margin-top:8px;font:700 16px 'Baloo 2';display:flex;justify-content:space-between}
+.cell .plate span{font:500 12px 'Baloo 2';background:#fff3c4;border-radius:10px;padding:2px 8px}
+.cell p{font:500 13px 'Baloo 2';color:#7a5566}
+.tabs{position:absolute;left:0;right:0;bottom:0;height:84px;background:#fff;display:flex;padding-top:12px;border-radius:22px 22px 0 0}
+.tabs span{flex:1;text-align:center;font:700 13px 'Baloo 2';color:#b08a9a}
+.tabs span.on{color:#ff7aa2}
+.fab{position:absolute;right:18px;bottom:100px;width:62px;height:62px;border-radius:20px;background:#ff7aa2;color:#fff;font:700 34px/62px 'Baloo 2';text-align:center}
+</style></head><body>
+<h1>Hallo Lena!</h1>
+<div class="sub">Wer darf heute mit? 12 Teile passen zum Herbst.</div>
+<div class="chips"><b class="on">Herbst</b><b>Oberteile</b><b>Schuhe</b></div>
+<div class="roster">
+  <div class="cell"><div class="pic" style="background:#e3f1ff"><i style="background:#2f6fdb"></i></div><div class="plate">Leinenbluse <span>Blau</span></div><p>Liebt Sonne und Biergärten.</p></div>
+  <div class="cell"><div class="pic" style="background:#fff3c4"><i style="background:#8b5a2b"></i></div><div class="plate">Lederjacke <span>Braun</span></div><p>Kommt bei Wind immer mit.</p></div>
+  <div class="cell"><div class="pic" style="background:#fde4ec"><i style="background:#1c1c1e"></i></div><div class="plate">Jeans <span>Schwarz</span></div><p>Passt zu allem.</p></div>
+  <div class="cell"><div class="pic" style="background:#e3f1ff"><i style="background:#3a9d4f"></i></div><div class="plate">Pulli <span>Grün</span></div><p>Kuschelig ab 10 Grad.</p></div>
+</div>
+<div class="fab">+</div>
+<div class="tabs"><span class="on">Schrank</span><span>Outfits</span><span>Einstellungen</span></div>
+</body></html>
