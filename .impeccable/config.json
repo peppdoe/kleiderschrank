@@ -1,0 +1,35 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-10-10T22:13:08.548Z",
+        "reason": "Claude: unchosen decision-round sketch, intentionally in another world's fonts; never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-character-catalog.html"
+        ],
+        "createdAt": "2026-10-10T22:13:08.800Z",
+        "reason": "Claude: unchosen decision-round sketch, intentionally in another world's fonts; never shipped"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-wayfinding.html"
+        ],
+        "createdAt": "2026-10-10T22:13:09.068Z",
+        "reason": "Claude: unchosen decision-round sketch, intentionally in another world's fonts; never shipped"
+      }
+    ]
+  }
+}
