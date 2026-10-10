@@ -1,7 +1,8 @@
-import { useState, type ReactElement } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { TabBar } from './components/TabBar';
 import { EMPTY_FILTER, type FilterState } from './lib/filters';
 import { navigate, tabOf, useRoute } from './lib/route';
+import { requestPersistence } from './lib/storage';
 import { ItemDetailScreen } from './screens/ItemDetailScreen';
 import { ItemFormScreen } from './screens/ItemFormScreen';
 import { OutfitDetailScreen } from './screens/OutfitDetailScreen';
@@ -14,6 +15,10 @@ export default function App() {
   const route = useRoute();
   const [draftPhoto, setDraftPhoto] = useState<File | null>(null);
   const [wardrobeFilter, setWardrobeFilter] = useState<FilterState>(EMPTY_FILTER);
+
+  useEffect(() => {
+    requestPersistence().catch(() => undefined);
+  }, []);
 
   function startNewItem(file: File) {
     setDraftPhoto(file);
