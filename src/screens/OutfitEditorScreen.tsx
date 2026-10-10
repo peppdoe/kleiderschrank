@@ -92,7 +92,7 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
         <div className="empty"><p>Du hast noch keine Teile im Schrank.</p></div>
       ) : (
         <>
-          <FilterTags value={filter} onChange={setFilter} />
+          <FilterTags value={filter} onChange={setFilter} resultCount={visible.length} />
           <ItemGrid
             items={visible}
             selectedIds={selected}

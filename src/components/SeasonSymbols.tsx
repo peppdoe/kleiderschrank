@@ -21,13 +21,14 @@ export function SeasonSymbols({ selected, current, onToggle }: SeasonSymbolsProp
             className={`care-symbol${on ? ' care-symbol--on' : ''}${isCurrent ? ' care-symbol--current' : ''}`}
             aria-pressed={on}
             aria-label={season.label}
+            title={isCurrent ? 'Aktuelle Saison' : undefined}
             onClick={() => onToggle(season.id)}
           >
             <span className="care-symbol__mark">
               <Icon name={season.id} />
             </span>
             <span className="care-symbol__label" aria-hidden="true">
-              {isCurrent ? 'Jetzt' : season.label}
+              {season.label}
             </span>
           </button>
         );

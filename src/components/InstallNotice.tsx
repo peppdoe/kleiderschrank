@@ -13,7 +13,7 @@ export function InstallNotice({ onDismiss, detailed = false }: { onDismiss?: () 
   }
   return (
     <div className="notice-line" role="note">
-      <p>Tipp: Über Safari → Teilen → „Zum Home-Bildschirm“ installieren. Daten aus Safari werden nicht übernommen.</p>
+      <p>Erst „Zum Home-Bildschirm“ – Daten aus Safari werden nicht übernommen.</p>
       {onDismiss && (
         <button type="button" className="icon-button" aria-label="Hinweis ausblenden" onClick={onDismiss}>
           <Icon name="close" size={20} />

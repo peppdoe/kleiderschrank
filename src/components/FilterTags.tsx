@@ -7,10 +7,11 @@ import { Icon } from './Icon';
 interface FilterTagsProps {
   value: FilterState;
   onChange: (filter: FilterState) => void;
+  resultCount: number;
 }
 
 /** Ein Anhänger „Filter“ öffnet das Bodenblatt; jeder aktive Filter hängt als eigener Anhänger daneben. */
-export function FilterTags({ value, onChange }: FilterTagsProps) {
+export function FilterTags({ value, onChange, resultCount }: FilterTagsProps) {
   const [open, setOpen] = useState(false);
   const active = [
     ...value.categories.map((id) => ({ key: `c-${id}`, label: labelOf(CATEGORIES, id), next: { ...value, categories: toggleValue(value.categories, id) } })),
@@ -38,7 +39,7 @@ export function FilterTags({ value, onChange }: FilterTagsProps) {
           </button>
         ))}
       </div>
-      {open && <FilterSheet value={value} onChange={onChange} onClose={() => setOpen(false)} />}
+      {open && <FilterSheet value={value} onChange={onChange} onClose={() => setOpen(false)} resultCount={resultCount} />}
     </>
   );
 }

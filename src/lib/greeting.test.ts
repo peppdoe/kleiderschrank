@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GREETING_LINES, greetingFor, seasonOf, wardrobeTitle } from './greeting';
+import { GREETING_LINES, greetingFor, seasonOf } from './greeting';
 
 describe('seasonOf', () => {
   it.each([
@@ -51,11 +51,9 @@ describe('greetingFor', () => {
   });
 });
 
-describe('wardrobeTitle', () => {
-  it('uses the German possessive of the name', () => {
-    expect(wardrobeTitle('Lena')).toBe('Lenas Kleiderschrank');
-    expect(wardrobeTitle('Jonas')).toBe('Jonas’ Kleiderschrank');
-    expect(wardrobeTitle('Max')).toBe('Max’ Kleiderschrank');
-    expect(wardrobeTitle('  ')).toBe('Mein Kleiderschrank');
+describe('greeting lines', () => {
+  it('never assume a specific garment Lena may not own', () => {
+    const all = Object.values(GREETING_LINES).flat();
+    expect(all.some((line) => /Lederjacke|Sommerkleid/.test(line))).toBe(false);
   });
 });

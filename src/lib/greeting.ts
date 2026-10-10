@@ -11,8 +11,8 @@ export const GREETING_LINES: Record<'general' | SeasonId, readonly string[]> = {
     'Schlicht oder ein bisschen mutig heute?',
   ],
   spring: ['Zeit für leichte Jacken?', 'Frühling: Farbe darf wieder raus.', 'Übergangsjacke oder schon ohne?'],
-  summer: ['Sonnenbrille nicht vergessen.', 'Leicht und luftig heute?', 'Sommerkleid-Wetter?'],
-  autumn: ['Herbstzeit: Zeit für Lagen und Strick?', 'Ein guter Tag für deine Lederjacke?', 'Gemütlich oder schick in den Herbst?'],
+  summer: ['Sonnenbrille nicht vergessen.', 'Leicht und luftig heute?', 'Heute darf es luftig sein.'],
+  autumn: ['Herbstzeit: Zeit für Lagen und Strick?', 'Zeit für Jacke und Schal?', 'Gemütlich oder schick in den Herbst?'],
   winter: ['Schal und Mütze bereit?', 'Warm eingepackt heute?', 'Zeit für den dicken Pulli?'],
 };
 
@@ -28,13 +28,6 @@ function salutation(hour: number): string {
   if (hour >= 5 && hour < 11) return 'Guten Morgen';
   if (hour >= 17 && hour < 23) return 'Guten Abend';
   return 'Hallo';
-}
-
-export function wardrobeTitle(name: string): string {
-  const trimmed = name.trim();
-  if (!trimmed) return 'Mein Kleiderschrank';
-  // Namen auf s, ß, x oder z bekommen im Genitiv nur einen Apostroph (Jonas’, Max’).
-  return /[sßxz]$/i.test(trimmed) ? `${trimmed}’ Kleiderschrank` : `${trimmed}s Kleiderschrank`;
 }
 
 /** `pick` ist eine Zufallszahl in [0, 1], beim Öffnen der App einmal gezogen. */

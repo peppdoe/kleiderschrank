@@ -63,6 +63,8 @@ export function ItemFormScreen({ itemId, initialFile }: ItemFormScreenProps) {
 
   if (itemId && existing === undefined) return null;
   if (itemId && existing === null) return <NotFound text="Dieses Teil gibt es nicht mehr." backTo="/" />;
+  // Erst zeigen, wenn die gespeicherten Werte übernommen sind – sonst würde ein früher Tipp überschrieben.
+  if (itemId && !loaded) return null;
 
   const hasPhoto = photo !== null || Boolean(itemId);
   const canSave = hasPhoto && category !== null && !saving && !processing;

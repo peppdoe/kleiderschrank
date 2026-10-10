@@ -52,14 +52,25 @@ describe('Schrank', () => {
     await user.click(screen.getByRole('button', { name: /^Filter/ }));
     const sheet = await screen.findByRole('dialog', { name: 'Filter' });
     await user.click(within(within(sheet).getByRole('group', { name: 'Kategorie' })).getByRole('button', { name: 'Hose' }));
-    await user.click(within(sheet).getByRole('button', { name: 'Fertig' }));
+    expect(within(sheet).getByRole('button', { name: 'Zurücksetzen' })).toBeInTheDocument();
+    await user.click(within(sheet).getByRole('button', { name: '1 Teil zeigen' }));
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Oberteil, Blau' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Hose, Schwarz' })).toBeInTheDocument();
+    expect(screen.getByText('1 von 2 Teilen')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Filter Hose entfernen' }));
     expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
+  });
+
+  it('marks the current season by name, not only as "Jetzt"', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-10T07:40:00'));
+    render(<App />);
+    const seasons = await screen.findByRole('group', { name: 'Saison wählen' });
+    expect(within(seasons).getByText('Herbst')).toBeInTheDocument();
+    expect(within(seasons).queryByText('Jetzt')).not.toBeInTheDocument();
   });
 
   it('filters by season with the care symbols and explains an empty result', async () => {

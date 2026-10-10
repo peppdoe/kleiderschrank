@@ -14,8 +14,8 @@ import { listOutfits } from '../db/outfits';
 import { needsBackupReminder } from '../lib/backupReminder';
 import { SEASONS, labelOf } from '../lib/constants';
 import { plural } from '../lib/describe';
-import { EMPTY_FILTER, applyFilter, toggleValue, type FilterState } from '../lib/filters';
-import { greetingFor, seasonOf, wardrobeTitle } from '../lib/greeting';
+import { EMPTY_FILTER, applyFilter, isFilterActive, toggleValue, type FilterState } from '../lib/filters';
+import { greetingFor, seasonOf } from '../lib/greeting';
 import { navigate } from '../lib/route';
 import { isStandalone } from '../lib/storage';
 import { outfitsForSeason } from '../lib/today';
@@ -51,7 +51,6 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto }: Wardrobe
   return (
     <section className="screen-content">
       <LabelBand
-        brand={wardrobeTitle(name)}
         title={greeting.title}
         line={greeting.line}
         meta={`${dateFormat.format(now)} · ${labelOf(SEASONS, season)}`}
@@ -70,8 +69,8 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto }: Wardrobe
           }}
         />}
       {showBackupHint && (
-        <button type="button" className="notice-line notice-line--action" onClick={() => navigate('/settings')}>
-          Zeit für ein Backup – tippen, um deine Daten zu sichern.
+        <button type="button" className="quiet-link" onClick={() => navigate('/settings')}>
+          Zeit für ein Backup – jetzt sichern
         </button>
       )}
 
@@ -84,7 +83,7 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto }: Wardrobe
           <ul className="today__row">
             {today.map((outfit) => (
               <li key={outfit.id}>
-                <button type="button" className="today__card" onClick={() => navigate(`/outfit/${outfit.id}`)}>
+                <button type="button" className="today__strip" onClick={() => navigate(`/outfit/${outfit.id}`)}>
                   <OutfitPreview itemIds={outfit.itemIds} />
                   <span className="today__name">{outfit.name}</span>
                 </button>
@@ -94,9 +93,13 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto }: Wardrobe
         </section>
       )}
 
-      <div className="section-head">
+      <div className="section-head section-head--start">
         <h2 className="section-title">Schrank</h2>
-        <span className="section-meta">{plural(items.length, 'Teil', 'Teile')}</span>
+        <span className="section-meta">
+          {isFilterActive(filter)
+            ? `${visible.length} von ${items.length} ${items.length === 1 ? 'Teil' : 'Teilen'}`
+            : plural(items.length, 'Teil', 'Teile')}
+        </span>
       </div>
 
       {items.length === 0 ? (
@@ -105,7 +108,7 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto }: Wardrobe
         </div>
       ) : (
         <>
-          <FilterTags value={filter} onChange={onFilterChange} />
+          <FilterTags value={filter} onChange={onFilterChange} resultCount={visible.length} />
           {visible.length === 0 ? (
             <div className="empty">
               <p>Keine Teile passen zu diesen Filtern.</p>

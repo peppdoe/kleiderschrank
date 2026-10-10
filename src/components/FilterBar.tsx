@@ -45,7 +45,7 @@ export function FilterBar({ value, onChange, wrap = false }: FilterBarProps) {
             </div>
           ))
         : groups}
-      {isFilterActive(value) && (
+      {!wrap && isFilterActive(value) && (
         <button type="button" className="text-button filter-bar__reset" onClick={() => onChange(EMPTY_FILTER)}>
           Filter zurücksetzen
         </button>
