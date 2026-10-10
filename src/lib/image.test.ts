@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { FULL_MAX, centerSquare, fitWithin } from './image';
+import { FULL_MAX, THUMB_HEIGHT, THUMB_WIDTH, centerCrop, fitWithin } from './image';
 
 describe('fitWithin', () => {
   it('scales a 48 MP iPhone photo down to 1200 px on the long edge', () => {
@@ -19,12 +19,23 @@ describe('fitWithin', () => {
   });
 });
 
-describe('centerSquare', () => {
-  it('crops landscape images in the middle', () => {
-    expect(centerSquare(4032, 3024)).toEqual({ sx: 504, sy: 0, size: 3024 });
+describe('centerCrop', () => {
+  it('cuts a 3:4 portrait window out of a landscape photo, centred', () => {
+    expect(centerCrop(4032, 3024, 3 / 4)).toEqual({ sx: 882, sy: 0, sw: 2268, sh: 3024 });
   });
 
-  it('crops portrait images in the middle', () => {
-    expect(centerSquare(3024, 4032)).toEqual({ sx: 0, sy: 504, size: 3024 });
+  it('keeps a 3:4 portrait photo whole', () => {
+    expect(centerCrop(3024, 4032, 3 / 4)).toEqual({ sx: 0, sy: 0, sw: 3024, sh: 4032 });
+  });
+
+  it('trims the height of a very tall photo', () => {
+    expect(centerCrop(1000, 3000, 3 / 4)).toEqual({ sx: 0, sy: 833, sw: 1000, sh: 1333 });
+  });
+});
+
+describe('thumbnail size', () => {
+  it('is portrait 3:4 so the grid tiles stay sharp', () => {
+    expect(THUMB_WIDTH / THUMB_HEIGHT).toBeCloseTo(3 / 4);
+    expect(THUMB_WIDTH).toBeGreaterThanOrEqual(330);
   });
 });

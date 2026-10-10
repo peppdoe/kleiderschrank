@@ -1,7 +1,9 @@
 import type { PhotoBlobs } from '../db/items';
 
 export const FULL_MAX = 1200;
-export const THUMB_SIZE = 300;
+// Vorschaubilder im Hochformat 3:4, passend zu den Kacheln im Raster.
+export const THUMB_WIDTH = 360;
+export const THUMB_HEIGHT = 480;
 const JPEG_QUALITY = 0.85;
 
 export class PhotoError extends Error {}
@@ -11,9 +13,14 @@ export function fitWithin(width: number, height: number, max: number): { width: 
   return { width: Math.max(1, Math.round(width * scale)), height: Math.max(1, Math.round(height * scale)) };
 }
 
-export function centerSquare(width: number, height: number): { sx: number; sy: number; size: number } {
-  const size = Math.min(width, height);
-  return { sx: Math.floor((width - size) / 2), sy: Math.floor((height - size) / 2), size };
+/** Größter mittiger Ausschnitt mit dem Seitenverhältnis ratio (Breite/Höhe). */
+export function centerCrop(width: number, height: number, ratio: number): { sx: number; sy: number; sw: number; sh: number } {
+  if (width / height > ratio) {
+    const sw = Math.round(height * ratio);
+    return { sx: Math.floor((width - sw) / 2), sy: 0, sw, sh: height };
+  }
+  const sh = Math.round(width / ratio);
+  return { sx: 0, sy: Math.floor((height - sh) / 2), sw: width, sh };
 }
 
 type Source = ImageBitmap | HTMLImageElement;
@@ -73,8 +80,8 @@ function draw(
 }
 
 function drawThumb(source: Source, width: number, height: number): Promise<Blob> {
-  const { sx, sy, size } = centerSquare(width, height);
-  return draw(source, sx, sy, size, size, THUMB_SIZE, THUMB_SIZE);
+  const { sx, sy, sw, sh } = centerCrop(width, height, THUMB_WIDTH / THUMB_HEIGHT);
+  return draw(source, sx, sy, sw, sh, THUMB_WIDTH, THUMB_HEIGHT);
 }
 
 export async function processPhoto(file: Blob): Promise<PhotoBlobs> {

@@ -36,6 +36,7 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto }: Wardrobe
   const name = useLiveQuery(async () => (await getMeta(META_USER_NAME)) ?? '', []);
   const hintDismissed = useLiveQuery(async () => (await getMeta(META_INSTALL_HINT_DISMISSED)) === 'true', []);
   const [pick] = useState(() => Math.random()); // pro Öffnen ein Spruch, nicht bei jedem Render
+  const [hintHidden, setHintHidden] = useState(false); // sofort weg, auch bevor die Datenbank antwortet
 
   if (!items || name === undefined) return null;
 
@@ -44,7 +45,7 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto }: Wardrobe
   const greeting = greetingFor({ name, now, pick });
   const visible = applyFilter(items, filter);
   const today = outfits ? outfitsForSeason(outfits, items, season) : [];
-  const showInstallHint = !isStandalone() && hintDismissed === false;
+  const showInstallHint = !isStandalone() && hintDismissed === false && !hintHidden;
   const showBackupHint = lastBackup !== undefined && needsBackupReminder(lastBackup ?? undefined, items.length);
 
   return (
@@ -62,7 +63,12 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto }: Wardrobe
         onToggle={(id) => onFilterChange({ ...filter, seasons: toggleValue(filter.seasons, id) })}
       />
 
-      {showInstallHint && <InstallNotice onDismiss={() => void setMeta(META_INSTALL_HINT_DISMISSED, 'true')} />}
+      {showInstallHint && <InstallNotice
+          onDismiss={() => {
+            setHintHidden(true);
+            void setMeta(META_INSTALL_HINT_DISMISSED, 'true');
+          }}
+        />}
       {showBackupHint && (
         <button type="button" className="notice-line notice-line--action" onClick={() => navigate('/settings')}>
           Zeit für ein Backup – tippen, um deine Daten zu sichern.
