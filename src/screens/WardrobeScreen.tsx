@@ -110,6 +110,9 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
             ? `${visible.length} von ${items.length} ${items.length === 1 ? 'Teil' : 'Teilen'}`
             : plural(items.length, 'Teil', 'Teile')}
         </span>
+        {filter.seasons.length > 0 && (
+          <span className="section-meta">· {filter.seasons.map((id) => labelOf(SEASONS, id)).join(', ')}</span>
+        )}
       </div>
 
       {items.length === 0 ? (

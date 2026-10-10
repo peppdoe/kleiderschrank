@@ -49,7 +49,7 @@ export function FilterTags({ value, onChange, resultCount, excludeSeasons = fals
           </button>
         ))}
       </div>
-      {open && <FilterSheet value={value} onChange={onChange} onClose={() => setOpen(false)} resultCount={resultCount} />}
+      {open && <FilterSheet value={value} onChange={onChange} onClose={() => setOpen(false)} resultCount={resultCount} withSeasons={!excludeSeasons} />}
     </>
   );
 }

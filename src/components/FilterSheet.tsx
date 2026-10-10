@@ -9,16 +9,21 @@ interface FilterSheetProps {
   onClose: () => void;
   /** Wie viele Teile mit den gewählten Filtern übrig bleiben. */
   resultCount: number;
+  /** false im Schrank: die Saison bleibt Sache der Saison-Reihe und wird nie mit zurückgesetzt. */
+  withSeasons?: boolean;
 }
 
 /** Alle Filter in einem Bodenblatt; die Aktionen liegen unten in Daumenreichweite. */
-export function FilterSheet({ value, onChange, onClose, resultCount }: FilterSheetProps) {
+export function FilterSheet({ value, onChange, onClose, resultCount, withSeasons = true }: FilterSheetProps) {
+  const active = withSeasons ? isFilterActive(value) : value.categories.length + value.colors.length > 0;
+  const reset = () => onChange(withSeasons ? EMPTY_FILTER : { ...value, categories: [], colors: [] });
+
   return (
     <Sheet title="Filter" onClose={onClose} className="sheet--filters">
-      <FilterBar value={value} onChange={onChange} wrap />
+      <FilterBar value={value} onChange={onChange} wrap withSeasons={withSeasons} />
       <div className="sheet__bar">
-        {isFilterActive(value) && (
-          <button type="button" className="text-button" onClick={() => onChange(EMPTY_FILTER)}>
+        {active && (
+          <button type="button" className="text-button" onClick={reset}>
             Zurücksetzen
           </button>
         )}

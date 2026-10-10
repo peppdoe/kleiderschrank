@@ -79,6 +79,8 @@ describe('Schrank', () => {
     expect(autumn).toHaveAttribute('aria-pressed', 'true');
     expect(await screen.findByRole('button', { name: 'Jacke/Mantel' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Oberteil, Blau' })).not.toBeInTheDocument();
+    expect(screen.getByText('1 von 3 Teilen')).toBeInTheDocument();
+    expect(screen.getByText('· Herbst')).toBeInTheDocument();
 
     await user.click(within(seasons).getByRole('button', { name: 'Sommer' }));
     expect(within(seasons).getByRole('button', { name: 'Sommer' })).toHaveAttribute('aria-pressed', 'true');
@@ -99,6 +101,24 @@ describe('Schrank', () => {
     const seasons = await screen.findByRole('group', { name: 'Saison wählen' });
     expect(within(seasons).getByText('Herbst')).toBeInTheDocument();
     expect(within(seasons).queryByText('Jetzt')).not.toBeInTheDocument();
+  });
+
+  it('keeps the season out of the filter sheet so resetting never clears today', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-10T07:40:00'));
+    await seedItem({ category: 'top', colors: ['blue'] });
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole('button', { name: /^Filter/ }));
+    const sheet = await screen.findByRole('dialog', { name: 'Filter' });
+    expect(within(sheet).queryByRole('group', { name: 'Saison' })).not.toBeInTheDocument();
+    expect(within(sheet).queryByRole('button', { name: 'Zurücksetzen' })).not.toBeInTheDocument();
+
+    await user.click(within(within(sheet).getByRole('group', { name: 'Farbe' })).getByRole('button', { name: 'Blau' }));
+    await user.click(within(sheet).getByRole('button', { name: 'Zurücksetzen' }));
+    await user.click(within(sheet).getByRole('button', { name: /zeigen$/ }));
+    const seasons = screen.getByRole('group', { name: 'Saison wählen' });
+    expect(within(seasons).getByRole('button', { name: 'Herbst (aktuelle Saison)' })).toHaveAttribute('aria-pressed', 'true');
   });
 
   it('filters by season with the care symbols and explains an empty result', async () => {

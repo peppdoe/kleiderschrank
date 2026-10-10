@@ -8,9 +8,11 @@ interface FilterBarProps {
   onChange: (filter: FilterState) => void;
   /** Im Bodenblatt: Gruppen mit sichtbarer Überschrift und umbrechenden Chips statt Seitwärts-Scrollen. */
   wrap?: boolean;
+  /** Im Schrank steuert die Saison-Reihe die Saison; dann keine eigene Saison-Gruppe. */
+  withSeasons?: boolean;
 }
 
-export function FilterBar({ value, onChange, wrap = false }: FilterBarProps) {
+export function FilterBar({ value, onChange, wrap = false, withSeasons = true }: FilterBarProps) {
   const groups = [
     <ChipGroup
       key="cat"
@@ -34,6 +36,10 @@ export function FilterBar({ value, onChange, wrap = false }: FilterBarProps) {
     />,
   ];
   const titles = ['Kategorie', 'Farbe', 'Saison'];
+  if (!withSeasons) {
+    groups.pop();
+    titles.pop();
+  }
 
   return (
     <div className={wrap ? 'filter-bar filter-bar--wrap' : 'filter-bar'}>
