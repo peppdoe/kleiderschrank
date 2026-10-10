@@ -1,0 +1,50 @@
+import { useLiveQuery } from 'dexie-react-hooks';
+import { useState } from 'react';
+import { ItemGrid } from '../components/ItemGrid';
+import { NotFound } from '../components/NotFound';
+import { getItemsByIds } from '../db/items';
+import { deleteOutfit, getOutfit } from '../db/outfits';
+import { userMessage } from '../lib/errors';
+import { navigate } from '../lib/route';
+
+export function OutfitDetailScreen({ outfitId }: { outfitId: string }) {
+  const outfit = useLiveQuery(async () => (await getOutfit(outfitId)) ?? null, [outfitId]);
+  const items = useLiveQuery(async () => (outfit ? getItemsByIds(outfit.itemIds) : []), [outfit]);
+  const [error, setError] = useState<string | null>(null);
+
+  if (outfit === undefined || items === undefined) return null;
+  if (outfit === null) return <NotFound text="Dieses Outfit gibt es nicht mehr." backTo="/outfits" />;
+
+  async function remove() {
+    if (!outfit || !window.confirm(`Outfit „${outfit.name}“ wirklich löschen? Die Teile bleiben erhalten.`)) return;
+    try {
+      await deleteOutfit(outfitId);
+      navigate('/outfits', { replace: true });
+    } catch (e) {
+      setError(userMessage(e));
+    }
+  }
+
+  return (
+    <section className="screen-content">
+      <header className="screen-header">
+        <a className="link-button" href="#/outfits">‹ Outfits</a>
+      </header>
+      <h1>{outfit.name}</h1>
+      {items.length === 0 ? (
+        <p className="muted">Keine Teile mehr – alle Teile dieses Outfits wurden gelöscht.</p>
+      ) : (
+        <ItemGrid items={items} size="large" onItemClick={(item) => navigate(`/item/${item.id}`)} />
+      )}
+      {error && <p className="error" role="alert">{error}</p>}
+      <div className="actions">
+        <button type="button" className="button" onClick={() => navigate(`/outfit/${outfitId}/edit`)}>
+          Bearbeiten
+        </button>
+        <button type="button" className="button button--danger" onClick={remove}>
+          Löschen
+        </button>
+      </div>
+    </section>
+  );
+}

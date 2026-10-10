@@ -4,6 +4,9 @@ import { EMPTY_FILTER, type FilterState } from './lib/filters';
 import { navigate, tabOf, useRoute } from './lib/route';
 import { ItemDetailScreen } from './screens/ItemDetailScreen';
 import { ItemFormScreen } from './screens/ItemFormScreen';
+import { OutfitDetailScreen } from './screens/OutfitDetailScreen';
+import { OutfitEditorScreen } from './screens/OutfitEditorScreen';
+import { OutfitsScreen } from './screens/OutfitsScreen';
 import { WardrobeScreen } from './screens/WardrobeScreen';
 
 export default function App() {
@@ -26,6 +29,18 @@ export default function App() {
       break;
     case 'itemEdit':
       screen = <ItemFormScreen key={`edit-${route.id}`} itemId={route.id} />;
+      break;
+    case 'outfits':
+      screen = <OutfitsScreen />;
+      break;
+    case 'outfitNew':
+      screen = <OutfitEditorScreen key="new" />;
+      break;
+    case 'outfit':
+      screen = <OutfitDetailScreen key={route.id} outfitId={route.id} />;
+      break;
+    case 'outfitEdit':
+      screen = <OutfitEditorScreen key={`edit-${route.id}`} outfitId={route.id} />;
       break;
     default:
       screen = <WardrobeScreen filter={wardrobeFilter} onFilterChange={setWardrobeFilter} onPickPhoto={startNewItem} />;
