@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import App from '../App';
@@ -7,6 +7,8 @@ import { createOutfit } from '../db/outfits';
 import { db } from '../db/schema';
 import { exportBackup } from '../lib/backup';
 import { shareOrDownload } from '../lib/files';
+import { makeThumb } from '../lib/image';
+import { isStandalone } from '../lib/storage';
 import { seedItem } from '../test/factories';
 
 vi.mock('../lib/image', async (importOriginal) => ({
@@ -17,6 +19,11 @@ vi.mock('../lib/image', async (importOriginal) => ({
 vi.mock('../lib/files', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../lib/files')>()),
   shareOrDownload: vi.fn(async () => 'shared'),
+}));
+
+vi.mock('../lib/storage', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../lib/storage')>()),
+  isStandalone: vi.fn(() => false),
 }));
 
 // Kein vi.restoreAllMocks(): Das würde die vi.fn()-Implementierungen aus vi.mock leeren.
@@ -62,6 +69,38 @@ describe('Einstellungen', () => {
     expect(shareOrDownload).toHaveBeenCalledTimes(1);
     finish('shared');
     expect(await screen.findByRole('status')).toHaveTextContent('Backup gesichert.');
+  });
+
+  it('does not count a download as a backup inside the installed app', async () => {
+    vi.mocked(isStandalone).mockReturnValue(true);
+    vi.mocked(shareOrDownload).mockResolvedValueOnce('downloaded');
+    await seedItem();
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole('button', { name: 'Backup erstellen' }));
+    await user.click(await screen.findByRole('button', { name: 'Backup sichern' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Dateien-App');
+    expect(await getMeta(META_LAST_BACKUP)).toBeUndefined();
+    vi.mocked(isStandalone).mockReturnValue(false);
+  });
+
+  it('blocks a second import while one is running and offers a fresh backup afterwards', async () => {
+    await seedItem();
+    const json = await exportBackup();
+    let finish: (blob: Blob) => void = () => {};
+    vi.mocked(makeThumb).mockImplementationOnce(() => new Promise((resolve) => { finish = resolve; }));
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole('button', { name: 'Backup erstellen' }));
+    await screen.findByRole('button', { name: 'Backup sichern' });
+    await user.upload(screen.getByLabelText('Backup einspielen'), new File([json], 'backup.json', { type: 'application/json' }));
+    await waitFor(() => expect(screen.getByLabelText('Backup einspielen')).toBeDisabled());
+    finish(new Blob(['thumb'], { type: 'image/jpeg' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('Backup eingespielt');
+    expect(screen.getByLabelText('Backup einspielen')).toBeEnabled();
+    expect(screen.queryByRole('button', { name: 'Backup sichern' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Backup erstellen' })).toBeInTheDocument();
   });
 
   it('does not remember a cancelled share', async () => {

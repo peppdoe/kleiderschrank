@@ -24,4 +24,8 @@ describe('parseRoute', () => {
     expect(tabOf({ name: 'outfitEdit', id: 'a' })).toBe('outfits');
     expect(tabOf({ name: 'settings' })).toBe('settings');
   });
+
+  it('falls back to the wardrobe for a malformed address', () => {
+    expect(parseRoute('#/item/%E0')).toEqual({ name: 'wardrobe' });
+  });
 });

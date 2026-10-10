@@ -15,4 +15,20 @@ describe('processPhoto orientation', () => {
     expect(decode).toHaveBeenCalledWith(file, { imageOrientation: 'from-image' });
     expect(bitmap.close).toHaveBeenCalled();
   });
+
+  it('uses high-quality smoothing when shrinking photos', async () => {
+    vi.stubGlobal('createImageBitmap', vi.fn(async () => ({ width: 8064, height: 6048, close: vi.fn() })));
+    const qualities: string[] = [];
+    const ctx = {
+      imageSmoothingEnabled: false,
+      imageSmoothingQuality: 'low',
+      drawImage() {
+        qualities.push(ctx.imageSmoothingEnabled ? ctx.imageSmoothingQuality : 'off');
+      },
+    };
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(ctx as unknown as CanvasRenderingContext2D);
+    vi.spyOn(HTMLCanvasElement.prototype, 'toBlob').mockImplementation((done) => done(new Blob(['x'])));
+    await processPhoto(new Blob(['x'], { type: 'image/jpeg' }));
+    expect(qualities).toEqual(['high', 'high']);
+  });
 });

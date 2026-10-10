@@ -52,6 +52,14 @@ export function SettingsScreen() {
     try {
       const result = await shareOrDownload(prepared.json, prepared.fileName);
       if (result === 'cancelled') return;
+      if (result === 'downloaded' && isStandalone()) {
+        // In der Home-Bildschirm-App landet ein Download nicht verlässlich in „Dateien“.
+        setMessage({
+          kind: 'error',
+          text: 'Die Datei wurde heruntergeladen, das klappt in der installierten App aber nicht immer. Prüfe in der Dateien-App, ob sie dort liegt – sonst „Backup sichern“ noch einmal versuchen.',
+        });
+        return;
+      }
       await setMeta(META_LAST_BACKUP, new Date().toISOString());
       setPrepared(null);
       setMessage({ kind: 'ok', text: result === 'shared' ? 'Backup gesichert.' : 'Backup heruntergeladen.' });
@@ -68,6 +76,7 @@ export function SettingsScreen() {
     setMessage(null);
     try {
       const result = await importBackup(await readFileText(file), makeThumb);
+      setPrepared(null);
       setMessage({
         kind: 'ok',
         text: `Backup eingespielt: ${plural(result.items, 'Teil', 'Teile')}, ${plural(result.outfits, 'Outfit', 'Outfits')}.`,
@@ -102,7 +111,7 @@ export function SettingsScreen() {
         ) : (
           <button type="button" className="button" disabled={busy} onClick={prepare}>Backup erstellen</button>
         )}
-        <FilePicker className="button" label="Backup einspielen" accept="application/json,.json" onPick={importFile}>
+        <FilePicker className="button" label="Backup einspielen" accept="application/json,.json" onPick={importFile} disabled={busy}>
           Backup einspielen
         </FilePicker>
         {message && (

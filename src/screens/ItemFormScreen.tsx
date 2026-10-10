@@ -106,7 +106,7 @@ export function ItemFormScreen({ itemId, initialFile }: ItemFormScreenProps) {
         ) : (
           <div className="photo photo--empty">{processing ? 'Foto wird verarbeitet …' : 'Noch kein Foto'}</div>
         )}
-        <FilePicker className="button" label="Foto wählen" accept="image/*" onPick={handleFile}>
+        <FilePicker className="button" label="Foto wählen" accept="image/*" onPick={handleFile} disabled={processing}>
           {hasPhoto ? 'Foto ändern' : 'Foto wählen'}
         </FilePicker>
       </div>

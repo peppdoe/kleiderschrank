@@ -14,7 +14,12 @@ export type Route =
 export type TabId = 'wardrobe' | 'outfits' | 'settings';
 
 export function parseRoute(hash: string): Route {
-  const parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+  let parts: string[];
+  try {
+    parts = hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
+  } catch {
+    return { name: 'wardrobe' };
+  }
   const [section, id, action] = parts;
   if (section === 'item' && id === 'new' && !action) return { name: 'itemNew' };
   if (section === 'item' && id && !action) return { name: 'item', id };

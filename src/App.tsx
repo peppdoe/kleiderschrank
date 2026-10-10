@@ -20,6 +20,11 @@ export default function App() {
     requestPersistence().catch(() => undefined);
   }, []);
 
+  // Das Originalfoto (oft 5–15 MB) nur so lange halten, wie das Formular offen ist.
+  useEffect(() => {
+    if (route.name !== 'itemNew') setDraftPhoto(null);
+  }, [route.name]);
+
   function startNewItem(file: File) {
     setDraftPhoto(file);
     navigate('/item/new');

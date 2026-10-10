@@ -76,4 +76,27 @@ describe('Teil erfassen', () => {
     expect(await screen.findByText(/Noch keine Teile/)).toBeInTheDocument();
     expect(await db.items.count()).toBe(0);
   });
+
+  it('blocks a second photo pick while the first one is still being processed', async () => {
+    let finish: (value: { full: Blob; thumb: Blob }) => void = () => {};
+    vi.mocked(processPhoto).mockImplementationOnce(() => new Promise((resolve) => { finish = resolve; }));
+    const user = userEvent.setup();
+    await startNewItem(user);
+    expect(screen.getByLabelText('Foto wählen')).toBeDisabled();
+    finish({ full: new Blob(['a']), thumb: new Blob(['a']) });
+    await waitFor(() => expect(screen.getByLabelText('Foto wählen')).toBeEnabled());
+  });
+
+  it('does not reuse the previous photo when the new-item form is opened again', async () => {
+    vi.mocked(processPhoto).mockClear();
+    const user = userEvent.setup();
+    await startNewItem(user);
+    await user.click(within(screen.getByRole('group', { name: 'Kategorie' })).getByRole('button', { name: 'Schuhe' }));
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Speichern' })).toBeEnabled());
+    await user.click(screen.getByRole('button', { name: 'Speichern' }));
+    await screen.findByText('1 Teil');
+    window.location.hash = '#/item/new';
+    expect(await screen.findByText('Noch kein Foto')).toBeInTheDocument();
+    expect(processPhoto).toHaveBeenCalledTimes(1);
+  });
 });

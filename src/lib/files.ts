@@ -4,7 +4,7 @@ export async function shareOrDownload(content: string, fileName: string): Promis
   const file = new File([content], fileName, { type: 'application/json' });
   if (navigator.canShare?.({ files: [file] })) {
     try {
-      await navigator.share({ files: [file], title: 'Kleiderschrank-Backup' });
+      await navigator.share({ files: [file] });
       return 'shared';
     } catch (error) {
       const name = (error as Error).name;

@@ -23,4 +23,12 @@ describe('shareOrDownload', () => {
     nav.share = vi.fn().mockResolvedValue(undefined);
     expect(await shareOrDownload('{}', 'backup.json')).toBe('shared');
   });
+
+  it('shares only the file, without extra text that iOS might save separately', async () => {
+    nav.canShare = () => true;
+    const share = vi.fn().mockResolvedValue(undefined);
+    nav.share = share;
+    await shareOrDownload('{}', 'backup.json');
+    expect(share).toHaveBeenCalledWith({ files: [expect.any(File)] });
+  });
 });

@@ -5,10 +5,11 @@ interface FilePickerProps {
   accept: string;
   onPick: (file: File) => void;
   className?: string;
+  disabled?: boolean;
   children: ReactNode;
 }
 
-export function FilePicker({ label, accept, onPick, className, children }: FilePickerProps) {
+export function FilePicker({ label, accept, onPick, className, disabled, children }: FilePickerProps) {
   return (
     <label className={className}>
       {children}
@@ -16,6 +17,7 @@ export function FilePicker({ label, accept, onPick, className, children }: FileP
         type="file"
         accept={accept}
         aria-label={label}
+        disabled={disabled}
         className="visually-hidden"
         onChange={(event) => {
           const file = event.target.files?.[0];

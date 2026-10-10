@@ -58,6 +58,8 @@ function draw(
   canvas.height = dh;
   const ctx = canvas.getContext('2d');
   if (!ctx) return Promise.reject(new PhotoError('Canvas nicht verfügbar'));
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
   ctx.drawImage(source, sx, sy, sw, sh, 0, 0, dw, dh);
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
