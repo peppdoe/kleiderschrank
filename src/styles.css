@@ -116,7 +116,7 @@ p { margin: 0; }
 .section { border-top: 1px solid var(--line); padding: 20px 0 24px; display: flex; flex-direction: column; gap: 14px; }
 
 /* Heute */
-.today__row { list-style: none; display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -16px; padding: 2px 16px 6px; scrollbar-width: none; }
+.today__row { list-style: none; display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; margin: 0 -16px; padding: 2px 16px 6px; scrollbar-width: none; }
 .today__row::-webkit-scrollbar { display: none; }
 .today__row li { flex: none; scroll-snap-align: start; }
 .today__strip { width: 196px; display: flex; flex-direction: column; gap: 6px; padding: 0; text-align: left; background: none; border: none; color: var(--ink); cursor: pointer; }
@@ -234,9 +234,12 @@ p { margin: 0; }
 
 /* Outfits */
 .outfit-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
-.outfit-card { width: 100%; text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px; display: flex; flex-direction: column; gap: 10px; cursor: pointer; }
-.outfit-card__name { font-size: 17px; font-weight: 500; padding: 0 2px 2px; }
+.outfit-list { gap: 22px; }
+.outfit-card { width: 100%; text-align: left; background: none; border: none; padding: 0; color: var(--ink); display: flex; flex-direction: column; gap: 8px; cursor: pointer; }
+.outfit-card__name { font-size: 17px; font-weight: 500; }
 .outfit-preview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
 .outfit-preview__cell { aspect-ratio: 3 / 4; border-radius: 4px; overflow: hidden; }
-.outfit-preview__more { display: flex; align-items: center; justify-content: center; background: var(--chip); color: var(--muted); font-weight: 600; }
+.outfit-preview__more { display: flex; align-items: center; justify-content: center; background: var(--kraft-soft); color: var(--kraft-ink); font-weight: 600; }
 .detail-title ~ .section-title { display: block; margin: 28px 0 10px; }
+.text-button--center { align-self: center; }
+@media (prefers-color-scheme: dark) { .swing-tag:not(.swing-tag--active) .swing-tag__count { color: var(--ground); } .outfit-preview__more { color: #eee2d2; } }

@@ -149,9 +149,9 @@ export function SettingsScreen() {
             <p className="notice">Die Datei ist bereit. Wähle „In Dateien sichern“ → iCloud Drive.</p>
           </>
         ) : (
-          <button type="button" className="button" disabled={busy} onClick={prepare}>Backup erstellen</button>
+          <button type="button" className="button button--primary" disabled={busy} onClick={prepare}>Backup erstellen</button>
         )}
-        <FilePicker className="button" label="Backup einspielen" accept="application/json,.json" onPick={chooseImportFile} disabled={busy}>
+        <FilePicker className="text-button text-button--center" label="Backup einspielen" accept="application/json,.json" onPick={chooseImportFile} disabled={busy}>
           Backup einspielen
         </FilePicker>
         {message && (

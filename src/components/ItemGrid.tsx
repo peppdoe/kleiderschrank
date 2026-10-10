@@ -1,5 +1,6 @@
 import type { Item } from '../db/schema';
 import { describeItem } from '../lib/describe';
+import { Icon } from './Icon';
 import { ItemPhoto } from './ItemPhoto';
 
 interface ItemGridProps {
@@ -24,7 +25,11 @@ export function ItemGrid({ items, onItemClick, selectedIds, size = 'normal' }: I
               onClick={() => onItemClick(item)}
             >
               <ItemPhoto itemId={item.id} alt="" />
-              {selected && <span className="tile__check" aria-hidden="true">✓</span>}
+              {selected && (
+                <span className="tile__check" aria-hidden="true">
+                  <Icon name="check" size={18} />
+                </span>
+              )}
             </button>
           </li>
         );
