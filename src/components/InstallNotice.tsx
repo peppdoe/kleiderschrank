@@ -1,10 +1,18 @@
+import { Icon } from './Icon';
+
 // Auf iOS hat die Home-Bildschirm-App einen eigenen Speicher, getrennt von Safari.
-export function InstallNotice() {
+export function InstallNotice({ onDismiss }: { onDismiss?: () => void }) {
   return (
-    <p className="banner banner--static" role="note">
-      Installiere die App zuerst: Safari → Teilen → „Zum Home-Bildschirm“, dann die App über das neue Symbol öffnen.
-      Daten aus Safari werden nicht übernommen – falls du hier schon Teile erfasst hast: Backup erstellen und in der
-      Home-Bildschirm-App einspielen.
-    </p>
+    <div className="notice-line" role="note">
+      <p>
+        Über Safari → Teilen → „Zum Home-Bildschirm“ installieren. Daten aus Safari werden nicht übernommen – wenn
+        du hier schon Teile erfasst hast: Backup erstellen und in der installierten App einspielen.
+      </p>
+      {onDismiss && (
+        <button type="button" className="icon-button" aria-label="Hinweis ausblenden" onClick={onDismiss}>
+          <Icon name="close" size={20} />
+        </button>
+      )}
+    </div>
   );
 }

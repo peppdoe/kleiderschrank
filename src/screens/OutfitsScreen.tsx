@@ -1,4 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
+import { Icon } from '../components/Icon';
 import { OutfitPreview } from '../components/OutfitPreview';
 import { listOutfits } from '../db/outfits';
 import { navigate } from '../lib/route';
@@ -9,13 +10,9 @@ export function OutfitsScreen() {
 
   return (
     <section className="screen-content">
-      <header className="screen-header">
-        <h1>Outfits</h1>
-        {outfits.length > 0 && (
-          <button type="button" className="link-button" onClick={() => navigate('/outfit/new')}>
-            Neues Outfit
-          </button>
-        )}
+      <header className="page-header">
+        <h1 className="page-header__title">Outfits</h1>
+        <span className="section-meta">{outfits.length > 0 ? `${outfits.length} gespeichert` : ''}</span>
       </header>
 
       {outfits.length === 0 ? (
@@ -30,12 +27,18 @@ export function OutfitsScreen() {
           {outfits.map((outfit) => (
             <li key={outfit.id}>
               <button type="button" className="outfit-card" onClick={() => navigate(`/outfit/${outfit.id}`)}>
-                <span className="outfit-card__name">{outfit.name}</span>
                 <OutfitPreview itemIds={outfit.itemIds} />
+                <span className="outfit-card__name">{outfit.name}</span>
               </button>
             </li>
           ))}
         </ul>
+      )}
+
+      {outfits.length > 0 && (
+        <button type="button" className="fab" aria-label="Neues Outfit" onClick={() => navigate('/outfit/new')}>
+          <Icon name="plus" size={28} />
+        </button>
       )}
     </section>
   );

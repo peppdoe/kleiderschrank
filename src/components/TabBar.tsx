@@ -1,9 +1,10 @@
 import type { TabId } from '../lib/route';
+import { Icon, type IconName } from './Icon';
 
-const TABS: { id: TabId; label: string; icon: string; href: string }[] = [
-  { id: 'wardrobe', label: 'Schrank', icon: '👗', href: '#/' },
-  { id: 'outfits', label: 'Outfits', icon: '✨', href: '#/outfits' },
-  { id: 'settings', label: 'Einstellungen', icon: '⚙️', href: '#/settings' },
+const TABS: { id: TabId; label: string; icon: IconName; href: string }[] = [
+  { id: 'wardrobe', label: 'Schrank', icon: 'hanger', href: '#/' },
+  { id: 'outfits', label: 'Outfits', icon: 'outfit', href: '#/outfits' },
+  { id: 'settings', label: 'Einstellungen', icon: 'settings', href: '#/settings' },
 ];
 
 export function TabBar({ active }: { active: TabId }) {
@@ -16,8 +17,8 @@ export function TabBar({ active }: { active: TabId }) {
           className={tab.id === active ? 'tab tab--active' : 'tab'}
           aria-current={tab.id === active ? 'page' : undefined}
         >
-          <span className="tab__icon" aria-hidden="true">{tab.icon}</span>
-          {tab.label}
+          <Icon name={tab.icon} />
+          <span className="tab__label">{tab.label}</span>
         </a>
       ))}
     </nav>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GREETING_LINES, greetingFor, seasonOf } from './greeting';
+import { GREETING_LINES, greetingFor, seasonOf, wardrobeTitle } from './greeting';
 
 describe('seasonOf', () => {
   it.each([
@@ -48,5 +48,14 @@ describe('greetingFor', () => {
   it('stays inside the pool for pick values at the edges', () => {
     expect(greetingFor({ name: '', now: morning, pick: 0.999999 }).line).toBeTruthy();
     expect(greetingFor({ name: '', now: morning, pick: 1 }).line).toBeTruthy();
+  });
+});
+
+describe('wardrobeTitle', () => {
+  it('uses the German possessive of the name', () => {
+    expect(wardrobeTitle('Lena')).toBe('Lenas Kleiderschrank');
+    expect(wardrobeTitle('Jonas')).toBe('Jonas’ Kleiderschrank');
+    expect(wardrobeTitle('Max')).toBe('Max’ Kleiderschrank');
+    expect(wardrobeTitle('  ')).toBe('Mein Kleiderschrank');
   });
 });

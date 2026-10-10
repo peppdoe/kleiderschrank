@@ -60,10 +60,13 @@ export default function App() {
       screen = <WardrobeScreen filter={wardrobeFilter} onFilterChange={setWardrobeFilter} onPickPhoto={startNewItem} />;
   }
 
+  // In Formularen keine Tab-Leiste: ein versehentlicher Tipp würde die Eingaben verwerfen.
+  const inForm = ['itemNew', 'itemEdit', 'outfitNew', 'outfitEdit'].includes(route.name);
+
   return (
-    <div className="app">
+    <div className={inForm ? 'app app--form' : 'app'}>
       {screen}
-      <TabBar active={tabOf(route)} />
+      {!inForm && <TabBar active={tabOf(route)} />}
     </div>
   );
 }

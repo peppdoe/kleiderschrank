@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import App from '../App';
 import { isStandalone } from '../lib/storage';
@@ -17,6 +18,18 @@ describe('Installationshinweis', () => {
     vi.mocked(isStandalone).mockReturnValue(false);
     render(<App />);
     expect(await screen.findByRole('note')).toHaveTextContent('Daten aus Safari werden nicht übernommen');
+  });
+
+  it('can be hidden for good', async () => {
+    vi.mocked(isStandalone).mockReturnValue(false);
+    const user = userEvent.setup();
+    const { unmount } = render(<App />);
+    await user.click(within(await screen.findByRole('note')).getByRole('button', { name: 'Hinweis ausblenden' }));
+    expect(screen.queryByRole('note')).not.toBeInTheDocument();
+    unmount();
+    render(<App />);
+    await screen.findByText(/Noch keine Teile/);
+    expect(screen.queryByRole('note')).not.toBeInTheDocument();
   });
 
   it('is hidden in the installed app', async () => {

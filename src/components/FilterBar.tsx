@@ -5,31 +5,48 @@ import { ChipGroup } from './ChipGroup';
 interface FilterBarProps {
   value: FilterState;
   onChange: (filter: FilterState) => void;
+  /** Im Bodenblatt: Gruppen mit sichtbarer Überschrift und umbrechenden Chips statt Seitwärts-Scrollen. */
+  wrap?: boolean;
 }
 
-export function FilterBar({ value, onChange }: FilterBarProps) {
+export function FilterBar({ value, onChange, wrap = false }: FilterBarProps) {
+  const groups = [
+    <ChipGroup
+      key="cat"
+      label="Kategorie"
+      options={CATEGORIES}
+      selected={value.categories}
+      onToggle={(id) => onChange({ ...value, categories: toggleValue(value.categories, id) })}
+    />,
+    <ChipGroup
+      key="color"
+      label="Farbe"
+      options={COLORS}
+      selected={value.colors}
+      onToggle={(id) => onChange({ ...value, colors: toggleValue(value.colors, id) })}
+    />,
+    <ChipGroup
+      key="season"
+      label="Saison"
+      options={SEASONS}
+      selected={value.seasons}
+      onToggle={(id) => onChange({ ...value, seasons: toggleValue(value.seasons, id) })}
+    />,
+  ];
+  const titles = ['Kategorie', 'Farbe', 'Saison'];
+
   return (
-    <div className="filter-bar">
-      <ChipGroup
-        label="Kategorie"
-        options={CATEGORIES}
-        selected={value.categories}
-        onToggle={(id) => onChange({ ...value, categories: toggleValue(value.categories, id) })}
-      />
-      <ChipGroup
-        label="Farbe"
-        options={COLORS}
-        selected={value.colors}
-        onToggle={(id) => onChange({ ...value, colors: toggleValue(value.colors, id) })}
-      />
-      <ChipGroup
-        label="Saison"
-        options={SEASONS}
-        selected={value.seasons}
-        onToggle={(id) => onChange({ ...value, seasons: toggleValue(value.seasons, id) })}
-      />
+    <div className={wrap ? 'filter-bar filter-bar--wrap' : 'filter-bar'}>
+      {wrap
+        ? groups.map((group, index) => (
+            <div key={titles[index]} className="filter-bar__group">
+              <h3 className="filter-bar__title">{titles[index]}</h3>
+              {group}
+            </div>
+          ))
+        : groups}
       {isFilterActive(value) && (
-        <button type="button" className="link-button" onClick={() => onChange(EMPTY_FILTER)}>
+        <button type="button" className="text-button filter-bar__reset" onClick={() => onChange(EMPTY_FILTER)}>
           Filter zurücksetzen
         </button>
       )}

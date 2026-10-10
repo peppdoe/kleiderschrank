@@ -1,5 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useState } from 'react';
+import { Icon } from '../components/Icon';
 import { ItemPhoto } from '../components/ItemPhoto';
 import { NotFound } from '../components/NotFound';
 import { deleteItem, getItem } from '../db/items';
@@ -31,36 +32,49 @@ export function ItemDetailScreen({ itemId }: { itemId: string }) {
     }
   }
 
-  const colorText = item.colors.map((c) => labelOf(COLORS, c)).join(', ') || '–';
-  const seasonText = item.seasons.map((s) => labelOf(SEASONS, s)).join(', ') || '–';
+  const colorText = item.colors.map((c) => labelOf(COLORS, c)).join(', ');
+  const seasonText = item.seasons.map((s) => labelOf(SEASONS, s)).join(', ');
 
   return (
     <section className="screen-content">
-      <header className="screen-header">
-        <a className="link-button" href="#/">‹ Schrank</a>
+      <header className="form-header">
+        <a className="text-button text-button--back" href="#/">
+          <Icon name="back" size={20} />
+          Schrank
+        </a>
       </header>
       <ItemPhoto itemId={itemId} variant="full" alt={describeItem(item)} />
-      <h1>{labelOf(CATEGORIES, item.category)}</h1>
-      <dl className="details">
-        <dt>Farben</dt>
-        <dd>{colorText}</dd>
-        <dt>Saison</dt>
-        <dd>{seasonText}</dd>
-        {item.note && (
-          <>
-            <dt>Notiz</dt>
-            <dd>{item.note}</dd>
-          </>
-        )}
-      </dl>
+      <h1 className="detail-title">{labelOf(CATEGORIES, item.category)}</h1>
+      {(colorText || seasonText || item.note) && (
+        <dl className="details">
+          {colorText && (
+            <>
+              <dt>Farben</dt>
+              <dd>{colorText}</dd>
+            </>
+          )}
+          {seasonText && (
+            <>
+              <dt>Saison</dt>
+              <dd>{seasonText}</dd>
+            </>
+          )}
+          {item.note && (
+            <>
+              <dt>Notiz</dt>
+              <dd>{item.note}</dd>
+            </>
+          )}
+        </dl>
+      )}
 
       {outfits && outfits.length > 0 && (
         <>
-          <h2>In diesen Outfits</h2>
-          <ul className="link-list">
+          <h2 className="section-title">In diesen Outfits</h2>
+          <ul className="tag-row">
             {outfits.map((outfit) => (
               <li key={outfit.id}>
-                <button type="button" className="link-button" onClick={() => navigate(`/outfit/${outfit.id}`)}>
+                <button type="button" className="swing-tag" onClick={() => navigate(`/outfit/${outfit.id}`)}>
                   {outfit.name}
                 </button>
               </li>
@@ -71,11 +85,11 @@ export function ItemDetailScreen({ itemId }: { itemId: string }) {
 
       {error && <p className="error" role="alert">{error}</p>}
 
-      <div className="actions">
-        <button type="button" className="button" onClick={() => navigate(`/item/${itemId}/edit`)}>
+      <div className="detail-actions">
+        <button type="button" className="button button--primary" onClick={() => navigate(`/item/${itemId}/edit`)}>
           Bearbeiten
         </button>
-        <button type="button" className="button button--danger" onClick={remove}>
+        <button type="button" className="text-button text-button--danger" onClick={remove}>
           Löschen
         </button>
       </div>

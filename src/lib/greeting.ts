@@ -30,6 +30,13 @@ function salutation(hour: number): string {
   return 'Hallo';
 }
 
+export function wardrobeTitle(name: string): string {
+  const trimmed = name.trim();
+  if (!trimmed) return 'Mein Kleiderschrank';
+  // Namen auf s, ß, x oder z bekommen im Genitiv nur einen Apostroph (Jonas’, Max’).
+  return /[sßxz]$/i.test(trimmed) ? `${trimmed}’ Kleiderschrank` : `${trimmed}s Kleiderschrank`;
+}
+
 /** `pick` ist eine Zufallszahl in [0, 1], beim Öffnen der App einmal gezogen. */
 export function greetingFor({ name, now, pick }: { name: string; now: Date; pick: number }): { title: string; line: string } {
   const trimmed = name.trim();

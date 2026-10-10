@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useRef, useState } from 'react';
-import { FilterBar } from '../components/FilterBar';
+import { FilterTags } from '../components/FilterTags';
 import { ItemGrid } from '../components/ItemGrid';
 import { NotFound } from '../components/NotFound';
 import { OutfitPreview } from '../components/OutfitPreview';
@@ -59,41 +59,40 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
   if (step === 'name') {
     return (
       <section className="screen-content form">
-        <header className="screen-header">
-          <button type="button" className="link-button" onClick={() => setStep('pick')}>‹ Zurück</button>
-          <h1>{outfitId ? 'Outfit bearbeiten' : 'Neues Outfit'}</h1>
+        <header className="form-header">
+          <button type="button" className="text-button" onClick={() => setStep('pick')}>Zurück</button>
+          <h1 className="form-header__title">{outfitId ? 'Outfit bearbeiten' : 'Neues Outfit'}</h1>
         </header>
         <OutfitPreview itemIds={selected} />
         <label className="field">
-          <span>Name des Outfits</span>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+          <span className="section-title">Name des Outfits</span>
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="z. B. Büro-Look" autoFocus />
         </label>
         {error && <p className="error" role="alert">{error}</p>}
-        <button type="button" className="button button--primary" disabled={!canSave} onClick={save}>
-          {saving ? 'Speichert …' : 'Speichern'}
-        </button>
+        <div className="action-bar">
+          {!name.trim() && <p className="action-bar__hint">Gib dem Outfit noch einen Namen.</p>}
+          <button type="button" className="button button--primary" disabled={!canSave} onClick={save}>
+            {saving ? 'Speichert …' : 'Speichern'}
+          </button>
+        </div>
       </section>
     );
   }
 
   const visible = applyFilter(items, filter);
   return (
-    <section className="screen-content">
-      <header className="screen-header">
-        <button type="button" className="link-button" onClick={() => navigate(cancelTarget, { replace: true })}>
+    <section className="screen-content form">
+      <header className="form-header">
+        <button type="button" className="text-button" onClick={() => navigate(cancelTarget, { replace: true })}>
           Abbrechen
         </button>
-        <h1>{outfitId ? 'Outfit bearbeiten' : 'Neues Outfit'}</h1>
-        <button type="button" className="link-button" disabled={selected.length === 0} onClick={() => setStep('name')}>
-          Weiter
-        </button>
+        <h1 className="form-header__title">{outfitId ? 'Outfit bearbeiten' : 'Neues Outfit'}</h1>
       </header>
-      <p className="muted">{selected.length} ausgewählt</p>
       {items.length === 0 ? (
         <div className="empty"><p>Du hast noch keine Teile im Schrank.</p></div>
       ) : (
         <>
-          <FilterBar value={filter} onChange={setFilter} />
+          <FilterTags value={filter} onChange={setFilter} />
           <ItemGrid
             items={visible}
             selectedIds={selected}
@@ -101,6 +100,12 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
           />
         </>
       )}
+      <div className="action-bar action-bar--split">
+        <p className="action-bar__count">{selected.length} ausgewählt</p>
+        <button type="button" className="button button--primary" disabled={selected.length === 0} onClick={() => setStep('name')}>
+          Weiter
+        </button>
+      </div>
     </section>
   );
 }

@@ -1,11 +1,12 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useRef, useState } from 'react';
 import { FilePicker } from '../components/FilePicker';
+import { ImportSheet } from '../components/ImportSheet';
 import { InstallNotice } from '../components/InstallNotice';
 import { countItems } from '../db/items';
-import { META_LAST_BACKUP, META_PERSIST, getMeta, setMeta } from '../db/meta';
+import { META_LAST_BACKUP, META_PERSIST, META_USER_NAME, getMeta, setMeta } from '../db/meta';
 import { countOutfits } from '../db/outfits';
-import { backupFileName, exportBackup, importBackup } from '../lib/backup';
+import { backupFileName, exportBackup, importBackup, parseBackup, type ParsedBackup } from '../lib/backup';
 import { plural } from '../lib/describe';
 import { userMessage } from '../lib/errors';
 import { readFileText, shareOrDownload } from '../lib/files';
@@ -23,8 +24,11 @@ export function SettingsScreen() {
   const outfitCount = useLiveQuery(countOutfits, []);
   const lastBackup = useLiveQuery(async () => (await getMeta(META_LAST_BACKUP)) ?? null, []);
   const persist = useLiveQuery(async () => (await getMeta(META_PERSIST)) ?? null, []);
+  const storedName = useLiveQuery(async () => (await getMeta(META_USER_NAME)) ?? '', []);
+  const [nameDraft, setNameDraft] = useState<string | null>(null);
   const [usage, setUsage] = useState<number>();
   const [prepared, setPrepared] = useState<{ json: string; fileName: string } | null>(null);
+  const [pendingImport, setPendingImport] = useState<{ text: string; backup: ParsedBackup } | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<Message | null>(null);
   const sharingRef = useRef(false);
@@ -32,6 +36,12 @@ export function SettingsScreen() {
   useEffect(() => {
     storageUsageMB().then(setUsage).catch(() => setUsage(undefined));
   }, [itemCount]);
+
+  async function saveName() {
+    if (nameDraft === null) return;
+    await setMeta(META_USER_NAME, nameDraft.trim());
+    setNameDraft(null);
+  }
 
   async function prepare() {
     setBusy(true);
@@ -70,12 +80,24 @@ export function SettingsScreen() {
     }
   }
 
-  async function importFile(file: File) {
-    if (!window.confirm('Backup einspielen? Alle aktuellen Teile und Outfits werden dabei ersetzt.')) return;
-    setBusy(true);
+  // Erst lesen und prüfen, dann mit Vergleich der Zahlen fragen; ersetzt wird erst nach „Ersetzen“.
+  async function chooseImportFile(file: File) {
     setMessage(null);
     try {
-      const result = await importBackup(await readFileText(file), makeThumb);
+      const text = await readFileText(file);
+      setPendingImport({ text, backup: parseBackup(text) });
+    } catch (e) {
+      setMessage({ kind: 'error', text: userMessage(e) });
+    }
+  }
+
+  async function confirmImport() {
+    if (!pendingImport) return;
+    const { text } = pendingImport;
+    setPendingImport(null);
+    setBusy(true);
+    try {
+      const result = await importBackup(text, makeThumb);
       setPrepared(null);
       setMessage({
         kind: 'ok',
@@ -92,12 +114,30 @@ export function SettingsScreen() {
 
   return (
     <section className="screen-content">
-      <header className="screen-header">
-        <h1>Einstellungen</h1>
+      <header className="page-header">
+        <h1 className="page-header__title">Einstellungen</h1>
       </header>
 
       <div className="section">
-        <h2>Backup</h2>
+        <h2 className="section-title">Persönlich</h2>
+        <label className="field field--inline">
+          <span>Dein Name</span>
+          <input
+            type="text"
+            autoComplete="given-name"
+            placeholder="für die Begrüßung"
+            value={nameDraft ?? storedName ?? ''}
+            onChange={(e) => setNameDraft(e.target.value)}
+            onBlur={() => void saveName()}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') e.currentTarget.blur();
+            }}
+          />
+        </label>
+      </div>
+
+      <div className="section">
+        <h2 className="section-title">Backup</h2>
         <p>
           {lastBackup
             ? `Letztes Backup: ${new Date(lastBackup).toLocaleDateString('de-DE')}`
@@ -106,12 +146,12 @@ export function SettingsScreen() {
         {prepared ? (
           <>
             <button type="button" className="button button--primary" onClick={share}>Backup sichern</button>
-            <p className="notice">Tipp: Wähle „In Dateien sichern“ → iCloud Drive.</p>
+            <p className="notice">Die Datei ist bereit. Wähle „In Dateien sichern“ → iCloud Drive.</p>
           </>
         ) : (
           <button type="button" className="button" disabled={busy} onClick={prepare}>Backup erstellen</button>
         )}
-        <FilePicker className="button" label="Backup einspielen" accept="application/json,.json" onPick={importFile} disabled={busy}>
+        <FilePicker className="button" label="Backup einspielen" accept="application/json,.json" onPick={chooseImportFile} disabled={busy}>
           Backup einspielen
         </FilePicker>
         {message && (
@@ -122,7 +162,7 @@ export function SettingsScreen() {
       </div>
 
       <div className="section">
-        <h2>Speicher</h2>
+        <h2 className="section-title">Speicher</h2>
         {itemCount !== undefined && outfitCount !== undefined && (
           <p>
             {`${plural(itemCount, 'Teil', 'Teile')} · ${plural(outfitCount, 'Outfit', 'Outfits')}`}
@@ -136,6 +176,20 @@ export function SettingsScreen() {
           </p>
         )}
       </div>
+
+      {pendingImport && (
+        <ImportSheet
+          backup={pendingImport.backup}
+          currentItems={itemCount ?? 0}
+          currentOutfits={outfitCount ?? 0}
+          onConfirm={() => void confirmImport()}
+          onBackupFirst={() => {
+            setPendingImport(null);
+            void prepare();
+          }}
+          onCancel={() => setPendingImport(null)}
+        />
+      )}
     </section>
   );
 }

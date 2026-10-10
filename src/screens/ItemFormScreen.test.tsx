@@ -69,6 +69,15 @@ describe('Teil erfassen', () => {
     await waitFor(() => expect(screen.queryByRole('alert')).not.toBeInTheDocument());
   });
 
+  it('hides the tab bar and explains why saving is not possible yet', async () => {
+    const user = userEvent.setup();
+    await startNewItem(user);
+    expect(screen.queryByRole('navigation', { name: 'Hauptnavigation' })).not.toBeInTheDocument();
+    expect(await screen.findByText('Wähle noch eine Kategorie.')).toBeInTheDocument();
+    await user.click(within(screen.getByRole('group', { name: 'Kategorie' })).getByRole('button', { name: 'Oberteil' }));
+    expect(screen.queryByText('Wähle noch eine Kategorie.')).not.toBeInTheDocument();
+  });
+
   it('can be cancelled without saving', async () => {
     const user = userEvent.setup();
     await startNewItem(user);

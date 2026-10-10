@@ -1,5 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useState } from 'react';
+import { Icon } from '../components/Icon';
 import { ItemGrid } from '../components/ItemGrid';
 import { NotFound } from '../components/NotFound';
 import { getItemsByIds } from '../db/items';
@@ -27,21 +28,24 @@ export function OutfitDetailScreen({ outfitId }: { outfitId: string }) {
 
   return (
     <section className="screen-content">
-      <header className="screen-header">
-        <a className="link-button" href="#/outfits">‹ Outfits</a>
+      <header className="form-header">
+        <a className="text-button text-button--back" href="#/outfits">
+          <Icon name="back" size={20} />
+          Outfits
+        </a>
       </header>
-      <h1>{outfit.name}</h1>
+      <h1 className="detail-title">{outfit.name}</h1>
       {items.length === 0 ? (
         <p className="muted">Keine Teile mehr – alle Teile dieses Outfits wurden gelöscht.</p>
       ) : (
         <ItemGrid items={items} size="large" onItemClick={(item) => navigate(`/item/${item.id}`)} />
       )}
       {error && <p className="error" role="alert">{error}</p>}
-      <div className="actions">
-        <button type="button" className="button" onClick={() => navigate(`/outfit/${outfitId}/edit`)}>
+      <div className="detail-actions">
+        <button type="button" className="button button--primary" onClick={() => navigate(`/outfit/${outfitId}/edit`)}>
           Bearbeiten
         </button>
-        <button type="button" className="button button--danger" onClick={remove}>
+        <button type="button" className="text-button text-button--danger" onClick={remove}>
           Löschen
         </button>
       </div>

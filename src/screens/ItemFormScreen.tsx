@@ -89,13 +89,21 @@ export function ItemFormScreen({ itemId, initialFile }: ItemFormScreenProps) {
     }
   }
 
+  const hint = processing
+    ? 'Foto wird verarbeitet …'
+    : !hasPhoto
+      ? 'Wähle zuerst ein Foto.'
+      : category === null
+        ? 'Wähle noch eine Kategorie.'
+        : null;
+
   return (
     <section className="screen-content form">
-      <header className="screen-header">
-        <button type="button" className="link-button" onClick={() => navigate(cancelTarget, { replace: true })}>
+      <header className="form-header">
+        <button type="button" className="text-button" onClick={() => navigate(cancelTarget, { replace: true })}>
           Abbrechen
         </button>
-        <h1>{itemId ? 'Teil bearbeiten' : 'Neues Teil'}</h1>
+        <h1 className="form-header__title">{itemId ? 'Teil bearbeiten' : 'Neues Teil'}</h1>
       </header>
 
       <div className="form__photo">
@@ -111,23 +119,28 @@ export function ItemFormScreen({ itemId, initialFile }: ItemFormScreenProps) {
         </FilePicker>
       </div>
 
-      <h2>Kategorie</h2>
+      <h2 className="section-title">
+        Kategorie <span className="required">Pflicht</span>
+      </h2>
       <ChipGroup label="Kategorie" options={CATEGORIES} selected={category ? [category] : []} onToggle={setCategory} />
-      <h2>Farbe</h2>
+      <h2 className="section-title">Farbe</h2>
       <ChipGroup label="Farbe" options={COLORS} selected={colors} onToggle={(id) => setColors(toggleValue(colors, id))} />
-      <h2>Saison</h2>
+      <h2 className="section-title">Saison</h2>
       <ChipGroup label="Saison" options={SEASONS} selected={seasons} onToggle={(id) => setSeasons(toggleValue(seasons, id))} />
 
       <label className="field">
-        <span>Notiz</span>
-        <textarea rows={3} value={note} onChange={(e) => setNote(e.target.value)} />
+        <span className="section-title">Notiz</span>
+        <textarea rows={3} value={note} onChange={(e) => setNote(e.target.value)} placeholder="z. B. von Oma, nur kalt waschen" />
       </label>
 
       {error && <p className="error" role="alert">{error}</p>}
 
-      <button type="button" className="button button--primary" disabled={!canSave} onClick={save}>
-        {saving ? 'Speichert …' : 'Speichern'}
-      </button>
+      <div className="action-bar">
+        {hint && <p className="action-bar__hint">{hint}</p>}
+        <button type="button" className="button button--primary" disabled={!canSave} onClick={save}>
+          {saving ? 'Speichert …' : 'Speichern'}
+        </button>
+      </div>
     </section>
   );
 }

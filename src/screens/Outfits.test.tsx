@@ -90,6 +90,13 @@ describe('Outfits', () => {
     expect(await db.items.count()).toBe(1);
   });
 
+  it('hides the tab bar while an outfit is being put together', async () => {
+    await seedItem();
+    open('/outfit/new');
+    await screen.findByRole('button', { name: 'Weiter' });
+    expect(screen.queryByRole('navigation', { name: 'Hauptnavigation' })).not.toBeInTheDocument();
+  });
+
   it('shows a hint for an outfit that no longer exists', async () => {
     open('/outfit/gibt-es-nicht');
     expect(await screen.findByText('Dieses Outfit gibt es nicht mehr.')).toBeInTheDocument();

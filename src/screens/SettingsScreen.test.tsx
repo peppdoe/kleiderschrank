@@ -1,8 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import App from '../App';
-import { META_LAST_BACKUP, getMeta } from '../db/meta';
+import { META_LAST_BACKUP, META_USER_NAME, getMeta } from '../db/meta';
 import { createOutfit } from '../db/outfits';
 import { db } from '../db/schema';
 import { exportBackup } from '../lib/backup';
@@ -89,12 +89,12 @@ describe('Einstellungen', () => {
     const json = await exportBackup();
     let finish: (blob: Blob) => void = () => {};
     vi.mocked(makeThumb).mockImplementationOnce(() => new Promise((resolve) => { finish = resolve; }));
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
     const user = userEvent.setup();
     render(<App />);
     await user.click(await screen.findByRole('button', { name: 'Backup erstellen' }));
     await screen.findByRole('button', { name: 'Backup sichern' });
     await user.upload(screen.getByLabelText('Backup einspielen'), new File([json], 'backup.json', { type: 'application/json' }));
+    await user.click(within(await screen.findByRole('dialog', { name: 'Backup einspielen?' })).getByRole('button', { name: 'Ersetzen' }));
     await waitFor(() => expect(screen.getByLabelText('Backup einspielen')).toBeDisabled());
     finish(new Blob(['thumb'], { type: 'image/jpeg' }));
     expect(await screen.findByRole('status')).toHaveTextContent('Backup eingespielt');
@@ -114,17 +114,20 @@ describe('Einstellungen', () => {
     expect(screen.getByRole('button', { name: 'Backup sichern' })).toBeInTheDocument();
   });
 
-  it('replaces all data from a valid backup after confirmation', async () => {
+  it('shows what the backup contains against the current state before replacing everything', async () => {
     await seedItem({ category: 'top' });
-    const json = await exportBackup();
+    const json = await exportBackup(new Date('2026-10-03T08:00:00'));
     await seedItem({ category: 'shoes' });
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
     const user = userEvent.setup();
     render(<App />);
     await user.upload(
       await screen.findByLabelText('Backup einspielen'),
-      new File([json], 'kleiderschrank-backup-2026-10-10.json', { type: 'application/json' }),
+      new File([json], 'kleiderschrank-backup-2026-10-03.json', { type: 'application/json' }),
     );
+    const sheet = await screen.findByRole('dialog', { name: 'Backup einspielen?' });
+    expect(sheet).toHaveTextContent('Backup vom 03.10.2026: 1 Teil, 0 Outfits');
+    expect(sheet).toHaveTextContent('Dein aktueller Stand: 2 Teile, 0 Outfits');
+    await user.click(within(sheet).getByRole('button', { name: 'Ersetzen' }));
     expect(await screen.findByRole('status')).toHaveTextContent('Backup eingespielt: 1 Teil, 0 Outfits.');
     expect(await db.items.count()).toBe(1);
     expect((await db.items.toArray())[0].category).toBe('top');
@@ -132,7 +135,6 @@ describe('Einstellungen', () => {
 
   it('rejects an invalid file and keeps the data', async () => {
     await seedItem();
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
     const user = userEvent.setup();
     render(<App />);
     await user.upload(
@@ -140,6 +142,7 @@ describe('Einstellungen', () => {
       new File(['kein backup'], 'notiz.json', { type: 'application/json' }),
     );
     expect(await screen.findByRole('alert')).toHaveTextContent('Das ist keine gültige Kleiderschrank-Sicherung.');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(await db.items.count()).toBe(1);
   });
 
@@ -147,13 +150,23 @@ describe('Einstellungen', () => {
     await seedItem();
     const json = await exportBackup();
     await seedItem();
-    vi.spyOn(window, 'confirm').mockReturnValue(false);
     const user = userEvent.setup();
     render(<App />);
     await user.upload(
       await screen.findByLabelText('Backup einspielen'),
       new File([json], 'backup.json', { type: 'application/json' }),
     );
+    await user.click(within(await screen.findByRole('dialog', { name: 'Backup einspielen?' })).getByRole('button', { name: 'Abbrechen' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(await db.items.count()).toBe(2);
+  });
+
+  it('remembers the name used for the greeting', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    const field = await screen.findByLabelText('Dein Name');
+    await user.type(field, '  Lena ');
+    await user.tab();
+    await waitFor(async () => expect(await getMeta(META_USER_NAME)).toBe('Lena'));
   });
 });

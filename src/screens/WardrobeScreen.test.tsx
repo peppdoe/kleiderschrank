@@ -1,12 +1,15 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import App from '../App';
+import { META_USER_NAME, setMeta } from '../db/meta';
+import { createOutfit } from '../db/outfits';
 import { seedItem } from '../test/factories';
 
 beforeEach(() => {
   window.location.hash = '#/';
 });
+afterEach(() => vi.useRealTimers());
 
 describe('Schrank', () => {
   it('shows a friendly empty state', async () => {
@@ -15,24 +18,60 @@ describe('Schrank', () => {
     expect(screen.getByRole('link', { name: /Schrank/ })).toHaveAttribute('aria-current', 'page');
   });
 
-  it('filters items and resets the filter', async () => {
+  it('greets Lena by her chosen name', async () => {
+    await setMeta(META_USER_NAME, 'Lena');
+    render(<App />);
+    expect(await screen.findByRole('heading', { level: 1, name: /, Lena$/ })).toBeInTheDocument();
+  });
+
+  it('greets without a name until one is set', async () => {
+    render(<App />);
+    expect(await screen.findByRole('heading', { level: 1, name: /^(Guten Morgen|Hallo|Guten Abend)$/ })).toBeInTheDocument();
+  });
+
+  it('shows the outfits that fit the current season under Heute', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-10T07:40:00'));
+    const coat = await seedItem({ category: 'jacket', seasons: ['autumn'] });
+    const sandals = await seedItem({ category: 'shoes', seasons: ['summer'] });
+    await createOutfit('Herbst-Look', [coat]);
+    await createOutfit('Strandtag', [sandals]);
+    render(<App />);
+    const today = await screen.findByRole('region', { name: 'Heute' });
+    expect(await within(today).findByRole('button', { name: /Herbst-Look/ })).toBeInTheDocument();
+    expect(within(today).queryByRole('button', { name: /Strandtag/ })).not.toBeInTheDocument();
+  });
+
+  it('narrows the wardrobe through the filter sheet and shows active filters as removable tags', async () => {
     await seedItem({ category: 'top', colors: ['blue'] });
     await seedItem({ category: 'pants', colors: ['black'] });
     const user = userEvent.setup();
     render(<App />);
     expect(await screen.findByText('2 Teile')).toBeInTheDocument();
 
-    const categories = screen.getByRole('group', { name: 'Kategorie' });
-    await user.click(within(categories).getByRole('button', { name: 'Hose' }));
+    await user.click(screen.getByRole('button', { name: /^Filter/ }));
+    const sheet = await screen.findByRole('dialog', { name: 'Filter' });
+    await user.click(within(within(sheet).getByRole('group', { name: 'Kategorie' })).getByRole('button', { name: 'Hose' }));
+    await user.click(within(sheet).getByRole('button', { name: 'Fertig' }));
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Oberteil, Blau' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Hose, Schwarz' })).toBeInTheDocument();
 
-    await user.click(within(categories).getByRole('button', { name: 'Kleid' }));
-    await user.click(within(categories).getByRole('button', { name: 'Hose' }));
+    await user.click(screen.getByRole('button', { name: 'Filter Hose entfernen' }));
+    expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
+  });
+
+  it('filters by season with the care symbols and explains an empty result', async () => {
+    await seedItem({ category: 'top', colors: ['blue'], seasons: ['summer'] });
+    const user = userEvent.setup();
+    render(<App />);
+    const seasons = await screen.findByRole('group', { name: 'Saison wählen' });
+    await user.click(within(seasons).getByRole('button', { name: 'Winter' }));
+    expect(within(seasons).getByRole('button', { name: 'Winter' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByText('Keine Teile passen zu diesen Filtern.')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Alle Teile anzeigen' }));
     expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Hose, Schwarz' })).toBeInTheDocument();
   });
 });

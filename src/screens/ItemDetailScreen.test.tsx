@@ -63,6 +63,14 @@ describe('Teil-Details', () => {
     expect(screen.getByRole('heading', { name: 'Oberteil' })).toBeInTheDocument();
   });
 
+  it('leaves out details that were never filled in', async () => {
+    const id = await seedItem({ category: 'bag' });
+    open(`/item/${id}`);
+    await screen.findByRole('heading', { name: 'Tasche' });
+    expect(screen.queryByText('Saison')).not.toBeInTheDocument();
+    expect(screen.queryByText('Farben')).not.toBeInTheDocument();
+  });
+
   it('shows a hint for an item that no longer exists', async () => {
     open('/item/gibt-es-nicht');
     expect(await screen.findByText('Dieses Teil gibt es nicht mehr.')).toBeInTheDocument();
