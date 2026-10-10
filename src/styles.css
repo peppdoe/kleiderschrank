@@ -173,6 +173,7 @@ p { margin: 0; }
 .sheet__head { display: flex; align-items: center; justify-content: space-between; }
 .sheet__title { font-size: 22px; }
 .sheet__actions { display: flex; flex-direction: column; gap: 8px; }
+.sheet__actions .text-button { align-self: center; }
 @keyframes sheet-in { from { transform: translateY(24px); opacity: 0.6; } to { transform: none; opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .sheet { animation: none; } }
 

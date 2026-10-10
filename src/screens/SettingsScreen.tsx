@@ -169,7 +169,7 @@ export function SettingsScreen() {
             {usage !== undefined && ` · ${formatUsage(usage)}`}
           </p>
         )}
-        {!standalone && <InstallNotice />}
+        {!standalone && <InstallNotice detailed />}
         {standalone && persist === 'false' && (
           <p className="notice">
             Das iPhone hat dauerhaften Speicher nicht zugesagt. Mach deshalb besonders regelmäßig ein Backup.
