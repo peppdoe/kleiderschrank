@@ -1,7 +1,10 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useRef, useState } from 'react';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { FilterTags } from '../components/FilterTags';
-import { ItemGrid } from '../components/ItemGrid';
+import { Icon } from '../components/Icon';
+import { ItemGrid, tileLabel } from '../components/ItemGrid';
+import { ItemPhoto } from '../components/ItemPhoto';
 import { NotFound } from '../components/NotFound';
 import { OutfitPreview } from '../components/OutfitPreview';
 import { listItems } from '../db/items';
@@ -9,6 +12,8 @@ import { createOutfit, getOutfit, updateOutfit } from '../db/outfits';
 import { userMessage } from '../lib/errors';
 import { EMPTY_FILTER, applyFilter, toggleValue, type FilterState } from '../lib/filters';
 import { navigate } from '../lib/route';
+
+const sameSet = (a: readonly string[], b: readonly string[]) => a.length === b.length && a.every((x) => b.includes(x));
 
 export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
   const existing = useLiveQuery(async () => (outfitId ? (await getOutfit(outfitId)) ?? null : null), [outfitId]);
@@ -20,6 +25,7 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
   const [loaded, setLoaded] = useState(!outfitId);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [confirmDiscard, setConfirmDiscard] = useState(false);
   const savingRef = useRef(false);
 
   useEffect(() => {
@@ -35,6 +41,22 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
 
   const cancelTarget = outfitId ? `/outfit/${outfitId}` : '/outfits';
   const canSave = name.trim().length > 0 && selected.length > 0 && !saving;
+  const dirty = !sameSet(selected, existing?.itemIds ?? []) || name.trim() !== (existing?.name ?? '');
+  const cancel = () => (dirty ? setConfirmDiscard(true) : navigate(cancelTarget, { replace: true }));
+  const discardSheet = confirmDiscard && (
+    <ConfirmSheet
+      title="Änderungen verwerfen?"
+      message={outfitId ? 'Deine Änderungen an diesem Outfit gehen verloren.' : 'Das neue Outfit wird nicht gespeichert.'}
+      confirmLabel="Verwerfen"
+      cancelLabel="Weiter bearbeiten"
+      destructive
+      onConfirm={() => navigate(cancelTarget, { replace: true })}
+      onCancel={() => setConfirmDiscard(false)}
+    />
+  );
+  const selectedItems = selected
+    .map((id) => items.find((item) => item.id === id))
+    .filter((item): item is NonNullable<typeof item> => item !== undefined);
 
   async function save() {
     if (!canSave || savingRef.current) return;
@@ -75,6 +97,7 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
             {saving ? 'Speichert …' : 'Speichern'}
           </button>
         </div>
+        {discardSheet}
       </section>
     );
   }
@@ -83,7 +106,7 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
   return (
     <section className="screen-content form">
       <header className="form-header">
-        <button type="button" className="text-button" onClick={() => navigate(cancelTarget, { replace: true })}>
+        <button type="button" className="text-button" onClick={cancel}>
           Abbrechen
         </button>
         <h1 className="form-header__title">{outfitId ? 'Outfit bearbeiten' : 'Neues Outfit'}</h1>
@@ -93,6 +116,25 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
       ) : (
         <>
           <FilterTags value={filter} onChange={setFilter} resultCount={visible.length} />
+          {selectedItems.length > 0 && (
+            <ul className="selection-strip" aria-label="Ausgewählt">
+              {selectedItems.map((item) => (
+                <li key={item.id}>
+                  <button
+                    type="button"
+                    className="selection-strip__item"
+                    aria-label={`${tileLabel(item)} abwählen`}
+                    onClick={() => setSelected(selected.filter((id) => id !== item.id))}
+                  >
+                    <ItemPhoto itemId={item.id} alt="" />
+                    <span className="selection-strip__x" aria-hidden="true">
+                      <Icon name="close" size={14} />
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
           <ItemGrid
             items={visible}
             selectedIds={selected}
@@ -106,6 +148,7 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
           Weiter
         </button>
       </div>
+      {discardSheet}
     </section>
   );
 }

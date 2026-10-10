@@ -20,6 +20,7 @@ describe('Backup-Erinnerung', () => {
     const banner = await screen.findByRole('button', { name: /Zeit für ein Backup/ });
     await userEvent.click(banner);
     expect(await screen.findByRole('heading', { name: 'Einstellungen' })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: 'Backup sichern' })).toBeInTheDocument();
   });
 
   it('stays hidden after a recent backup', async () => {

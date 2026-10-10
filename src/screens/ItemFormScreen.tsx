@@ -1,12 +1,15 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChipGroup } from '../components/ChipGroup';
+import { ConfirmSheet } from '../components/ConfirmSheet';
 import { FilePicker } from '../components/FilePicker';
 import { ItemPhoto } from '../components/ItemPhoto';
 import { NotFound } from '../components/NotFound';
+import { SeasonSymbols } from '../components/SeasonSymbols';
 import { createItem, getItem, updateItem, type PhotoBlobs } from '../db/items';
+import type { Item } from '../db/schema';
 import {
-  CATEGORIES, COLORS, SEASONS, type CategoryId, type ColorId, type SeasonId,
+  CATEGORIES, COLORS, type CategoryId, type ColorId, type SeasonId,
 } from '../lib/constants';
 import { userMessage } from '../lib/errors';
 import { toggleValue } from '../lib/filters';
@@ -17,9 +20,13 @@ import { useObjectUrl } from '../lib/useObjectUrl';
 interface ItemFormScreenProps {
   itemId?: string;
   initialFile?: File | null;
+  /** Neues Teil gespeichert: der Schrank markiert es. */
+  onCreated?: (item: Item) => void;
 }
 
-export function ItemFormScreen({ itemId, initialFile }: ItemFormScreenProps) {
+const sameSet = (a: readonly string[], b: readonly string[]) => a.length === b.length && a.every((x) => b.includes(x));
+
+export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScreenProps) {
   // undefined = lädt noch, null = neu bzw. nicht gefunden
   const existing = useLiveQuery(async () => (itemId ? (await getItem(itemId)) ?? null : null), [itemId]);
   const [photo, setPhoto] = useState<PhotoBlobs | null>(null);
@@ -31,6 +38,7 @@ export function ItemFormScreen({ itemId, initialFile }: ItemFormScreenProps) {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [loaded, setLoaded] = useState(!itemId);
+  const [confirmDiscard, setConfirmDiscard] = useState(false);
   const savingRef = useRef(false);
 
   useEffect(() => {
@@ -81,7 +89,9 @@ export function ItemFormScreen({ itemId, initialFile }: ItemFormScreenProps) {
         await updateItem(itemId, input, photo ?? undefined);
         navigate(`/item/${itemId}`, { replace: true });
       } else {
-        await createItem(input, photo!);
+        const id = await createItem(input, photo!);
+        const created = await getItem(id);
+        if (created) onCreated?.(created);
         navigate('/', { replace: true });
       }
     } catch (e) {
@@ -90,6 +100,16 @@ export function ItemFormScreen({ itemId, initialFile }: ItemFormScreenProps) {
       setSaving(false);
     }
   }
+
+  // Hat sich gegenüber dem Ausgangsstand etwas geändert? Dann vor dem Verwerfen fragen.
+  const initial = existing ?? { category: null, colors: [], seasons: [], note: '' };
+  const dirty =
+    photo !== null ||
+    category !== initial.category ||
+    !sameSet(colors, initial.colors) ||
+    !sameSet(seasons, initial.seasons) ||
+    note.trim() !== initial.note.trim();
+  const cancel = () => (dirty ? setConfirmDiscard(true) : navigate(cancelTarget, { replace: true }));
 
   const hint = processing
     ? 'Foto wird verarbeitet …'
@@ -102,7 +122,7 @@ export function ItemFormScreen({ itemId, initialFile }: ItemFormScreenProps) {
   return (
     <section className="screen-content form">
       <header className="form-header">
-        <button type="button" className="text-button" onClick={() => navigate(cancelTarget, { replace: true })}>
+        <button type="button" className="text-button" onClick={cancel}>
           Abbrechen
         </button>
         <h1 className="form-header__title">{itemId ? 'Teil bearbeiten' : 'Neues Teil'}</h1>
@@ -128,7 +148,8 @@ export function ItemFormScreen({ itemId, initialFile }: ItemFormScreenProps) {
       <h2 className="section-title">Farbe</h2>
       <ChipGroup label="Farbe" options={COLORS} selected={colors} onToggle={(id) => setColors(toggleValue(colors, id))} />
       <h2 className="section-title">Saison</h2>
-      <ChipGroup label="Saison" options={SEASONS} selected={seasons} onToggle={(id) => setSeasons(toggleValue(seasons, id))} />
+      <SeasonSymbols label="Saison" selected={seasons} onToggle={(id) => setSeasons(toggleValue(seasons, id))} />
+      {seasons.length === 0 && <p className="field-hint">Ohne Saison gilt das Teil als ganzjährig.</p>}
 
       <label className="field">
         <span className="section-title">Notiz</span>
@@ -143,6 +164,18 @@ export function ItemFormScreen({ itemId, initialFile }: ItemFormScreenProps) {
           {saving ? 'Speichert …' : 'Speichern'}
         </button>
       </div>
+
+      {confirmDiscard && (
+        <ConfirmSheet
+          title="Änderungen verwerfen?"
+          message={itemId ? 'Deine Änderungen an diesem Teil gehen verloren.' : 'Das neue Teil wird nicht gespeichert.'}
+          confirmLabel="Verwerfen"
+          cancelLabel="Weiter bearbeiten"
+          destructive
+          onConfirm={() => navigate(cancelTarget, { replace: true })}
+          onCancel={() => setConfirmDiscard(false)}
+        />
+      )}
     </section>
   );
 }

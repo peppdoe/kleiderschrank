@@ -54,6 +54,7 @@ describe('Schrank', () => {
     await user.click(within(within(sheet).getByRole('group', { name: 'Kategorie' })).getByRole('button', { name: 'Hose' }));
     expect(within(sheet).getByRole('button', { name: 'Zurücksetzen' })).toBeInTheDocument();
     await user.click(within(sheet).getByRole('button', { name: '1 Teil zeigen' }));
+    expect(screen.getByRole('button', { name: /^Filter, \d aktiv$/ })).toHaveFocus();
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Oberteil, Blau' })).not.toBeInTheDocument();
@@ -61,6 +62,33 @@ describe('Schrank', () => {
     expect(screen.getByText('1 von 2 Teilen')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Filter Hose entfernen' }));
+    expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
+  });
+
+  it('preselects the current season as today and lets Lena switch it', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-10T07:40:00'));
+    await seedItem({ category: 'top', colors: ['blue'], seasons: ['summer'] });
+    await seedItem({ category: 'jacket', seasons: ['autumn'] });
+    const sandals = await seedItem({ category: 'shoes', seasons: ['summer'] });
+    await createOutfit('Strandtag', [sandals]);
+    const user = userEvent.setup();
+    render(<App />);
+    const seasons = await screen.findByRole('group', { name: 'Saison wählen' });
+    const autumn = within(seasons).getByRole('button', { name: 'Herbst (aktuelle Saison)' });
+    expect(autumn).toHaveAttribute('aria-pressed', 'true');
+    expect(await screen.findByRole('button', { name: 'Jacke/Mantel' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Oberteil, Blau' })).not.toBeInTheDocument();
+
+    await user.click(within(seasons).getByRole('button', { name: 'Sommer' }));
+    expect(within(seasons).getByRole('button', { name: 'Sommer' })).toHaveAttribute('aria-pressed', 'true');
+    expect(autumn).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
+    const today = screen.getByRole('region', { name: 'Für den Sommer' });
+    expect(within(today).getByRole('button', { name: /Strandtag/ })).toBeInTheDocument();
+
+    await user.click(within(seasons).getByRole('button', { name: 'Sommer' }));
+    expect(screen.getByRole('button', { name: 'Jacke/Mantel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
   });
 

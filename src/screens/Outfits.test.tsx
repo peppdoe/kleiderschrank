@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import App from '../App';
@@ -81,13 +81,38 @@ describe('Outfits', () => {
   it('deletes an outfit after confirmation but keeps its items', async () => {
     const a = await seedItem();
     const id = await createOutfit('Weg damit', [a]);
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
     const user = userEvent.setup();
     open(`/outfit/${id}`);
     await user.click(await screen.findByRole('button', { name: 'Löschen' }));
+    await user.click(within(await screen.findByRole('dialog', { name: 'Outfit löschen?' })).getByRole('button', { name: 'Löschen' }));
     expect(await screen.findByText(/Noch keine Outfits/)).toBeInTheDocument();
     expect(await db.outfits.count()).toBe(0);
     expect(await db.items.count()).toBe(1);
+  });
+
+  it('asks before discarding a half-built outfit', async () => {
+    await seedItem({ category: 'top', colors: ['blue'] });
+    const user = userEvent.setup();
+    open('/outfit/new');
+    await user.click(await screen.findByRole('button', { name: 'Oberteil, Blau' }));
+    await user.click(screen.getByRole('button', { name: 'Abbrechen' }));
+    await user.click(within(await screen.findByRole('dialog', { name: 'Änderungen verwerfen?' })).getByRole('button', { name: 'Verwerfen' }));
+    expect(await screen.findByText(/Noch keine Outfits/)).toBeInTheDocument();
+  });
+
+  it('keeps selected pieces visible even when a filter hides them', async () => {
+    await seedItem({ category: 'top', colors: ['blue'] });
+    await seedItem({ category: 'pants', colors: ['black'] });
+    const user = userEvent.setup();
+    open('/outfit/new');
+    await user.click(await screen.findByRole('button', { name: 'Oberteil, Blau' }));
+    await user.click(screen.getByRole('button', { name: /^Filter/ }));
+    const sheet = await screen.findByRole('dialog', { name: 'Filter' });
+    await user.click(within(within(sheet).getByRole('group', { name: 'Kategorie' })).getByRole('button', { name: 'Hose' }));
+    await user.click(within(sheet).getByRole('button', { name: '1 Teil zeigen' }));
+    expect(screen.getByRole('button', { name: 'Oberteil, Blau abwählen' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Oberteil, Blau abwählen' }));
+    expect(screen.getByText('0 ausgewählt')).toBeInTheDocument();
   });
 
   it('hides the tab bar while an outfit is being put together', async () => {

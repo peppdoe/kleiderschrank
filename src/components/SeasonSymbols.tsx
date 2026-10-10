@@ -2,15 +2,18 @@ import { SEASONS, type SeasonId } from '../lib/constants';
 import { Icon } from './Icon';
 
 interface SeasonSymbolsProps {
+  /** Name der Gruppe für Screenreader, z. B. „Saison wählen“. */
+  label: string;
   selected: readonly SeasonId[];
-  current: SeasonId;
   onToggle: (season: SeasonId) => void;
+  /** Die aktuelle Saison bekommt eine Naht-Markierung und wird so angesagt. */
+  current?: SeasonId;
 }
 
-/** Saisons als Pflegesymbole: ein Tipp filtert den Schrank, die aktuelle Saison ist markiert. */
-export function SeasonSymbols({ selected, current, onToggle }: SeasonSymbolsProps) {
+/** Saisons als Pflegesymbole: gefüllt heißt gewählt, die gestrichelte Naht markiert die aktuelle Saison. */
+export function SeasonSymbols({ label, selected, onToggle, current }: SeasonSymbolsProps) {
   return (
-    <div className="care-symbols" role="group" aria-label="Saison wählen">
+    <div className="care-symbols" role="group" aria-label={label}>
       {SEASONS.map((season) => {
         const on = selected.includes(season.id);
         const isCurrent = season.id === current;
@@ -20,8 +23,7 @@ export function SeasonSymbols({ selected, current, onToggle }: SeasonSymbolsProp
             type="button"
             className={`care-symbol${on ? ' care-symbol--on' : ''}${isCurrent ? ' care-symbol--current' : ''}`}
             aria-pressed={on}
-            aria-label={season.label}
-            title={isCurrent ? 'Aktuelle Saison' : undefined}
+            aria-label={isCurrent ? `${season.label} (aktuelle Saison)` : season.label}
             onClick={() => onToggle(season.id)}
           >
             <span className="care-symbol__mark">

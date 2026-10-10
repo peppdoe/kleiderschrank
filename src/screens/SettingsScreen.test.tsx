@@ -168,5 +168,6 @@ describe('Einstellungen', () => {
     await user.type(field, '  Lena ');
     await user.tab();
     await waitFor(async () => expect(await getMeta(META_USER_NAME)).toBe('Lena'));
+    expect(await screen.findByText('Gespeichert')).toBeInTheDocument();
   });
 });

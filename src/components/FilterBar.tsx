@@ -1,6 +1,7 @@
-import { CATEGORIES, COLORS, SEASONS } from '../lib/constants';
+import { CATEGORIES, COLORS } from '../lib/constants';
 import { EMPTY_FILTER, isFilterActive, toggleValue, type FilterState } from '../lib/filters';
 import { ChipGroup } from './ChipGroup';
+import { SeasonSymbols } from './SeasonSymbols';
 
 interface FilterBarProps {
   value: FilterState;
@@ -25,10 +26,9 @@ export function FilterBar({ value, onChange, wrap = false }: FilterBarProps) {
       selected={value.colors}
       onToggle={(id) => onChange({ ...value, colors: toggleValue(value.colors, id) })}
     />,
-    <ChipGroup
+    <SeasonSymbols
       key="season"
       label="Saison"
-      options={SEASONS}
       selected={value.seasons}
       onToggle={(id) => onChange({ ...value, seasons: toggleValue(value.seasons, id) })}
     />,

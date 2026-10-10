@@ -1,6 +1,8 @@
 import { useEffect, useState, type ReactElement } from 'react';
 import { TabBar } from './components/TabBar';
-import { EMPTY_FILTER, type FilterState } from './lib/filters';
+import type { Item } from './db/schema';
+import { EMPTY_FILTER, matchesFilter, type FilterState } from './lib/filters';
+import { seasonOf } from './lib/greeting';
 import { navigate, tabOf, useRoute } from './lib/route';
 import { requestPersistence } from './lib/storage';
 import { ItemDetailScreen } from './screens/ItemDetailScreen';
@@ -11,10 +13,14 @@ import { OutfitsScreen } from './screens/OutfitsScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
 import { WardrobeScreen } from './screens/WardrobeScreen';
 
+const SAVED_NOTICE_MS = 3500;
+
 export default function App() {
   const route = useRoute();
   const [draftPhoto, setDraftPhoto] = useState<File | null>(null);
-  const [wardrobeFilter, setWardrobeFilter] = useState<FilterState>(EMPTY_FILTER);
+  // Morgens zählt die aktuelle Saison: sie ist beim Öffnen vorausgewählt.
+  const [wardrobeFilter, setWardrobeFilter] = useState<FilterState>(() => ({ ...EMPTY_FILTER, seasons: [seasonOf(new Date())] }));
+  const [savedItemId, setSavedItemId] = useState<string | null>(null);
 
   useEffect(() => {
     requestPersistence().catch(() => undefined);
@@ -24,6 +30,18 @@ export default function App() {
   useEffect(() => {
     if (route.name !== 'itemNew') setDraftPhoto(null);
   }, [route.name]);
+
+  useEffect(() => {
+    if (!savedItemId) return undefined;
+    const timer = setTimeout(() => setSavedItemId(null), SAVED_NOTICE_MS);
+    return () => clearTimeout(timer);
+  }, [savedItemId]);
+
+  // Ein neues Teil soll sichtbar sein: passt es nicht zum aktuellen Filter, wird der Filter gelöst.
+  function itemCreated(item: Item) {
+    if (!matchesFilter(item, wardrobeFilter)) setWardrobeFilter(EMPTY_FILTER);
+    setSavedItemId(item.id);
+  }
 
   function startNewItem(file: File) {
     setDraftPhoto(file);
@@ -36,7 +54,7 @@ export default function App() {
       screen = <ItemDetailScreen key={route.id} itemId={route.id} />;
       break;
     case 'itemNew':
-      screen = <ItemFormScreen key="new" initialFile={draftPhoto} />;
+      screen = <ItemFormScreen key="new" initialFile={draftPhoto} onCreated={itemCreated} />;
       break;
     case 'itemEdit':
       screen = <ItemFormScreen key={`edit-${route.id}`} itemId={route.id} />;
@@ -54,10 +72,20 @@ export default function App() {
       screen = <OutfitEditorScreen key={`edit-${route.id}`} outfitId={route.id} />;
       break;
     case 'settings':
-      screen = <SettingsScreen />;
+      screen = <SettingsScreen key="settings" />;
+      break;
+    case 'settingsBackup':
+      screen = <SettingsScreen key="settings-backup" prepareBackup />;
       break;
     default:
-      screen = <WardrobeScreen filter={wardrobeFilter} onFilterChange={setWardrobeFilter} onPickPhoto={startNewItem} />;
+      screen = (
+        <WardrobeScreen
+          filter={wardrobeFilter}
+          onFilterChange={setWardrobeFilter}
+          onPickPhoto={startNewItem}
+          highlightId={savedItemId}
+        />
+      );
   }
 
   // In Formularen keine Tab-Leiste: ein versehentlicher Tipp würde die Eingaben verwerfen.
@@ -66,6 +94,11 @@ export default function App() {
   return (
     <div className={inForm ? 'app app--form' : 'app'}>
       {screen}
+      {savedItemId && route.name === 'wardrobe' && (
+        <p className="toast" role="status">
+          Teil gespeichert
+        </p>
+      )}
       {!inForm && <TabBar active={tabOf(route)} />}
     </div>
   );

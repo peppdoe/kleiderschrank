@@ -19,19 +19,26 @@ function formatUsage(mb: number): string {
   return mb < 1 ? '< 1 MB' : `${Math.round(mb)} MB`;
 }
 
-export function SettingsScreen() {
+export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: boolean }) {
   const itemCount = useLiveQuery(countItems, []);
   const outfitCount = useLiveQuery(countOutfits, []);
   const lastBackup = useLiveQuery(async () => (await getMeta(META_LAST_BACKUP)) ?? null, []);
   const persist = useLiveQuery(async () => (await getMeta(META_PERSIST)) ?? null, []);
   const storedName = useLiveQuery(async () => (await getMeta(META_USER_NAME)) ?? '', []);
   const [nameDraft, setNameDraft] = useState<string | null>(null);
+  const [nameSaved, setNameSaved] = useState(false);
   const [usage, setUsage] = useState<number>();
   const [prepared, setPrepared] = useState<{ json: string; fileName: string } | null>(null);
   const [pendingImport, setPendingImport] = useState<{ text: string; backup: ParsedBackup } | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<Message | null>(null);
   const sharingRef = useRef(false);
+
+  // Vom Hinweis „jetzt sichern“ kommend: die Sicherung gleich vorbereiten, Lena tippt nur noch „Backup sichern“.
+  useEffect(() => {
+    if (prepareBackup) void prepare();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     storageUsageMB().then(setUsage).catch(() => setUsage(undefined));
@@ -41,6 +48,8 @@ export function SettingsScreen() {
     if (nameDraft === null) return;
     await setMeta(META_USER_NAME, nameDraft.trim());
     setNameDraft(null);
+    setNameSaved(true);
+    setTimeout(() => setNameSaved(false), 2500);
   }
 
   async function prepare() {
@@ -121,7 +130,14 @@ export function SettingsScreen() {
       <div className="section">
         <h2 className="section-title">Persönlich</h2>
         <label className="field field--inline">
-          <span>Dein Name</span>
+          <span>
+            Dein Name
+            {nameSaved && (
+              <span className="field-saved" role="status">
+                Gespeichert
+              </span>
+            )}
+          </span>
           <input
             type="text"
             autoComplete="given-name"

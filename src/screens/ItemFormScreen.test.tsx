@@ -39,7 +39,8 @@ describe('Teil erfassen', () => {
     await waitFor(() => expect(save).toBeEnabled());
     await user.click(save);
 
-    expect(await screen.findByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: 'Oberteil, Blau – Von Oma' })).toBeInTheDocument();
+    expect(await screen.findByRole('status')).toHaveTextContent('Teil gespeichert');
     const items = await db.items.toArray();
     expect(items).toHaveLength(1);
     expect(items[0]).toMatchObject({ category: 'top', colors: ['blue'], seasons: ['winter'], note: 'Von Oma' });
@@ -78,10 +79,19 @@ describe('Teil erfassen', () => {
     expect(screen.queryByText('Wähle noch eine Kategorie.')).not.toBeInTheDocument();
   });
 
-  it('can be cancelled without saving', async () => {
+  it('asks before discarding a new piece and can keep editing', async () => {
     const user = userEvent.setup();
     await startNewItem(user);
+    await user.click(within(screen.getByRole('group', { name: 'Kategorie' })).getByRole('button', { name: 'Oberteil' }));
+
     await user.click(screen.getByRole('button', { name: 'Abbrechen' }));
+    const sheet = await screen.findByRole('dialog', { name: 'Änderungen verwerfen?' });
+    await user.click(within(sheet).getByRole('button', { name: 'Weiter bearbeiten' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Neues Teil' })).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Abbrechen' }));
+    await user.click(within(await screen.findByRole('dialog', { name: 'Änderungen verwerfen?' })).getByRole('button', { name: 'Verwerfen' }));
     expect(await screen.findByText(/Noch keine Teile/)).toBeInTheDocument();
     expect(await db.items.count()).toBe(0);
   });
