@@ -32,11 +32,14 @@ function salutation(hour: number): string {
   return 'Hallo';
 }
 
-/** `pick` ist eine Zufallszahl in [0, 1], beim Öffnen der App einmal gezogen. */
-export function greetingFor({ name, now, pick }: { name: string; now: Date; pick: number }): { title: string; line: string } {
+/**
+ * `pick` ist eine Zufallszahl in [0, 1], beim Öffnen der App einmal gezogen.
+ * `season` ist die gewählte Saison; der Spruch passt dann zum Band in deren Farbe. Ohne Wahl gilt der Kalender.
+ */
+export function greetingFor({ name, now, pick, season }: { name: string; now: Date; pick: number; season?: SeasonId }): { title: string; line: string } {
   const trimmed = name.trim();
   const hello = salutation(now.getHours());
-  const pool = [...GREETING_LINES.general, ...GREETING_LINES[seasonOf(now)]];
+  const pool = [...GREETING_LINES.general, ...GREETING_LINES[season ?? seasonOf(now)]];
   const index = Math.min(pool.length - 1, Math.max(0, Math.floor(pick * pool.length)));
   return { title: trimmed ? `${hello}, ${trimmed}` : hello, line: pool[index] };
 }

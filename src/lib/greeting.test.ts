@@ -45,6 +45,13 @@ describe('greetingFor', () => {
     }
   });
 
+  it('follows the season Lena chose instead of the calendar', () => {
+    for (let i = 0; i < 50; i += 1) {
+      const { line } = greetingFor({ name: '', now: morning, pick: i / 50, season: 'winter' });
+      expect([...GREETING_LINES.general, ...GREETING_LINES.winter]).toContain(line);
+    }
+  });
+
   it('stays inside the pool for pick values at the edges', () => {
     expect(greetingFor({ name: '', now: morning, pick: 0.999999 }).line).toBeTruthy();
     expect(greetingFor({ name: '', now: morning, pick: 1 }).line).toBeTruthy();

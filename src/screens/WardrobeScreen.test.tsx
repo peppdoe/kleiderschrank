@@ -119,6 +119,25 @@ describe('Schrank', () => {
     expect(piece.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
+  it('keeps the chosen season when only other filters leave nothing to show', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-10T07:40:00'));
+    await seedItem({ category: 'top', colors: ['blue'], seasons: ['autumn'] });
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole('button', { name: 'Lieblinge' }));
+    await user.click(await screen.findByRole('button', { name: 'Lieblinge aus' }));
+    await user.click(screen.getByRole('button', { name: /^Filter/ }));
+    const sheet = await screen.findByRole('dialog', { name: 'Filter' });
+    await user.click(within(within(sheet).getByRole('group', { name: 'Farbe' })).getByRole('button', { name: 'Rot' }));
+    await user.click(within(sheet).getByRole('button', { name: /zeigen$/ }));
+
+    await user.click(await screen.findByRole('button', { name: 'Filter lösen' }));
+    expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
+    const seasons = screen.getByRole('group', { name: 'Saison wählen' });
+    expect(within(seasons).getByRole('button', { name: 'Herbst (aktuelle Saison)' })).toHaveAttribute('aria-pressed', 'true');
+  });
+
   it('marks the current season by name, not only as "Jetzt"', async () => {
     vi.useFakeTimers({ toFake: ['Date'] });
     vi.setSystemTime(new Date('2026-10-10T07:40:00'));

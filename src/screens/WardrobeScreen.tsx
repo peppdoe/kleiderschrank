@@ -44,10 +44,13 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
 
   const now = new Date();
   const current = seasonOf(now);
-  const greeting = greetingFor({ name, now, pick });
   const visible = applyFilter(items, filter);
   // Die Saison-Reihe ist der „Heute“-Regler: genau eine Saison gewählt → Heute zeigt deren Outfits.
   const todaySeason: SeasonId = filter.seasons.length === 1 ? filter.seasons[0] : current;
+  const greeting = greetingFor({ name, now, pick, season: todaySeason });
+  // Liegt die leere Auswahl an anderen Filtern, bleibt die Saison (der Heute-Regler) stehen.
+  const withSeasonOnly: FilterState = { ...EMPTY_FILTER, seasons: filter.seasons };
+  const seasonAloneShows = applyFilter(items, withSeasonOnly).length > 0;
   const todayLabel = labelOf(SEASONS, todaySeason);
   const today = outfits ? outfitsForSeason(outfits, items, todaySeason) : [];
 
@@ -126,9 +129,15 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
             ) : (
               <div className="empty">
                 <p>Keine Teile passen zu diesen Filtern.</p>
-                <button type="button" className="button" onClick={() => onFilterChange(EMPTY_FILTER)}>
-                  Alle Teile anzeigen
-                </button>
+                {seasonAloneShows ? (
+                  <button type="button" className="button" onClick={() => onFilterChange(withSeasonOnly)}>
+                    Filter lösen
+                  </button>
+                ) : (
+                  <button type="button" className="button" onClick={() => onFilterChange(EMPTY_FILTER)}>
+                    Alle Teile anzeigen
+                  </button>
+                )}
               </div>
             )
           ) : (
