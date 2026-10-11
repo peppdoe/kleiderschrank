@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>So kann's aussehen</title>
+<style>
+  @font-face {
+    font-family: 'Jost';
+    src: url('/kleiderschrank/@fs/C:/Claude Projekte/Kleiderschrank App Lena/node_modules/@fontsource-variable/jost/files/jost-latin-wght-normal.woff2') format('woff2');
+    font-weight: 100 900;
+  }
+  :root { --ground: #f5f6f8; --ink: #1f2a44; --muted: #56617a; --line-strong: #9aa3b5; --band: #f6e3c8; --stitch: #c98a3e; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 540px; height: 960px; background: var(--ground); color: var(--ink); font-family: 'Jost', sans-serif; }
+  body { padding: 34px 22px 30px; display: flex; flex-direction: column; justify-content: space-between; }
+
+  .band { position: relative; background: var(--band); border-radius: 4px; padding: 22px 24px 20px; text-align: center; box-shadow: 0 6px 18px rgba(31, 42, 68, 0.18); }
+  .band::before { content: ''; position: absolute; inset: 8px; border: 1.5px dashed var(--stitch); border-radius: 2px; }
+  .band h1 { font-size: 36px; font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; }
+  .band p { margin-top: 6px; font-size: 18px; opacity: 0.9; }
+
+  .phones { display: flex; justify-content: center; gap: 14px; }
+  figure { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .phone { width: 241px; padding: 8px; border-radius: 34px; background: #1f2a44; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18); }
+  .phone img { display: block; width: 100%; border-radius: 26px; }
+  figcaption { font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+  .note { text-align: center; font-size: 19px; line-height: 1.4; }
+  .note span { display: block; margin-top: 4px; font-size: 16px; color: var(--muted); }
+  footer { text-align: center; font-size: 20px; font-weight: 500; }
+  footer svg { vertical-align: -4px; margin-left: 4px; }
+</style>
+</head>
+<body>
+  <header class="band">
+    <h1>So kann’s aussehen</h1>
+    <p>Wenn dein Schrank gefüllt ist.</p>
+  </header>
+
+  <div class="phones">
+    <figure>
+      <div class="phone"><img src="/kleiderschrank/@fs/C:/Claude Projekte/Kleiderschrank App Lena/docs/uebergabe/ansicht-schrank.png" alt=""></div>
+      <figcaption>Schrank</figcaption>
+    </figure>
+    <figure>
+      <div class="phone"><img src="/kleiderschrank/@fs/C:/Claude Projekte/Kleiderschrank App Lena/docs/uebergabe/ansicht-looks.png" alt=""></div>
+      <figcaption>Looks</figcaption>
+    </figure>
+  </div>
+
+  <p class="note">Unter „Heute“ stehen jeden Morgen deine Looks zur Saison.
+    <span>Das hier sind nur Beispiel-Zeichnungen. Mit deinen eigenen Fotos wird’s natürlich viel schöner.</span></p>
+
+  <footer>Viel Spaß beim Stylen
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="#c98a3e" stroke="#1f2a44" stroke-width="1.5" stroke-linejoin="round"><path d="M12 19.5c-.3 0-7.5-4.4-7.5-9.6A4 4 0 0 1 8.5 6c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2a4 4 0 0 1 4 3.9c0 5.2-7.2 9.6-7.5 9.6Z"/></svg>
+  </footer>
+</body>
+</html>

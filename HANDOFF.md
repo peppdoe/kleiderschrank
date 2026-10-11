@@ -121,7 +121,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 1. **Kurz auf dem iPhone prüfen** (Auftraggeber), nach ein, zwei Neustarts der App:
    - Hell/Dunkel: Einstellungen → Darstellung → „Dunkel“, App schließen und neu öffnen (bleibt dunkel). Dann „Automatisch“, im Kontrollzentrum den Dunkelmodus umschalten, zurück in die App (zieht mit).
    - Begrüßung: Die App ein paarmal neu öffnen, die Begrüßung wechselt (tagsüber Hallo/Hey/Hi). Nach 23 Uhr steht „Noch wach, …?“ in einer Zeile im Band.
-2. **Übergabe an Lena** (macht der Auftraggeber): die beiden Bilder in `docs/uebergabe/` (Installation, „So funktioniert’s“) und den Link `https://peppdoe.github.io/kleiderschrank/` per WhatsApp schicken. Danach erst weiterbauen, mit ihren echten Rückmeldungen.
+2. **Übergabe an Lena** (macht der Auftraggeber): die drei Bilder in `docs/uebergabe/` (Installation, „So funktioniert’s“, „So kann’s aussehen“) und den Link `https://peppdoe.github.io/kleiderschrank/` per WhatsApp schicken. Danach erst weiterbauen, mit ihren echten Rückmeldungen.
 3. **Aus Kritik Runde 5 (28/40), noch offen, zur Auswahl durch den Nutzer:**
    - Keine Suche nach Namen oder Notizen. Bei 100+ Teilen hilft nur der Filter.
    - Die Saison-Reihe auf dem Band ist als Regler nicht selbsterklärend.
@@ -159,7 +159,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 | `src/screens/` | Schrank, Teil-Formular/-Detail, Looks (Dateien heißen `Outfit…`), Look-Editor/-Detail, Einstellungen |
 | `src/styles.css` | Gesamte Gestaltung inkl. Dunkel (`[data-theme='dark']`) |
 | `src/lib/theme.ts` | Hell/Dunkel/Automatisch: Wahl lesen/speichern, `data-theme` und Statusleistenfarbe setzen, System beobachten |
-| `docs/uebergabe/` | Bilder für Lena (PNG, 1080×1920): `Kleiderschrank-Anleitung.png` (Installation) und `Kleiderschrank-So-gehts.png` (Bedienung), Quellen `anleitung.html` und `so-gehts.html` (Pflegeetikett-Stil, Jost über den Dev-Server). Neu aufnehmen: Dev-Server starten, dann `node scripts/shot.mjs "http://localhost:5173/kleiderschrank/@fs/<absoluter Pfad>/docs/uebergabe/anleitung.html" <ziel.png> 540 960 2` |
+| `docs/uebergabe/` | Bilder für Lena (PNG, 1080×1920): `Kleiderschrank-Anleitung.png` (Installation), `Kleiderschrank-So-gehts.png` (Bedienung), `Kleiderschrank-Beispiel.png` (So kann's aussehen: Schrank und Looks mit Demo-Daten und „Hallo, Lena“), Quellen `anleitung.html`, `so-gehts.html`, `beispiel.html` (nutzt `ansicht-schrank.png`/`ansicht-looks.png`; neu aufnehmen mit `node scripts/capture-preview.mjs <demo.json absolut> <ordner>`) (Pflegeetikett-Stil, Jost über den Dev-Server). Neu aufnehmen: Dev-Server starten, dann `node scripts/shot.mjs "http://localhost:5173/kleiderschrank/@fs/<absoluter Pfad>/docs/uebergabe/anleitung.html" <ziel.png> 540 960 2` |
 | `scripts/demo-backup.mjs` | Erzeugt eine Demo-Sicherung mit Schaubild-Fotos (14 Teile, 5 Looks, 1 Tragebild) zum Testen auf dem iPhone: `node scripts/demo-backup.mjs "$(pwd)" <ziel.json>`. Braucht `sharp` (liegt in `node_modules`). |
 | `scripts/shot.mjs` | Nimmt eine Seite mit Edge headless in exakter Größe auf (`<url> <out.png> <breite> <höhe> <skalierung>`). |
 | `.github/workflows/deploy.yml` | Test, Build, Deploy auf GitHub Pages |
