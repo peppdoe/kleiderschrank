@@ -31,7 +31,7 @@ export function OutfitsScreen({ onPickPhoto }: { onPickPhoto: (file: File) => vo
       ) : outfits.length === 0 ? (
         <div className="empty">
           <p>Noch keine Looks. Kombinier deine Lieblingsteile zu deinem ersten.</p>
-          <button type="button" className="button" onClick={() => navigate('/outfit/new')}>
+          <button type="button" className="button button--primary" onClick={() => navigate('/outfit/new')}>
             Neuer Look
           </button>
         </div>

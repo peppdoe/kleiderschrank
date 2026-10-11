@@ -83,7 +83,7 @@ describe('Outfits', () => {
     open('/outfits');
     expect(await screen.findByText('Erscheint im Herbst und Winter')).toBeInTheDocument();
     expect(screen.getByText('Erscheint das ganze Jahr')).toBeInTheDocument();
-    expect(screen.getByText(/taucht der Look unter/)).toBeInTheDocument();
+    expect(screen.getByText(/mögen verschiedene Saisons/)).toBeInTheDocument();
     // Die Pflegesymbole stehen nie allein: daneben immer die Namen der Saisons.
     expect(screen.getByText('Herbst · Winter')).toBeVisible();
     expect(screen.getByText('Ganzjährig')).toBeVisible();

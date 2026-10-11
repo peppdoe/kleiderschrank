@@ -100,7 +100,7 @@ export function OutfitDetailScreen({ outfitId, justSaved = false, onNotice }: Ou
       )}
       {photoError && <p className="error" role="alert">{photoError}</p>}
       {items.length === 0 ? (
-        <p className="muted">Keine Teile mehr – alle Teile dieses Outfits wurden gelöscht.</p>
+        <p className="muted">Keine Teile mehr – alle Teile dieses Looks wurden gelöscht.</p>
       ) : (
         <>
           <h2 className="section-title">Teile</h2>

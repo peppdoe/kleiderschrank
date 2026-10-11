@@ -18,7 +18,7 @@ export function outfitsForSeason(outfits: Outfit[], items: Item[], season: Seaso
 
 /** Satz für Outfit-Liste, -Detail und -Editor, z. B. „Erscheint im Herbst und Winter“. */
 export function describeOutfitSeasons(seasons: readonly SeasonId[]): string {
-  if (seasons.length === 0) return 'Die Teile teilen keine Saison, darum taucht der Look unter „Heute“ nicht auf.';
+  if (seasons.length === 0) return 'Die Teile mögen verschiedene Saisons – darum nicht unter „Heute“.';
   if (seasons.length === SEASONS.length) return 'Erscheint das ganze Jahr';
   const names = seasons.map((id) => labelOf(SEASONS, id));
   const list = names.length === 1 ? names[0] : `${names.slice(0, -1).join(', ')} und ${names[names.length - 1]}`;

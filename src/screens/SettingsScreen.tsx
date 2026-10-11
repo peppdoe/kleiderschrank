@@ -162,7 +162,7 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
         <p>
           {lastBackup
             ? `Zuletzt gesichert: ${sinceBackup(lastBackup)}`
-            : lastBackup === null ? 'Noch kein Backup' : ''}
+            : lastBackup === null ? 'Noch kein Backup – sichere am besten gleich.' : ''}
         </p>
         {prepared ? (
           <>

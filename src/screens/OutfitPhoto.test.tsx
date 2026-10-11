@@ -285,3 +285,19 @@ describe('Look-Editor mit einer Hand', () => {
     expect(await screen.findByText('Tipp die Teile an, die zusammengehören.')).toBeInTheDocument();
   });
 });
+
+describe('Rest-Texte', () => {
+  it('says Look, not Outfit, when all pieces of a look are gone', async () => {
+    const a = await seedItem();
+    const id = await createOutfit('Weg', [a]);
+    await deleteItem(a);
+    open(`/outfit/${id}`);
+    expect(await screen.findByText('Keine Teile mehr – alle Teile dieses Looks wurden gelöscht.')).toBeInTheDocument();
+  });
+
+  it('makes Neuer Look the primary action of an empty Looks tab', async () => {
+    await seedItem();
+    open('/outfits');
+    expect(await screen.findByRole('button', { name: 'Neuer Look' })).toHaveClass('button--primary');
+  });
+});

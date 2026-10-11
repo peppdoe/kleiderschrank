@@ -39,7 +39,7 @@ describe('Einstellungen', () => {
     await createOutfit('Büro', [a]);
     render(<App />);
     expect(await screen.findByText('2 Teile · 1 Look')).toBeInTheDocument();
-    expect(await screen.findByText('Noch kein Backup')).toBeInTheDocument();
+    expect(await screen.findByText('Noch kein Backup – sichere am besten gleich.')).toBeInTheDocument();
   });
 
   it('exports a backup via the share sheet and remembers the date', async () => {

@@ -61,7 +61,7 @@ describe('describeOutfitSeasons', () => {
   });
 
   it('explains when the outfit never shows up', () => {
-    expect(describeOutfitSeasons([])).toBe('Die Teile teilen keine Saison, darum taucht der Look unter „Heute“ nicht auf.');
+    expect(describeOutfitSeasons([])).toBe('Die Teile mögen verschiedene Saisons – darum nicht unter „Heute“.');
   });
 });
 

@@ -67,7 +67,7 @@
 @media (prefers-color-scheme: dark) {
   [data-season='spring'] { --band: #2b3627; --stitch: var(--spring); }
   [data-season='summer'] { --band: #3d2c22; --stitch: var(--summer); }
-  [data-season='autumn'] { --band: #3a3022; --stitch: var(--autumn); }
+  [data-season='autumn'] { --band: #47351d; --stitch: var(--autumn); }
   [data-season='winter'] { --band: #262f47; --stitch: var(--winter); }
 }
 
@@ -158,8 +158,9 @@ p { margin: 0; }
 .today__row { list-style: none; display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; margin: 0 -16px; padding: 2px 16px 6px; scrollbar-width: none; }
 .today__row::-webkit-scrollbar { display: none; }
 .today__row li { flex: none; scroll-snap-align: start; }
-.today__strip { width: auto; max-width: 260px; display: flex; flex-direction: column; gap: 6px; padding: 0; text-align: left; background: none; border: none; color: var(--ink); cursor: pointer; }
-.today__name { font-size: 17px; font-weight: 500; }
+.today__strip { width: min-content; max-width: 260px; display: flex; flex-direction: column; gap: 6px; padding: 0; text-align: left; background: none; border: none; color: var(--ink); cursor: pointer; }
+/* Der Name richtet sich nach der Breite des Looks und endet mit Auslassung statt mitten im Wort am Rand */
+.today__name { width: 0; min-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 17px; font-weight: 500; }
 
 /* Karton-Anhänger: Filter und aktive Filter */
 .tag-row { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
