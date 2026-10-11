@@ -79,16 +79,21 @@ const seeded = await evaluate(`(async () => {
   await outfits.createOutfit('Sommerfest', [kleid, sandalen]);
   await outfits.createOutfit('Büro-Look', [bluse, jeans]);
   await outfits.createOutfit('Passt nicht zusammen', [sandalen, mantel]);
+  await items.setFavorite(kleid, true);
+  await items.setFavorite(pulli, true);
   await meta.setMeta(meta.META_USER_NAME, 'Lena');
   return 'ok';
 })()`);
 console.log('seed', seeded);
 
+const favId = await evaluate(`(async () => { const i = await import('/kleiderschrank/src/db/items.ts'); return (await i.listItems()).find((x) => x.favorite).id; })()`);
 const outfitId = await evaluate(`(async () => { const o = await import('/kleiderschrank/src/db/outfits.ts'); return (await o.listOutfits()).find((x) => x.name === 'Herbstspaziergang').id; })()`);
 
 await scheme('light');
 await go('/outfits'); await shot('mobile-outfits.png');
 await go('/outfit/' + outfitId); await shot('mobile-outfit-detail.png');
+await go('/item/' + favId); await shot('mobile-item-detail.png');
+await go('/item/new'); await shot('mobile-item-form.png');
 await go('/settings'); await shot('mobile-settings.png');
 await evaluate(`(() => { const input = document.querySelector('input[autocomplete="given-name"]');
   const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
@@ -98,6 +103,7 @@ await go('/'); await shot('mobile.png');
 await scheme('dark');
 await go('/outfits'); await shot('mobile-outfits-dark.png');
 await go('/outfit/' + outfitId); await shot('mobile-outfit-detail-dark.png');
+await go('/item/' + favId); await shot('mobile-item-detail-dark.png');
 await go('/'); await shot('mobile-dark.png');
 await scheme('light');
 await size(1280, 800, false);

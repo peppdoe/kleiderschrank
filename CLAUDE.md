@@ -43,12 +43,17 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
 ## Gestaltung (vor UI-Änderungen `DESIGN.md` lesen)
 
 - Welt „Pflegeetikett“: flaches navyblaues Namensband mit gestrichelter Naht (Begrüßung mit Namen + wechselnder Spruch), Saisons als Pflegesymbole, Auswahl und Filter als Karton-Anhänger mit Lochung, Porzellan-Grund `#f5f6f8` (nie Creme).
+- **Lena ist 20.** Ton wie eine Freundin mit Gespür für Mode (siehe `PRODUCT.md`), nie wie Verkäuferin, Amt oder Eltern. Ein Test in `lib/greeting.test.ts` sperrt typische Eltern-/Verkäufer-Floskeln.
 - **Fadenrot nur für:** die eine Hauptaktion (Hinzufügen, Speichern, Backup erstellen), den aktiven Tab, zerstörerische Aktionen, Fehler und Fokus. Nichts anderes wird rot.
+- **Saisonfaden:** Nähte (Namensband, Etiketten), Herz und gewählte Saison tragen die Farbe der gewählten Saison (`--accent`, gesetzt als `data-season` am Root in `App.tsx`). Nie für Aktionen oder Text.
+- Abschnittstitel in normaler Schreibweise; Versalien nur für Tabs und Pflegesymbol-Namen.
 - Keine Karten um Fotos/Outfits, keine Pillen-Chips, keine Emojis als Symbole (eigene SVGs in `components/Icon.tsx`), keine Kicker-/Eyebrow-Zeile über Überschriften.
 - In Formularen keine Tab-Leiste; Aktionen sitzen in einer festen Leiste unten (Daumenreichweite).
 - **Saison-Reihe = „Heute“-Regler:** Die aktuelle Saison ist beim Öffnen vorausgewählt (`App.tsx`) und filtert Schrank und „Heute“; Einfachauswahl über `chooseSeason`. Das Filter-Panel im Schrank hat bewusst keine Saison-Gruppe und setzt die Saison nie zurück. Teile ohne Saison gelten als ganzjährig (`lib/filters.ts`).
 - Rückfragen laufen über Bodenblätter (`components/Sheet.tsx`, `ConfirmSheet.tsx`), nie über `window.confirm`. Abbrechen mit ungespeicherten Änderungen fragt nach („Änderungen verwerfen?“).
-- Neues Teil passt nicht zum aktiven Filter → Filter wird gelöst, das Teil markiert und „Teil gespeichert“ angezeigt.
+- Neues Teil passt nicht zum aktiven Filter → Filter wird gelöst, das Teil markiert und „Teil gespeichert“ angezeigt. Nach dem Speichern eines Outfits: Etikett wird eingenäht, „Look gespeichert“.
+- Outfits erscheinen als Collage (`OutfitPreview`), die Liste zweispaltig; ihre Saison ergibt sich aus den Teilen (`lib/today.ts`), Outfits haben keine eigene Saison.
+- **Lieblingsteile:** optionales Feld `favorite` am Teil, ohne Index (daher keine neue Schema-Version). `setFavorite` in `db/items.ts`; das Backup übernimmt es in `parseItem` (Format bleibt v1). Anhänger „Lieblinge“ filtert (`FilterState.favorites`).
 - Name für die Begrüßung: Meta-Schlüssel `userName` (Einstellungen). Grußsprüche nennen nie konkrete Kleidungsstücke (Test erzwingt das).
 - Vorschaubilder sind 3:4 (360×480); ältere quadratische werden per `object-fit: cover` angezeigt.
 - Design-Prüfungen: `/impeccable critique` bzw. `impeccable detect --json src index.html`; Review-Aufnahmen landen in `.impeccable/review/` (nicht versioniert).

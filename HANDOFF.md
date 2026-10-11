@@ -77,15 +77,16 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
    - Outfit-Liste: Namen als gewebtes Etikett (Pflegesymbole pro Outfit sind erledigt).
    - Outfit-Detailansicht: wie die Teil-Detailansicht als Etikett.
    - Einstellungen: das Namensband dort zeigen, wo Lena ihren Namen einträgt.
-3. **Optional: neue Kritik** mit `/impeccable critique`, um zu messen, wo die App nach Runde 2 steht (zuletzt 26/40).
+3. **Erledigt (11.10.): neue Kritik mit Fokus „Lena ist 20“** → 28/40 (vorher 26). Danach alle fünf Befunde umgesetzt, ohne Rückfrage am Stück: Sprache wie eine Freundin, Saisonfaden-Farben und Blush-Kraft, Abschnittstitel ohne Versalien und flacheres Band, Outfits als Collage/Looks, Lieblingsteile mit Herz und „Lieblinge“-Filter, Speicher-Moment beim Outfit. Ursprünglich: **Optional: neue Kritik** mit `/impeccable critique`, um zu messen, wo die App nach Runde 2 steht (zuletzt 26/40).
 4. **Erst nach ausdrücklicher Freigabe („hochladen“):** `feature/pflegeetikett` per Fast-Forward in `main` übernehmen, pushen, den Deploy prüfen (`gh run list --workflow Deploy`) und die Live-Seite kontrollieren.
-5. **Abnahme auf Lenas iPhone** mit der Checkliste in `README.md`. Besonders prüfen:
+5. **Nach Lenas Test klären:** Möchte sie „Heute“ nach Anlass/Vibe (Uni, Abends, Cozy …) statt nur nach Saison? Fehlen ihr Kategorien oder Farben (z. B. Jeans, Blazer, Schmuck; Denim, Creme, Oliv, Bordeaux)? Will sie „Heute getragen“ / „Lange nicht getragen“? Braucht jeweils eine Datenmodell-Änderung, deshalb bewusst erst mit ihren echten Wörtern. Die App ist ein Geschenk.
+6. **Abnahme auf Lenas iPhone** mit der Checkliste in `README.md`. Besonders prüfen:
    - Hochformat- und HEIC-Fotos (richtige Drehung)
    - Kamera
    - Offline-Start vom Home-Bildschirm
    - Backup nach iCloud Drive und wieder einspielen
    - Begrüßung mit Namen und Saison-Regler
-6. Nach der Abnahme: gefundene Probleme beheben, gegebenenfalls `CLAUDE.md` und `DESIGN.md` nachziehen.
+7. Nach der Abnahme: gefundene Probleme beheben, gegebenenfalls `CLAUDE.md` und `DESIGN.md` nachziehen.
 
 ---
 

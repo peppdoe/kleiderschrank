@@ -12,9 +12,14 @@ colors:
   band: "#1f2a44"
   band-ink: "#f5f6f8"
   band-stitch: "rgba(245, 246, 248, 0.5)"
-  kraft: "#c9a27a"
-  kraft-soft: "#eee2d2"
-  kraft-ink: "#2a2016"
+  kraft: "#d6ad94"
+  kraft-soft: "#f2e4db"
+  kraft-ink: "#2e1f19"
+  season-spring: "#b7d1a8"
+  season-summer: "#f3b98f"
+  season-autumn: "#e2ad6f"
+  season-winter: "#b6c4ec"
+  on-season: "#1f2a44"
   thread: "#b8322a"
   thread-ink: "#ffffff"
   danger-solid: "#8f1d17"
@@ -28,7 +33,7 @@ colors:
   chip-dark: "#222c46"
   band-dark: "#28355a"
   band-stitch-dark: "rgba(245, 246, 248, 0.45)"
-  kraft-soft-dark: "#3a3126"
+  kraft-soft-dark: "#46363a"
   thread-dark: "#e8706a"
   thread-ink-dark: "#1b0d0b"
   danger-solid-dark: "#e8706a"
@@ -93,10 +98,9 @@ typography:
     letterSpacing: "0.2em"
   label-small:
     fontFamily: "'Jost Variable', 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "11px"
+    fontSize: "13px"
     fontWeight: 400
     lineHeight: 1.45
-    letterSpacing: "0.12em"
 rounded:
   stitch: "2px"
   weave: "4px"
@@ -173,8 +177,8 @@ components:
     rounded: "{rounded.round}"
     size: "44px"
   care-symbol-on:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.ground}"
+    backgroundColor: "{colors.season-autumn}"
+    textColor: "{colors.on-season}"
   label-band:
     backgroundColor: "{colors.band}"
     textColor: "{colors.band-ink}"
@@ -230,15 +234,16 @@ components:
 
 **Creative North Star: "Pflegeetikett"**
 
-The wardrobe is sewn like the label inside Lena's clothes. A woven navy name band with an inset dashed stitch greets her by name; each piece carries its own sewn-in care label on its detail page; seasons are drawn as care-label symbols in a single 1.5px stroke; filters hang as kraft swing tags with a punched hole; one red thread marks what to do next. Everything else steps back so the clothing photos carry the screen.
+Lena is 20; the world is a care label made young, not heritage workwear: soft seasonal thread, blush kraft, a friend's voice. The wardrobe is sewn like the label inside Lena's clothes. A woven navy name band with an inset dashed stitch greets her by name; each piece carries its own sewn-in care label on its detail page; seasons are drawn as care-label symbols in a single 1.5px stroke; filters hang as kraft swing tags with a punched hole; one red thread marks what to do next. Everything else steps back so the clothing photos carry the screen.
 
-The ground is a cool porcelain, never cream, with white surfaces and hairline navy-grey lines. Density is calm and single-column (max 720px), built for one hand at the open wardrobe: 44px minimum targets, primary actions in thumb reach, text tab bar at the bottom. Photos are frameless at 3:4 with only a 4px corner. Type is one family, Jost Variable, self-hosted; hierarchy comes from size and from letterspaced caps labels, not from a second face.
+The ground is a cool porcelain, never cream, with white surfaces and hairline navy-grey lines. Density is calm and single-column (max 720px), built for one hand at the open wardrobe: 44px minimum targets, primary actions in thumb reach, text tab bar at the bottom. Photos are frameless at 3:4 with only a 4px corner. Type is one family, Jost Variable, self-hosted; hierarchy comes from size and weight in sentence case; letterspaced caps are kept for tabs and care-symbol names only, and there is no second face.
 
 The system refuses the iOS-settings grey grid: no pill chips, no emoji tabs, no grey-filled list rows.
 
 **Key Characteristics:**
 - Navy woven fabric with an inset dashed stitch as the only branded surface: the name band on the wardrobe (and its preview in the settings), the care label on a piece or an outfit, the small woven name label of each outfit in the list.
 - Kraft swing tags (notched left edge, punched hole) for every filter and selectable choice.
+- A seasonal thread (sage, apricot, ochre, ice blue) sews every stitch and fills the chosen season; it follows the Season Row.
 - Thread red reserved for the one primary action, the active tab, destructive actions, errors and the focus/caret affordance.
 - One 1.5px round-capped stroke system for all pictograms.
 - Frameless 3:4 photo tiles; the clothing is the star.
@@ -246,14 +251,18 @@ The system refuses the iOS-settings grey grid: no pill chips, no emoji tabs, no 
 
 ## Colors
 
-A cool navy-and-porcelain base, warmed only by kraft paper and pierced by a single thread red; garment swatches sit outside it as data.
+A cool navy-and-porcelain base, warmed by blush kraft and a soft seasonal thread, pierced by a single thread red for action; garment swatches sit outside it as data.
 
 ### Primary
 - **Thread Red** (`thread`; dark: `thread-dark`): the sewing thread. Fills the primary button and the round add button, colors the active tab and its stitched underline, destructive text buttons, error text, the 2px focus ring and the text caret. Text on it uses `thread-ink` (white in light, near-black `thread-ink-dark` in dark, because the dark thread is lightened for contrast).
 - **Deep Thread** (`danger-solid`; dark: `danger-solid-dark`): the solid confirm button in every destructive confirm sheet (delete a piece or outfit, discard changes, replace with a backup). Darker than thread red in light so a destructive confirm reads heavier than an ordinary primary action; in dark it equals the lightened thread.
 
+### Seasonal Thread
+- **Season colors** (`season-spring` sage, `season-summer` apricot, `season-autumn` ochre, `season-winter` ice blue; same in both themes): the color of the thread. `--accent` points at the season chosen in the Season Row (without a choice: the current season), set as `data-season` on the root by `App.tsx`. It draws the dashed stitch on the name band, the care labels and the outfit name labels, the heart of a favorite, and the favorite mark on tiles. Each care symbol fills in its own season color when chosen, with `on-season` navy marks.
+- Never for actions, errors, text or anything that must be read; it is ornament and state. The One Thread Rule still owns red.
+
 ### Secondary
-- **Kraft** (`kraft`): swing-tag card stock. Active filter tags, selected chips, text selection highlight, and the 3px inset ring that marks a just-saved tile. Same value in both themes.
+- **Kraft** (`kraft`): swing-tag card stock, warmed toward blush sand. Active filter tags, selected chips, text selection highlight, and the 3px inset ring that marks a just-saved tile. Same value in both themes.
 - **Kraft Soft** (`kraft-soft`; dark: `kraft-soft-dark`): resting swing tags and chips, the "+N" overflow cell in outfit previews.
 - **Kraft Ink** (`kraft-ink`): text on kraft surfaces.
 
@@ -264,19 +273,19 @@ A cool navy-and-porcelain base, warmed only by kraft paper and pierced by a sing
 ### Neutral
 - **Porcelain Ground** (`ground`; dark: `ground-dark`): page background, sticky action bar, theme-color meta, text on ink-filled marks (season, check, badge, toast).
 - **Surface** (`surface`; dark: `surface-dark`): tab bar, sheets, inputs, secondary buttons, notice lines.
-- **Navy Ink** (`ink`; dark: `ink-dark`): body text, headings, the chosen season, selection outline on tiles, count badges, the toast.
+- **Navy Ink** (`ink`; dark: `ink-dark`): body text, headings, selection outline on tiles, count badges, the toast.
 - **Muted** (`muted`; dark: `muted-dark`): secondary text, inactive tabs, placeholders, quiet links, notices, link-row chevrons.
 - **Line / Line Strong** (`line`, `line-strong` and dark variants): hairline dividers, link-row rules and borders; the strong variant outlines secondary buttons and inputs and dashes the empty-photo frame.
 - **Chip** (`chip`; dark: `chip-dark`): placeholder fill behind loading photos and the disabled primary button.
 - **Success** (`success`; dark: `success-dark`): confirmation text only.
 
 ### Garment Swatches (data palette)
-The `garment-*` colors are data, not interface: each names a clothing color Lena can assign (Schwarz, Weiß, Grau, Beige, Braun, Rot, Rosa, Orange, Gelb, Grün, Blau, Lila), defined in `src/lib/constants.ts`. They render only inside 16px swatch circles (color chips in the form and filter sheet, the care label's color line). "Bunt/Muster" is a conic sweep of red, yellow, green, blue and purple; "Metallic" is a 135° gradient of the three `garment-metallic-*` stops. They are the same in both themes because they describe the garment, not the screen.
+The `garment-*` colors are data, not interface: each names a clothing color Lena can assign (Schwarz, Weiß, Grau, Beige, Braun, Rot, Rosa, Orange, Gelb, Grün, Blau, Lila), defined in `src/lib/constants.ts`. They render only inside 16px swatch circles (color chips in the form and filter sheet, the care label's color line). "Gemustert" is a conic sweep of red, yellow, green, blue and purple; "Metallic" is a 135° gradient of the three `garment-metallic-*` stops. They are the same in both themes because they describe the garment, not the screen.
 
 ### Named Rules
 **The One Thread Rule.** Thread red appears only on the primary action (primary button, add button), the active tab, destructive actions, error messages, and the focus ring/caret. Never on decoration, headings, icons at rest, or a second button on the same screen.
 
-**The Porcelain Rule.** The ground is cool porcelain (`ground`), never cream or warm off-white. Warmth enters only through kraft.
+**The Porcelain Rule.** The ground is cool porcelain (`ground`), never cream or warm off-white. Warmth enters only through kraft and the seasonal thread.
 
 **The Data Palette Rule.** Garment swatches describe clothing and appear only inside a swatch circle; they never color interface chrome, and no UI token stands in for a garment color.
 
@@ -284,25 +293,26 @@ The `garment-*` colors are data, not interface: each names a clothing color Lena
 
 **Display Font:** Jost Variable (self-hosted via `@fontsource-variable/jost`, with Jost, -apple-system, Segoe UI, sans-serif fallback)
 **Body Font:** Jost Variable
-**Label Font:** Jost Variable in letterspaced caps
+**Label Font:** Jost Variable; letterspaced caps only for tabs and care-symbol names
 
-**Character:** A geometric sans with a woven-label calm; one family carries everything, with letterspaced caps acting as the embroidered label voice.
+**Character:** A geometric sans with a woven-label calm; one family carries everything, in sentence case so it reads personal rather than filed; small letterspaced caps remain the embroidered voice of tabs and care symbols.
 
 ### Hierarchy
 - **Display** (500, 30px, 1.1, -0.01em): the greeting in the name band and page titles.
 - **Label Title** (500, 26px, 1.15): the name on a care label (a piece or an outfit) and in the name-band preview in the settings; one step under Display so it sits inside the stitch.
 - **Title** (500, 22px): sheet titles.
-- **Title Small** (500, 20px): centered form headers ("Neues Teil", "Neues Outfit").
+- **Title Small** (500, 20px, 1.2): centered form headers ("Neues Teil", "Neues Outfit") and section titles in sentence case ("Heute", "Schrank", "In diesen Outfits", "Du", "Backup", "Auf diesem iPhone").
+- **Group Label** (600, 17px): form group and filter-sheet group titles ("Kategorie", "Farbe", "Saison", "Notiz", "Name des Outfits").
 - **Body** (400, 17px, 1.45): base size; buttons, text buttons and link rows at 500, primary at 600. Outfit card names at 500.
 - **Body Small** (400, 15px): notices, chips and tags (tags at 500), section meta, action-bar hints, care-label lines, the toast (500).
 - **Caption** (400, 13px): band date meta, the tag count badge (600, tabular) and the inline "Gespeichert" confirmation.
-- **Label** (600, 12px, 0.2em, uppercase): section titles ("HEUTE", "SCHRANK", "IN DIESEN OUTFITS", form groups). Siblings in the same voice: tab labels (12px, 0.08em), care-symbol labels (12px, 0.12em).
-- **Label Small** (400, 11px, 0.12em): the muted "Pflicht" marker beside a required form group.
+- **Label** (uppercase): tab labels (12px, 0.08em) and care-symbol labels (12px, 0.12em) only. The `label` token (600, 12px, 0.2em) is no longer used for headings.
+- **Label Small** (400, 13px): the muted "wähl eine" marker beside a required form group.
 
 ### Named Rules
 **The One Family Rule.** Jost Variable only, self-hosted; no external font host at runtime and no second display face.
 
-**The Caps Are Labels Rule.** Letterspaced caps name a section, a tab or a symbol. They are the heading or the label itself, never a decorative line stacked above another heading.
+**The Caps Are Labels Rule.** Letterspaced caps name a tab or a symbol, nothing else. Section titles are sentence case. Caps are never a decorative line stacked above another heading.
 
 **The Tabular Count Rule.** Every count (section meta, tag badge, action-bar count, backup compare) uses `font-variant-numeric: tabular-nums`.
 
@@ -310,9 +320,9 @@ The `garment-*` colors are data, not interface: each names a clothing color Lena
 
 Single column, max 720px centered, 16px side padding, top padding respecting the safe area plus 12px. Sections are separated by 22px above a section head and 10px below; settings sections use a 1px top hairline with 20px/24px padding. Spacing steps observed: 4, 8, 12, 16, 22px, with 6px and 14px as in-component gaps.
 
-The wardrobe grid is 3 columns at 8px gap (2 columns at 10px for the large variant); outfit previews use 4 columns at 4px. "Heute" scrolls sideways with scroll-snap and 196px strips, bleeding to the screen edge. The tab bar is fixed at 62px plus the bottom safe area and centers its content to 720px on wide screens; the add button tracks the content column's right edge. Forms hide the tab bar and end in a sticky action bar on the ground color. Bottom sheets rise to 86dvh max.
+The wardrobe grid is 3 columns at 8px gap (2 columns at 10px for the large variant); outfit previews are collages (see Outfit Look). "Heute" scrolls sideways with scroll-snap and 148px square looks, bleeding to the screen edge. The tab bar is fixed at 62px plus the bottom safe area and centers its content to 720px on wide screens; the add button tracks the content column's right edge. Forms hide the tab bar and end in a sticky action bar on the ground color. Bottom sheets rise to 86dvh max.
 
-**Section meta pattern.** A section head pairs the caps title with a 15px muted, tabular meta on the same baseline, left-aligned beside the title. In the wardrobe it reads "N von M Teilen · Saison" when filters narrow the list and "M Teile · Saison" when they don't; the season clause joins with a middle dot. "Heute" uses a plain sentence ("2 Outfits passen zum Herbst"), Outfits a count ("3 gespeichert").
+**Section meta pattern.** A section head pairs the sentence-case title with a 15px muted, tabular meta on the same baseline, left-aligned beside the title. In the wardrobe it reads "N von M Teilen · Saison" when filters narrow the list and "M Teile · Saison" when they don't; the season clause joins with a middle dot. "Heute" uses a plain sentence ("2 Outfits passen zum Herbst"), Outfits a count ("3 gespeichert").
 
 ## Elevation & Depth
 
@@ -342,19 +352,21 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 ## Components
 
 ### Name Band (signature)
-- Navy band, 4px corners, 18px/22px padding, centered; inset 1.5px dashed stitch 7px from the edge.
+- Navy band, 4px corners, 14px/20px/15px padding (slimmer, so the clothes start higher), centered; inset 1.5px dashed stitch in the seasonal thread (`--accent`) 7px from the edge.
 - Contents: greeting at Display, one rotating line at 17px (0.92 opacity, single line, ellipsis), date meta at Caption (0.78 opacity).
 - **Motion, the stitch-in:** whenever the greeting line changes it reveals left to right with `clip-path: inset(0 100% 0 0)` to `inset(0 0 0 0)`, 900ms, `cubic-bezier(0.16, 1, 0.3, 1)`, 150ms delay. Disabled under `prefers-reduced-motion`. This is the system's one expressive motion moment.
-- **Preview (settings):** below the name field in "Persönlich" (input first, then result; the caps label never sits directly above the greeting) the band repeats as a live preview of the greeting (title updates while Lena types; fixed first line, no date). Same size as the real band, title at Display, so a long name wraps exactly as it will on the wardrobe; flat (no lift), no stitch-in. A group named "Vorschau der Begrüßung", not a heading.
+- **Preview (settings):** below the name field in "Du" (input first, then result; the caps label never sits directly above the greeting) the band repeats as a live preview of the greeting (title updates while Lena types; fixed first line, no date). Same size as the real band, title at Display, so a long name wraps exactly as it will on the wardrobe; flat (no lift), no stitch-in. A group named "Vorschau der Begrüßung", not a heading.
 
 ### Care Label (item and outfit detail)
 - The piece's own sewn-in label under its photo: the band's woven navy and inset stitch, 4px corners, 18px/20px/20px padding, 10px gaps, flat (no lift).
+- **Favorite:** a 44px heart button top right on the piece's label (`aria-label="Lieblingsteil"`, `aria-pressed`); outline in band ink at rest, filled in the seasonal thread when on, with a 420ms pop from `scale(0.6)` (none under reduced motion). The title keeps 40px clear on the right.
+- **Just saved (outfit):** after saving a look its label's stitch draws in left to right with the stitch-in curve (900ms, 120ms delay), paired with the toast "Look gespeichert"; none under reduced motion.
 - **Outfit:** the same label opens the outfit detail, between the back link and the photo grid (4px above, 18px below): name at Label Title, the piece count as the 15px kind line, then the Outfit Seasons Line in band ink at 0.9 opacity with 22px pictograms.
-- Name at Label Title; category below at 15px, 0.8 opacity, pulled up 6px; a color line with 16px garment swatches ringed in `band-stitch`; seasons as 22px care pictograms with 15px names, wrapping at 14px gaps; the note at 15px, 0.9 opacity, preserving line breaks.
+- Name at Label Title; category below at 15px, 0.8 opacity, pulled up 6px; a color line with 16px garment swatches ringed in `band-stitch` (the stitch itself is seasonal thread); seasons as 22px care pictograms with 15px names, wrapping at 14px gaps; the note at 15px, 0.9 opacity, preserving line breaks.
 
 ### Season Row ("Heute" control)
 - Four care-symbol buttons: 44px circles with a 1.5px ink stroke and a 1.5px pictogram, 12px caps label below in muted, 12px apart, centered (left-aligned in forms and sheets).
-- **Chosen (filled):** ink fill, ground-colored mark, label in ink at 600, `aria-pressed`.
+- **Chosen (filled):** filled in its own season color (sage, apricot, ochre, ice blue) with the ink stroke kept and an `on-season` navy mark; label in ink at 600, `aria-pressed`. Choosing a season also re-threads every stitch in that color.
 - **Current season, not chosen:** the ring turns to a 2px dashed stitch so "today" stays findable when Lena picks another season; announced as "(aktuelle Saison)".
 - On the wardrobe the current season is preselected on launch, and the choice filters both Heute and the wardrobe grid. In the item form the same row is a plain multi-select without a current mark.
 - Transition: background-color and color 160ms ease-out.
@@ -373,6 +385,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 
 ### Swing Tags and Chips
 - Kraft-soft tag stock, kraft-ink 15px text, 44px tall, swing-tag silhouette with punched hole.
+- **"Lieblinge" tag:** sits next to "Filter" in the tag row; a toggle (`aria-pressed`) with an 18px heart (filled when on) that narrows the grid to favorites; active in kraft like any active tag.
 - **Selected / active:** kraft fill (chips go to 600). Active filter tags carry a 16px close mark; the "Filter" tag carries a navy count badge (22px capsule, Caption at 600, tabular).
 - **Focus:** inset 2px thread-red ring (the clip-path would cut an outline).
 - Color chips add a 16px garment swatch with a 1px `line-strong` ring.
@@ -381,6 +394,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 ### Photo Tiles
 - Frameless 3:4, 4px corners, chip fill while loading.
 - **Selected:** 3px inset ink outline and a 26px ink check circle top right.
+- **Favorite:** a 24px band-navy circle bottom left with a filled 14px heart in the seasonal thread; the tile's accessible name ends in ", Lieblingsteil".
 - **Just saved:** 3px inset kraft outline and a 1.2s settle from `scale(0.94)` on `cubic-bezier(0.16, 1, 0.3, 1)`, paired with the toast; no motion under reduced motion.
 - Empty photo: 4:3 dashed `line-strong` frame, muted centered text.
 
@@ -389,11 +403,16 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 
 ### Outfit Seasons Line
 - Says when an outfit shows up under "Heute". The seasons are derived from its pieces (every piece with seasons must include the season; pieces without seasons always fit); outfits have no season of their own.
-- One line: 18px ink care pictograms of the matching seasons, 4px apart, then a 15px muted sentence: "Erscheint im Herbst und Winter", "Erscheint das ganze Jahr", or, when the pieces share no season, "Erscheint nie unter „Heute“: Die Teile haben keine gemeinsame Saison." The conflict stays muted, not red; it is a hint, not an error.
+- **Compact (outfit list):** only the pictograms, plus visible 13px text in the two exceptions ("Ganzjährig", "Keine gemeinsame Saison"); the full sentence stays as visually hidden text and describes the card.
+- Full: 18px ink care pictograms of the matching seasons, 4px apart, then a 15px muted sentence: "Erscheint im Herbst und Winter", "Erscheint das ganze Jahr", or, when the pieces share no season, "Erscheint nie unter „Heute“: Die Teile haben keine gemeinsame Saison." The conflict stays muted, not red; it is a hint, not an error.
 - Sits under the name label in the outfit list, inside the care label on the outfit detail, and in the editor under the selection strip and under the preview on the naming step, updating live. Hidden when no pieces remain.
 
+### Outfit Look (collage)
+- An outfit is shown as one look, not a row of boxes: 1 piece fills the frame; 2 sit side by side; 3 or more become a hero piece (2/3 width, full height) with two stacked pieces beside it, the last turning into a kraft-soft "+N" cell when more remain. 3px gaps, 4px outer corners, chip fill behind.
+- Ratio by context (`--look-ratio`): square 148px looks in "Heute"; 3:4 in the outfit list (two columns, 22px/10px gaps) and on the naming step of the editor (62% width, max 260px).
+
 ### Outfit Name Label (outfit list)
-- Each outfit's name sits under its preview as a small woven label: band navy, band-ink 17px/500 text, 7px/16px/8px padding, 4px corners, a 1.5px dashed `band-stitch` stitch inset 4px, sized to its text (wraps anywhere when long). Flat. The whole card stays one button, named by the label and described by the seasons line.
+- Each outfit's name is sewn onto the lower edge of its look (overlapping it by 14px, 8px in from the left) as a small woven label: band navy, band-ink 15px/500 text, 6px/12px/7px padding, 4px corners, a 1.5px dashed seasonal-thread stitch inset 4px, sized to its text, hyphenated in German when long. Flat. The whole card stays one button, named by the label and described by the seasons line.
 - The "Heute" strip on the wardrobe keeps plain outfit names on purpose: the name band directly above is the first viewport's only navy surface.
 
 ### Link Rows (outfit references)
@@ -401,7 +420,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 
 ### Inputs / Fields
 - Surface fill, 1px `line-strong` border, 12px corners, 12px/14px padding, 17px. Placeholder in muted, caret in thread red.
-- Field label is the caps section label; required groups add the Label Small "Pflicht" marker.
+- Field label is the Group Label (17px, 600, sentence case); required groups add the Label Small "wähl eine" marker.
 - **Error:** thread-red message below with `role="alert"`.
 
 ### Navigation
