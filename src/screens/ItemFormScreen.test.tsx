@@ -66,6 +66,7 @@ describe('Teil erfassen', () => {
     const save = screen.getByRole('button', { name: 'Speichern' });
     await waitFor(() => expect(save).toBeEnabled());
     await user.click(save);
+    await waitFor(() => expect(screen.queryByRole('heading', { name: 'Neues Teil' })).not.toBeInTheDocument());
     expect(await screen.findByRole('button', { name: 'Hose' })).toBeInTheDocument();
     expect(await db.items.count()).toBe(2);
   });

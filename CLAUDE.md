@@ -86,6 +86,7 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter (Saison = Heute-Regler), Fot
 - `*.test.ts` laufen in Node, `*.test.tsx` in jsdom (`environmentMatchGlobs` in `vite.config.ts`).
 - `src/test/setup.ts` ersetzt in jsdom `Blob` durch Nodes `Blob`, weil fake-indexeddb jsdom-Blobs leer zurückgibt. Außerdem stubbt die Datei `URL.createObjectURL` und leert vor jedem Test alle Tabellen.
 - Helfer in `src/test/factories.ts`: `makeItem`, `fakePhoto`, `seedItem`.
+- Der Ansagebereich (`role="status"`) ist immer eingehängt. `findByRole('status')` kehrt deshalb sofort zurück; auf die Meldung immer mit `waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(…))` warten. Ebenso nach dem Speichern erst warten, bis das Formular weg ist, bevor man im Schrank nach einem Namen wie „Hose“ sucht (sonst trifft man den Kategorie-Anhänger).
 - Werte aus `useLiveQuery` erscheinen asynchron. In Tests deshalb `findBy…` verwenden, nicht `getBy…`. Sonst werden die Tests wackelig.
 - In Dateien mit `vi.mock(..., () => ({ x: vi.fn(...) }))` **kein** `vi.restoreAllMocks()` aufrufen, das leert die Mock-Implementierungen.
 - Canvas und `createImageBitmap` gibt es in jsdom nicht. `lib/image.ts` wird in Screen-Tests gemockt. Echte Bildverarbeitung lässt sich im Browser-Pane per `await import('/kleiderschrank/src/lib/image.ts')` prüfen.

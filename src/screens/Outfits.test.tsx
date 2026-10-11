@@ -155,7 +155,7 @@ describe('Outfits', () => {
     open(`/outfit/${id}`);
     await user.click(await screen.findByRole('button', { name: 'Löschen' }));
     await user.click(within(await screen.findByRole('dialog', { name: 'Look löschen?' })).getByRole('button', { name: 'Löschen' }));
-    expect(await screen.findByRole('status')).toHaveTextContent('Look gelöscht');
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Look gelöscht'));
     await user.click(await screen.findByRole('button', { name: 'Rückgängig' }));
     expect(await screen.findByText('Zurückholen')).toBeInTheDocument();
     expect(await db.outfits.count()).toBe(1);
