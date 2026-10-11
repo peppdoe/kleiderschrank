@@ -67,49 +67,49 @@ colors:
 typography:
   display:
     fontFamily: "'Jost Variable', 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "30px"
+    fontSize: "1.7647rem"
     fontWeight: 500
     lineHeight: 1.1
     letterSpacing: "-0.01em"
   label-title:
     fontFamily: "'Jost Variable', 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "26px"
+    fontSize: "1.5294rem"
     fontWeight: 500
     lineHeight: 1.15
   title:
     fontFamily: "'Jost Variable', 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "22px"
+    fontSize: "1.2941rem"
     fontWeight: 500
     lineHeight: 1.45
   title-small:
     fontFamily: "'Jost Variable', 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "20px"
+    fontSize: "1.1765rem"
     fontWeight: 500
     lineHeight: 1.45
   body:
     fontFamily: "'Jost Variable', 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "17px"
+    fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.45
   body-small:
     fontFamily: "'Jost Variable', 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "15px"
+    fontSize: "0.8824rem"
     fontWeight: 400
     lineHeight: 1.45
   caption:
     fontFamily: "'Jost Variable', 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "13px"
+    fontSize: "0.7647rem"
     fontWeight: 400
     lineHeight: 1.45
   label:
     fontFamily: "'Jost Variable', 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "12px"
+    fontSize: "0.7059rem"
     fontWeight: 600
     lineHeight: 1.45
     letterSpacing: "0.2em"
   label-small:
     fontFamily: "'Jost Variable', 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-    fontSize: "13px"
+    fontSize: "0.7647rem"
     fontWeight: 400
     lineHeight: 1.45
 rounded:
@@ -245,9 +245,9 @@ components:
 
 **Creative North Star: "Pflegeetikett"**
 
-Lena is 20; the world is a care label made young, not heritage workwear: soft seasonal thread, blush kraft, a friend's voice. The wardrobe is sewn like the label inside Lena's clothes. A woven navy name band with an inset dashed stitch greets her by name; each piece carries its own sewn-in care label on its detail page; seasons are drawn as care-label symbols in a single 1.5px stroke; filters hang as kraft swing tags with a punched hole; one red thread marks what to do next. Everything else steps back so the clothing photos carry the screen.
+Lena is 20; the world is a care label made young, not heritage workwear: soft seasonal thread, blush kraft, a friend's voice. The wardrobe is sewn like the label inside Lena's clothes. A woven name band in the color of the chosen season, with an inset dashed stitch, greets her by name; each piece carries its own sewn-in care label on its detail page; seasons are drawn as care-label symbols in a single 1.5px stroke; filters hang as kraft swing tags with a punched hole; one red thread marks what to do next. Everything else steps back so the clothing photos carry the screen.
 
-The ground is a cool porcelain, never cream, with white surfaces and hairline navy-grey lines. Density is calm and single-column (max 720px), built for one hand at the open wardrobe: 44px minimum targets, primary actions in thumb reach, text tab bar at the bottom. Photos are frameless at 3:4 with only a 4px corner. Type is one family, Jost Variable, self-hosted; hierarchy comes from size and weight in sentence case; letterspaced caps are kept for tabs and care-symbol names only, and there is no second face.
+The ground is a cool porcelain, never cream, with white surfaces and hairline navy-grey lines. Density is calm and single-column (max 720px), built for one hand at the open wardrobe: 44px minimum targets, primary actions in thumb reach, text tab bar at the bottom. Photos are frameless at 3:4 with only a 4px corner. Type is one family, Jost Variable, self-hosted, and grows with the iPhone's text size; hierarchy comes from size and weight in sentence case; letterspaced caps are kept for tabs and care-symbol names only, and there is no second face.
 
 The system refuses the iOS-settings grey grid: no pill chips, no emoji tabs, no grey-filled list rows.
 
@@ -309,21 +309,23 @@ The `garment-*` colors are data, not interface: each names a clothing color Lena
 **Character:** A geometric sans with a woven-label calm; one family carries everything, in sentence case so it reads personal rather than filed; small letterspaced caps remain the embroidered voice of tabs and care symbols.
 
 ### Hierarchy
-- **Display** (500, 30px, 1.1, -0.01em): the greeting in the name band and page titles.
-- **Label Title** (500, 26px, 1.15): the name on a care label (a piece or an outfit) and in the name-band preview in the settings; one step under Display so it sits inside the stitch.
-- **Title** (500, 22px): sheet titles.
-- **Title Small** (500, 20px, 1.2): centered form headers ("Neues Teil", "Neuer Look") and section titles in sentence case ("Heute", "Schrank", "In diesen Looks", "Du", "Backup", "Auf diesem iPhone").
-- **Group Label** (600, 17px): form group and filter-sheet group titles ("Kategorie", "Farbe", "Saison", "Name", "Notiz", "Name des Looks").
-- **Body** (400, 17px, 1.45): base size; buttons, text buttons and link rows at 500, primary at 600. Outfit card names at 500.
-- **Body Small** (400, 15px): notices, chips and tags (tags at 500), section meta, action-bar hints, care-label lines, the toast (500).
-- **Caption** (400, 13px): the tag count badge (600, tabular) and the inline "Gespeichert" confirmation.
-- **Label** (uppercase): tab labels (12px, 0.08em) and care-symbol labels (12px, 0.12em) only. The `label` token (600, 12px, 0.2em) is no longer used for headings.
-- **Label Small** (400, 13px): the muted "wähl eine" marker beside a required form group.
+- **Display** (500, 1.7647rem = 30px, 1.1, -0.01em): the greeting in the name band (capped at 40px) and page titles.
+- **Label Title** (500, 1.5294rem = 26px, 1.15): the name on a care label (a piece or an outfit) and in the name-band preview in the settings; one step under Display so it sits inside the stitch.
+- **Title** (500, 1.2941rem = 22px): sheet titles and the first-run invitation.
+- **Title Small** (500, 1.1765rem = 20px, 1.2): centered form headers ("Neues Teil", "Neuer Look") and section titles in sentence case ("Heute", "Schrank", "In diesen Looks", "Du", "Backup", "Auf diesem iPhone").
+- **Group Label** (600, 1rem = 17px): form group and filter-sheet group titles ("Kategorie", "Farbe", "Saison", "Name", "Notiz", "Name des Looks").
+- **Body** (400, 1rem = 17px, 1.45): base size; buttons, text buttons and link rows at 500, primary at 600. Outfit card names at 500.
+- **Body Small** (400, 0.8824rem = 15px): notices, chips and tags (tags at 500), section meta, action-bar hints, care-label lines, the toast (500).
+- **Caption** (400, 0.7647rem = 13px): the tag count badge (600, tabular) and the inline "Gespeichert" confirmation.
+- **Label** (uppercase): tab labels (0.7059rem = 12px, capped at 13px, 0.08em) and care-symbol labels (0.7059rem, capped at 14px, 0.12em) only. The `label` token (600, 12px, 0.2em) is no longer used for headings.
+- **Label Small** (400, 0.7647rem = 13px): the muted "wähl eine" marker beside a required form group.
 
 ### Named Rules
 **The One Family Rule.** Jost Variable only, self-hosted; no external font host at runtime and no second display face.
 
 **The Caps Are Labels Rule.** Letterspaced caps name a tab or a symbol, nothing else. Section titles are sentence case. Caps are never a decorative line stacked above another heading.
+
+**The Growing Text Rule.** Every font size is a rem step on a 17px root, so the whole ramp follows the reader. On iPhone and iPad the root is `font: -apple-system-body` (Dynamic Type, 17px at the default size), guarded by `@supports (font: -apple-system-body) and (-webkit-touch-callout: none)` so a Mac keeps 17px; elsewhere it is `106.25%`. Fixed rows that cannot wrap (tab labels, care-symbol names, swatch names, the name-band greeting) cap their growth with `min(<rem>, <px>)`; inputs never drop below 16px (`max(1rem, 16px)`) so iOS does not zoom on focus. Never write a font size in px.
 
 **The Tabular Count Rule.** Every count (section meta, tag badge, action-bar count, backup compare) uses `font-variant-numeric: tabular-nums`.
 
@@ -333,7 +335,7 @@ Single column, max 720px centered, 16px side padding, top padding respecting the
 
 The wardrobe grid is 3 columns at 8px gap (also for the pieces on the outfit detail); outfit previews are collages (see Outfit Look). "Heute" scrolls sideways with scroll-snap and 148px-high looks, bleeding to the screen edge. The tab bar is fixed at 62px plus the bottom safe area and centers its content to 720px on wide screens; the add button tracks the content column's right edge. Forms hide the tab bar and end in a sticky action bar on the ground color. Bottom sheets rise to 86dvh max.
 
-**Section meta pattern.** A section head pairs the sentence-case title with a 15px muted, tabular meta on the same baseline, left-aligned beside the title. In the wardrobe it reads "N von M Teilen · Saison" when filters narrow the list and "M Teile · Saison" when they don't; the season clause joins with a middle dot. "Heute" uses a plain sentence ("2 Outfits passen zum Herbst"), Outfits a count ("3 gespeichert").
+**Section meta pattern.** A section head pairs the sentence-case title with a 15px muted, tabular meta on the same baseline, left-aligned beside the title. In the wardrobe it reads "N von M Teilen" when filters narrow the list and "M Teile" when they don't (the season never hides pieces, so it is not part of the count). "Heute" shows the date for the current season and "N Looks" for another one; the Looks tab counts "N gespeichert".
 
 ## Elevation & Depth
 
@@ -448,7 +450,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - References to other screens are rows, not tags: full-width 48px rows between 1px `line` rules (top rule on the list), 17px ink text, an 18px muted chevron at the right. No fill, no card.
 
 ### Inputs / Fields
-- Surface fill, 1px `line-strong` border, 12px corners, 12px/14px padding, 17px. Placeholder in muted, caret in thread red.
+- Surface fill, 1px `line-strong` border, 12px corners, 12px/14px padding, Body size but never under 16px (`max(1rem, 16px)`). Placeholder in muted, caret in thread red.
 - Field label is the Group Label (17px, 600, sentence case); required groups add the Label Small "wähl eine" marker.
 - **Error:** thread-red message below with `role="alert"`.
 
@@ -456,7 +458,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - Fixed bottom bar on surface with a 1px top hairline, three equal text tabs: 24px pictogram over a 12px caps label (0.08em).
 - **Rest:** muted. **Active:** thread red, label at 600 with a 1.5px dashed underline in currentColor (the stitch).
 - Hidden on form screens.
-- **Form action bar:** forms hide the tab bar and end in a bar **fixed** to the bottom edge (never floating mid-screen on short content): an optional muted hint line centered on top ("Wähle zuerst ein Foto.", "Tipp die Teile an, die zusammengehören.", "2 ausgewählt"), then a row with "Abbrechen" / "Zurück" as a text button on the left and the primary action (min 160px) on the right. Form headers carry only the centered title. Same thumb logic as the detail bar.
+- **Form action bar:** forms hide the tab bar and end in a bar **fixed** to the bottom edge (never floating mid-screen on short content): an optional muted hint line centered on top ("Wähle zuerst ein Foto.", "Tipp die Teile an, die zusammengehören.", "2 ausgewählt"), then a row with "Abbrechen" / "Zurück" as a text button on the left and the primary action (min 160px) on the right. On a new piece that can be saved, a centered quiet link "Speichern und nächstes Teil fotografieren" takes the hint's place: it is itself the photo picker, saves the piece and opens a fresh form with the next photo (scrolled to the top), so several pieces go in one after another without a detour through the wardrobe. Form headers carry only the centered title. Same thumb logic as the detail bar.
 - **Detail bar (piece and look detail):** fixed directly above the tab bar on the ground color with a 1px top hairline, 8px/16px padding: "‹ Schrank" or "‹ Looks" as a text button on the left, "Bearbeiten" as a secondary button (min 140px) on the right. There is no back link at the top: the installed iPhone app has no swipe-back and the top left is out of thumb reach, so photos start at the top. "Löschen" stays at the end of the content, never in the thumb zone. Toasts rise above the bar.
 - **Pieces under a collage:** on a look without a wear photo the pieces follow as a 72px-wide strip (sideways, bleeding to the edge) instead of a second full grid; under a wear photo they keep the 3-column grid.
 
@@ -467,10 +469,13 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - **Import sheet:** a backup-versus-current comparison as hairline rows with 600 tabular counts, a muted warning that the current state is replaced, then danger-solid "replace", secondary "back up first", and a text-button cancel that has first focus.
 
 ### Toast
-- An ink capsule (22px corners) with ground-colored 15px/500 text, 10px/18px padding, centered and fixed 22px above the tab bar, button lift, `role="status"`. Used for "Teil gespeichert" together with the kraft-ringed new tile; one short past-tense line, no actions.
+- An ink capsule (22px corners) with ground-colored Body Small/500 text, 10px/18px padding, sized to its text (at most the screen width minus 32px), centered and fixed above whatever sits at the bottom: 22px above the tab bar, above the round add button on the wardrobe, above the detail bar, above the form action bar. Button lift. One short past-tense line ("Teil gespeichert", "Look gespeichert", "Foto gespeichert"), shown 3.5s.
+- **With an action:** after deleting a piece or a look the toast reads "Teil gelöscht" / "Look gelöscht" with one action, "Rückgängig": ground-colored 600 text with the dashed thread underline of the quiet link (never thread red), a 44px tall target inside the capsule (padding 0/6px/0/18px). It stays 6s; undoing brings back the piece with its photo, favorite and place in its looks (or the look with its wear photo) and confirms "Teil ist wieder da" / "Look ist wieder da".
+- **Announcement:** one permanently mounted visually hidden `role="status"` region reads the line to VoiceOver; the visible text is `aria-hidden`, the action stays a real button.
 
 ### First Run
 - **Empty wardrobe:** an invitation, not a grey line: "Noch ganz viel Platz hier." (22px, ink, 500), "Fang mit deinem Lieblingsteil an." (muted), then one primary button "Erstes Teil fotografieren" with the camera pictogram (auto width). The round add button and the season symbols on the band appear only with the first piece, so the screen has exactly one red action and nothing to filter.
+- **Name ask:** below the button, separated by a 1.5px dashed `line-strong` seam (28px above, 22px padding), the empty wardrobe asks once "Wie heißt du?" (Body, 500, ink) with a text field ("Dein Vorname") and a secondary button "Merken" side by side (max 360px). Saving greets her by name on the band at once and the question disappears; leaving it empty is fine, and it is never asked again once a name is set or the first piece exists (the name stays editable in the settings).
 - **Empty Looks tab without pieces:** "Für Looks brauchst du erst ein paar Teile. Fang mit deinem ersten an." with the same primary button, which opens the new-piece form. With pieces but no looks it offers "Neuer Look" as before.
 
 ### Notice Line and Quiet Link
@@ -493,6 +498,8 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - **Do** define every new UI color in both the light and the dark token set; garment swatches stay theme-independent.
 - **Do** confirm destructive steps in a confirm sheet with a danger-solid button and the safe action focused.
 - **Do** honor `prefers-reduced-motion` for the stitch-in, the sheet rise and the new-tile settle.
+- **Do** write font sizes as rem steps of the 17px ramp and cap only rows that cannot wrap.
+- **Do** offer "Rückgängig" in the toast after deleting instead of a second confirmation.
 
 ### Don't:
 - **Don't** use pill-shaped chips or a grey settings-style grid; choices are kraft tags.
@@ -503,3 +510,4 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - **Don't** stack a small caps line above a heading as decoration; caps labels are the heading.
 - **Don't** add shadows beyond the name band, the add button, the toast and sheets.
 - **Don't** use garment swatch colors for interface chrome.
+- **Don't** set a font size in px, or let an input fall below 16px.

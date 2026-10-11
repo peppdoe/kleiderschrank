@@ -1,40 +1,542 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-11T12:00:00Z",
+  "generatedAt": "2026-10-11T11:44:35.122Z",
   "title": "Design System: Kleiderschrank",
   "extensions": {
     "colorMeta": {
-      "thread": { "role": "primary", "displayName": "Thread Red", "canonical": "#b8322a", "darkCounterpart": "thread-dark", "tonalRamp": ["oklch(15% 0.06 28)", "oklch(26% 0.1 28)", "oklch(37% 0.14 28)", "oklch(50% 0.17 28)", "oklch(62% 0.15 28)", "oklch(74% 0.11 28)", "oklch(85% 0.06 28)", "oklch(95% 0.02 28)"] },
-      "thread-dark": { "role": "primary", "displayName": "Thread Red (dark theme)", "canonical": "#e8706a" },
-      "danger-solid": { "role": "primary", "displayName": "Deep Thread", "canonical": "#8f1d17", "darkCounterpart": "danger-solid-dark", "usage": "Confirm button in every destructive confirm sheet (delete, discard, replace with backup)." },
-      "kraft": { "role": "secondary", "displayName": "Kraft", "canonical": "#c9a27a", "tonalRamp": ["oklch(15% 0.03 65)", "oklch(26% 0.04 65)", "oklch(38% 0.05 65)", "oklch(52% 0.06 65)", "oklch(64% 0.07 65)", "oklch(74% 0.07 65)", "oklch(86% 0.04 65)", "oklch(95% 0.015 65)"] },
-      "kraft-soft": { "role": "secondary", "displayName": "Kraft Soft", "canonical": "#eee2d2", "darkCounterpart": "kraft-soft-dark" },
-      "kraft-ink": { "role": "secondary", "displayName": "Kraft Ink", "canonical": "#2a2016" },
-      "band": { "role": "tertiary", "displayName": "Woven Navy", "canonical": "#1f2a44", "darkCounterpart": "band-dark", "tonalRamp": ["oklch(15% 0.04 265)", "oklch(26% 0.05 265)", "oklch(35% 0.06 265)", "oklch(48% 0.05 265)", "oklch(60% 0.04 265)", "oklch(72% 0.03 265)", "oklch(86% 0.015 265)", "oklch(96% 0.005 265)"] },
-      "band-stitch": { "role": "tertiary", "displayName": "Band Stitch", "canonical": "rgba(245, 246, 248, 0.5)" },
-      "ground": { "role": "neutral", "displayName": "Porcelain Ground", "canonical": "#f5f6f8", "darkCounterpart": "ground-dark" },
-      "surface": { "role": "neutral", "displayName": "Surface", "canonical": "#ffffff", "darkCounterpart": "surface-dark" },
-      "ink": { "role": "neutral", "displayName": "Navy Ink", "canonical": "#1f2a44", "darkCounterpart": "ink-dark" },
-      "muted": { "role": "neutral", "displayName": "Muted", "canonical": "#56617a", "darkCounterpart": "muted-dark" },
-      "line": { "role": "neutral", "displayName": "Hairline", "canonical": "#d8dce5", "darkCounterpart": "line-dark" },
-      "line-strong": { "role": "neutral", "displayName": "Strong Line", "canonical": "#9aa3b5", "darkCounterpart": "line-strong-dark" },
-      "chip": { "role": "neutral", "displayName": "Photo Placeholder", "canonical": "#e8ebf1", "darkCounterpart": "chip-dark" },
-      "success": { "role": "neutral", "displayName": "Success", "canonical": "#2e7d4f", "darkCounterpart": "success-dark" },
-      "garment-black": { "role": "data", "displayName": "Schwarz (garment)", "canonical": "#1c1c1e" },
-      "garment-white": { "role": "data", "displayName": "Weiß (garment)", "canonical": "#ffffff" },
-      "garment-grey": { "role": "data", "displayName": "Grau (garment)", "canonical": "#8e8e93" },
-      "garment-beige": { "role": "data", "displayName": "Beige (garment)", "canonical": "#e8d8bd" },
-      "garment-brown": { "role": "data", "displayName": "Braun (garment)", "canonical": "#8b5a2b" },
-      "garment-red": { "role": "data", "displayName": "Rot (garment)", "canonical": "#e0262f" },
-      "garment-pink": { "role": "data", "displayName": "Rosa (garment)", "canonical": "#f4a6c1" },
-      "garment-orange": { "role": "data", "displayName": "Orange (garment)", "canonical": "#f28c28" },
-      "garment-yellow": { "role": "data", "displayName": "Gelb (garment)", "canonical": "#f5d327" },
-      "garment-green": { "role": "data", "displayName": "Grün (garment)", "canonical": "#3a9d4f" },
-      "garment-blue": { "role": "data", "displayName": "Blau (garment)", "canonical": "#2f6fdb" },
-      "garment-purple": { "role": "data", "displayName": "Lila (garment)", "canonical": "#8a4fc9" },
-      "garment-metallic-light": { "role": "data", "displayName": "Metallic stop 1 (garment)", "canonical": "#d9d9d9" },
-      "garment-metallic-mid": { "role": "data", "displayName": "Metallic stop 2 (garment)", "canonical": "#8c8c8c" },
-      "garment-metallic-high": { "role": "data", "displayName": "Metallic stop 3 (garment)", "canonical": "#f2f2f2" }
+      "ground": {
+        "role": "neutral",
+        "displayName": "Porcelain Ground",
+        "canonical": "#f5f6f8",
+        "darkCounterpart": "ground-dark",
+        "tonalRamp": [
+          "oklch(15% 0.002 265)",
+          "oklch(26% 0.002 265)",
+          "oklch(37% 0.003 265)",
+          "oklch(50% 0.003 265)",
+          "oklch(62% 0.003 265)",
+          "oklch(74% 0.003 265)",
+          "oklch(85% 0.003 265)",
+          "oklch(95% 0.002 265)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface",
+        "canonical": "#ffffff",
+        "darkCounterpart": "surface-dark",
+        "tonalRamp": [
+          "oklch(15% 0 90)",
+          "oklch(26% 0 90)",
+          "oklch(37% 0 90)",
+          "oklch(50% 0 90)",
+          "oklch(62% 0 90)",
+          "oklch(74% 0 90)",
+          "oklch(85% 0 90)",
+          "oklch(95% 0 90)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Navy Ink",
+        "canonical": "#1f2a44",
+        "darkCounterpart": "ink-dark",
+        "tonalRamp": [
+          "oklch(15% 0.028 266)",
+          "oklch(26% 0.028 266)",
+          "oklch(37% 0.05 266)",
+          "oklch(50% 0.05 266)",
+          "oklch(62% 0.05 266)",
+          "oklch(74% 0.05 266)",
+          "oklch(85% 0.05 266)",
+          "oklch(95% 0.028 266)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "canonical": "#56617a",
+        "darkCounterpart": "muted-dark",
+        "tonalRamp": [
+          "oklch(15% 0.023 266)",
+          "oklch(26% 0.023 266)",
+          "oklch(37% 0.042 266)",
+          "oklch(50% 0.042 266)",
+          "oklch(62% 0.042 266)",
+          "oklch(74% 0.042 266)",
+          "oklch(85% 0.042 266)",
+          "oklch(95% 0.023 266)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line",
+        "canonical": "#d8dce5",
+        "darkCounterpart": "line-dark",
+        "tonalRamp": [
+          "oklch(15% 0.007 267)",
+          "oklch(26% 0.007 267)",
+          "oklch(37% 0.013 267)",
+          "oklch(50% 0.013 267)",
+          "oklch(62% 0.013 267)",
+          "oklch(74% 0.013 267)",
+          "oklch(85% 0.013 267)",
+          "oklch(95% 0.007 267)"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Line Strong",
+        "canonical": "#9aa3b5",
+        "darkCounterpart": "line-strong-dark",
+        "tonalRamp": [
+          "oklch(15% 0.015 264)",
+          "oklch(26% 0.015 264)",
+          "oklch(37% 0.028 264)",
+          "oklch(50% 0.028 264)",
+          "oklch(62% 0.028 264)",
+          "oklch(74% 0.028 264)",
+          "oklch(85% 0.028 264)",
+          "oklch(95% 0.015 264)"
+        ]
+      },
+      "chip": {
+        "role": "neutral",
+        "displayName": "Chip",
+        "canonical": "#e8ebf1",
+        "darkCounterpart": "chip-dark",
+        "tonalRamp": [
+          "oklch(15% 0.005 265)",
+          "oklch(26% 0.005 265)",
+          "oklch(37% 0.009 265)",
+          "oklch(50% 0.009 265)",
+          "oklch(62% 0.009 265)",
+          "oklch(74% 0.009 265)",
+          "oklch(85% 0.009 265)",
+          "oklch(95% 0.005 265)"
+        ]
+      },
+      "band": {
+        "role": "tertiary",
+        "displayName": "Seasonal Weave (autumn)",
+        "canonical": "#f6e3c8",
+        "darkCounterpart": "band-dark",
+        "tonalRamp": [
+          "oklch(15% 0.023 77)",
+          "oklch(26% 0.023 77)",
+          "oklch(37% 0.041 77)",
+          "oklch(50% 0.041 77)",
+          "oklch(62% 0.041 77)",
+          "oklch(74% 0.041 77)",
+          "oklch(85% 0.041 77)",
+          "oklch(95% 0.023 77)"
+        ]
+      },
+      "band-ink": {
+        "role": "tertiary",
+        "displayName": "Band Ink",
+        "canonical": "#1f2a44",
+        "darkCounterpart": "band-ink-dark",
+        "tonalRamp": [
+          "oklch(15% 0.028 266)",
+          "oklch(26% 0.028 266)",
+          "oklch(37% 0.05 266)",
+          "oklch(50% 0.05 266)",
+          "oklch(62% 0.05 266)",
+          "oklch(74% 0.05 266)",
+          "oklch(85% 0.05 266)",
+          "oklch(95% 0.028 266)"
+        ]
+      },
+      "band-stitch": {
+        "role": "tertiary",
+        "displayName": "Band Stitch",
+        "canonical": "rgba(31, 42, 68, 0.3)",
+        "darkCounterpart": "band-stitch-dark"
+      },
+      "stitch": {
+        "role": "tertiary",
+        "displayName": "Stitch (autumn)",
+        "canonical": "#c98a3e",
+        "tonalRamp": [
+          "oklch(15% 0.066 68)",
+          "oklch(26% 0.066 68)",
+          "oklch(37% 0.119 68)",
+          "oklch(50% 0.119 68)",
+          "oklch(62% 0.119 68)",
+          "oklch(74% 0.119 68)",
+          "oklch(85% 0.119 68)",
+          "oklch(95% 0.066 68)"
+        ]
+      },
+      "band-spring": {
+        "role": "tertiary",
+        "displayName": "Seasonal Weave (spring)",
+        "canonical": "#e4eedb",
+        "darkCounterpart": "band-spring-dark",
+        "tonalRamp": [
+          "oklch(15% 0.015 130)",
+          "oklch(26% 0.015 130)",
+          "oklch(37% 0.027 130)",
+          "oklch(50% 0.027 130)",
+          "oklch(62% 0.027 130)",
+          "oklch(74% 0.027 130)",
+          "oklch(85% 0.027 130)",
+          "oklch(95% 0.015 130)"
+        ]
+      },
+      "stitch-spring": {
+        "role": "tertiary",
+        "displayName": "Stitch (spring)",
+        "canonical": "#7fa06c",
+        "tonalRamp": [
+          "oklch(15% 0.045 135)",
+          "oklch(26% 0.045 135)",
+          "oklch(37% 0.083 135)",
+          "oklch(50% 0.083 135)",
+          "oklch(62% 0.083 135)",
+          "oklch(74% 0.083 135)",
+          "oklch(85% 0.083 135)",
+          "oklch(95% 0.045 135)"
+        ]
+      },
+      "band-summer": {
+        "role": "tertiary",
+        "displayName": "Seasonal Weave (summer)",
+        "canonical": "#fde3d0",
+        "darkCounterpart": "band-summer-dark",
+        "tonalRamp": [
+          "oklch(15% 0.021 58)",
+          "oklch(26% 0.021 58)",
+          "oklch(37% 0.038 58)",
+          "oklch(50% 0.038 58)",
+          "oklch(62% 0.038 58)",
+          "oklch(74% 0.038 58)",
+          "oklch(85% 0.038 58)",
+          "oklch(95% 0.021 58)"
+        ]
+      },
+      "stitch-summer": {
+        "role": "tertiary",
+        "displayName": "Stitch (summer)",
+        "canonical": "#d98a55",
+        "tonalRamp": [
+          "oklch(15% 0.065 53)",
+          "oklch(26% 0.065 53)",
+          "oklch(37% 0.119 53)",
+          "oklch(50% 0.119 53)",
+          "oklch(62% 0.119 53)",
+          "oklch(74% 0.119 53)",
+          "oklch(85% 0.119 53)",
+          "oklch(95% 0.065 53)"
+        ]
+      },
+      "band-winter": {
+        "role": "tertiary",
+        "displayName": "Seasonal Weave (winter)",
+        "canonical": "#e3e9f9",
+        "darkCounterpart": "band-winter-dark",
+        "tonalRamp": [
+          "oklch(15% 0.012 269)",
+          "oklch(26% 0.012 269)",
+          "oklch(37% 0.023 269)",
+          "oklch(50% 0.023 269)",
+          "oklch(62% 0.023 269)",
+          "oklch(74% 0.023 269)",
+          "oklch(85% 0.023 269)",
+          "oklch(95% 0.012 269)"
+        ]
+      },
+      "stitch-winter": {
+        "role": "tertiary",
+        "displayName": "Stitch (winter)",
+        "canonical": "#7b8fc9",
+        "tonalRamp": [
+          "oklch(15% 0.049 269)",
+          "oklch(26% 0.049 269)",
+          "oklch(37% 0.09 269)",
+          "oklch(50% 0.09 269)",
+          "oklch(62% 0.09 269)",
+          "oklch(74% 0.09 269)",
+          "oklch(85% 0.09 269)",
+          "oklch(95% 0.049 269)"
+        ]
+      },
+      "kraft": {
+        "role": "secondary",
+        "displayName": "Kraft",
+        "canonical": "#d6ad94",
+        "tonalRamp": [
+          "oklch(15% 0.033 53)",
+          "oklch(26% 0.033 53)",
+          "oklch(37% 0.059 53)",
+          "oklch(50% 0.059 53)",
+          "oklch(62% 0.059 53)",
+          "oklch(74% 0.059 53)",
+          "oklch(85% 0.059 53)",
+          "oklch(95% 0.033 53)"
+        ]
+      },
+      "kraft-soft": {
+        "role": "secondary",
+        "displayName": "Kraft Soft",
+        "canonical": "#f2e4db",
+        "darkCounterpart": "kraft-soft-dark",
+        "tonalRamp": [
+          "oklch(15% 0.011 55)",
+          "oklch(26% 0.011 55)",
+          "oklch(37% 0.02 55)",
+          "oklch(50% 0.02 55)",
+          "oklch(62% 0.02 55)",
+          "oklch(74% 0.02 55)",
+          "oklch(85% 0.02 55)",
+          "oklch(95% 0.011 55)"
+        ]
+      },
+      "kraft-ink": {
+        "role": "secondary",
+        "displayName": "Kraft Ink",
+        "canonical": "#2e1f19",
+        "tonalRamp": [
+          "oklch(15% 0.014 43)",
+          "oklch(26% 0.014 43)",
+          "oklch(37% 0.026 43)",
+          "oklch(50% 0.026 43)",
+          "oklch(62% 0.026 43)",
+          "oklch(74% 0.026 43)",
+          "oklch(85% 0.026 43)",
+          "oklch(95% 0.014 43)"
+        ]
+      },
+      "season-spring": {
+        "role": "accent",
+        "displayName": "Sage Thread",
+        "canonical": "#b7d1a8",
+        "tonalRamp": [
+          "oklch(15% 0.034 134)",
+          "oklch(26% 0.034 134)",
+          "oklch(37% 0.062 134)",
+          "oklch(50% 0.062 134)",
+          "oklch(62% 0.062 134)",
+          "oklch(74% 0.062 134)",
+          "oklch(85% 0.062 134)",
+          "oklch(95% 0.034 134)"
+        ]
+      },
+      "season-summer": {
+        "role": "accent",
+        "displayName": "Apricot Thread",
+        "canonical": "#f3b98f",
+        "tonalRamp": [
+          "oklch(15% 0.048 57)",
+          "oklch(26% 0.048 57)",
+          "oklch(37% 0.087 57)",
+          "oklch(50% 0.087 57)",
+          "oklch(62% 0.087 57)",
+          "oklch(74% 0.087 57)",
+          "oklch(85% 0.087 57)",
+          "oklch(95% 0.048 57)"
+        ]
+      },
+      "season-autumn": {
+        "role": "accent",
+        "displayName": "Ochre Thread",
+        "canonical": "#e2ad6f",
+        "tonalRamp": [
+          "oklch(15% 0.055 70)",
+          "oklch(26% 0.055 70)",
+          "oklch(37% 0.101 70)",
+          "oklch(50% 0.101 70)",
+          "oklch(62% 0.101 70)",
+          "oklch(74% 0.101 70)",
+          "oklch(85% 0.101 70)",
+          "oklch(95% 0.055 70)"
+        ]
+      },
+      "season-winter": {
+        "role": "accent",
+        "displayName": "Ice Blue Thread",
+        "canonical": "#b6c4ec",
+        "tonalRamp": [
+          "oklch(15% 0.032 270)",
+          "oklch(26% 0.032 270)",
+          "oklch(37% 0.058 270)",
+          "oklch(50% 0.058 270)",
+          "oklch(62% 0.058 270)",
+          "oklch(74% 0.058 270)",
+          "oklch(85% 0.058 270)",
+          "oklch(95% 0.032 270)"
+        ]
+      },
+      "on-season": {
+        "role": "accent",
+        "displayName": "On Season",
+        "canonical": "#1f2a44",
+        "tonalRamp": [
+          "oklch(15% 0.028 266)",
+          "oklch(26% 0.028 266)",
+          "oklch(37% 0.05 266)",
+          "oklch(50% 0.05 266)",
+          "oklch(62% 0.05 266)",
+          "oklch(74% 0.05 266)",
+          "oklch(85% 0.05 266)",
+          "oklch(95% 0.028 266)"
+        ]
+      },
+      "thread": {
+        "role": "primary",
+        "displayName": "Thread Red",
+        "canonical": "#b8322a",
+        "darkCounterpart": "thread-dark",
+        "tonalRamp": [
+          "oklch(15% 0.095 28)",
+          "oklch(26% 0.095 28)",
+          "oklch(37% 0.172 28)",
+          "oklch(50% 0.172 28)",
+          "oklch(62% 0.172 28)",
+          "oklch(74% 0.172 28)",
+          "oklch(85% 0.172 28)",
+          "oklch(95% 0.095 28)"
+        ]
+      },
+      "thread-ink": {
+        "role": "primary",
+        "displayName": "Thread Ink",
+        "canonical": "#ffffff",
+        "darkCounterpart": "thread-ink-dark",
+        "tonalRamp": [
+          "oklch(15% 0 90)",
+          "oklch(26% 0 90)",
+          "oklch(37% 0 90)",
+          "oklch(50% 0 90)",
+          "oklch(62% 0 90)",
+          "oklch(74% 0 90)",
+          "oklch(85% 0 90)",
+          "oklch(95% 0 90)"
+        ]
+      },
+      "danger-solid": {
+        "role": "primary",
+        "displayName": "Deep Thread",
+        "canonical": "#8f1d17",
+        "darkCounterpart": "danger-solid-dark",
+        "tonalRamp": [
+          "oklch(15% 0.083 28)",
+          "oklch(26% 0.083 28)",
+          "oklch(37% 0.15 28)",
+          "oklch(50% 0.15 28)",
+          "oklch(62% 0.15 28)",
+          "oklch(74% 0.15 28)",
+          "oklch(85% 0.15 28)",
+          "oklch(95% 0.083 28)"
+        ]
+      },
+      "success": {
+        "role": "neutral",
+        "displayName": "Success",
+        "canonical": "#2e7d4f",
+        "darkCounterpart": "success-dark",
+        "tonalRamp": [
+          "oklch(15% 0.058 155)",
+          "oklch(26% 0.058 155)",
+          "oklch(37% 0.106 155)",
+          "oklch(50% 0.106 155)",
+          "oklch(62% 0.106 155)",
+          "oklch(74% 0.106 155)",
+          "oklch(85% 0.106 155)",
+          "oklch(95% 0.058 155)"
+        ]
+      },
+      "ground-dark": {
+        "role": "neutral",
+        "displayName": "Porcelain Ground (dark theme)",
+        "canonical": "#0f1524"
+      },
+      "surface-dark": {
+        "role": "neutral",
+        "displayName": "Surface (dark theme)",
+        "canonical": "#182036"
+      },
+      "ink-dark": {
+        "role": "neutral",
+        "displayName": "Navy Ink (dark theme)",
+        "canonical": "#e9ecf3"
+      },
+      "muted-dark": {
+        "role": "neutral",
+        "displayName": "Muted (dark theme)",
+        "canonical": "#a7b0c3"
+      },
+      "line-dark": {
+        "role": "neutral",
+        "displayName": "Line (dark theme)",
+        "canonical": "#2b3652"
+      },
+      "line-strong-dark": {
+        "role": "neutral",
+        "displayName": "Line Strong (dark theme)",
+        "canonical": "#6b7896"
+      },
+      "chip-dark": {
+        "role": "neutral",
+        "displayName": "Chip (dark theme)",
+        "canonical": "#222c46"
+      },
+      "band-dark": {
+        "role": "tertiary",
+        "displayName": "Seasonal Weave (autumn) (dark theme)",
+        "canonical": "#47351d"
+      },
+      "band-ink-dark": {
+        "role": "tertiary",
+        "displayName": "Band Ink (dark theme)",
+        "canonical": "#f5ead9"
+      },
+      "band-stitch-dark": {
+        "role": "tertiary",
+        "displayName": "Band Stitch (dark theme)",
+        "canonical": "rgba(245, 234, 217, 0.4)"
+      },
+      "band-spring-dark": {
+        "role": "tertiary",
+        "displayName": "Seasonal Weave (spring) (dark theme)",
+        "canonical": "#2b3627"
+      },
+      "band-summer-dark": {
+        "role": "tertiary",
+        "displayName": "Seasonal Weave (summer) (dark theme)",
+        "canonical": "#3d2c22"
+      },
+      "band-winter-dark": {
+        "role": "tertiary",
+        "displayName": "Seasonal Weave (winter) (dark theme)",
+        "canonical": "#262f47"
+      },
+      "kraft-soft-dark": {
+        "role": "secondary",
+        "displayName": "Kraft Soft (dark theme)",
+        "canonical": "#46363a"
+      },
+      "thread-dark": {
+        "role": "primary",
+        "displayName": "Thread Red (dark theme)",
+        "canonical": "#e8706a"
+      },
+      "thread-ink-dark": {
+        "role": "primary",
+        "displayName": "Thread Ink (dark theme)",
+        "canonical": "#1b0d0b"
+      },
+      "danger-solid-dark": {
+        "role": "primary",
+        "displayName": "Deep Thread (dark theme)",
+        "canonical": "#e8706a"
+      },
+      "success-dark": {
+        "role": "neutral",
+        "displayName": "Success (dark theme)",
+        "canonical": "#6fcf97"
+      }
     },
     "dataPalettes": [
       {
@@ -42,159 +544,264 @@
         "source": "src/lib/constants.ts (COLORS)",
         "purpose": "Clothing colors Lena assigns to a piece; rendered only inside 16px swatch circles. Not interface colors; theme-independent.",
         "composites": [
-          { "id": "pattern", "label": "Bunt/Muster", "value": "conic-gradient(#e0262f, #f5d327, #3a9d4f, #2f6fdb, #8a4fc9, #e0262f)" },
-          { "id": "metallic", "label": "Metallic", "value": "linear-gradient(135deg, #d9d9d9, #8c8c8c, #f2f2f2)" }
+          {
+            "id": "pattern",
+            "label": "Bunt/Muster",
+            "value": "conic-gradient(#e0262f, #f5d327, #3a9d4f, #2f6fdb, #8a4fc9, #e0262f)"
+          },
+          {
+            "id": "metallic",
+            "label": "Metallic",
+            "value": "linear-gradient(135deg, #d9d9d9, #8c8c8c, #f2f2f2)"
+          }
         ]
       }
     ],
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Greeting in the name band and page titles." },
-      "headline": { "displayName": "Headline", "purpose": "Outfit detail title." },
-      "label-title": { "displayName": "Label Title", "purpose": "The piece's name on its care label." },
-      "title": { "displayName": "Title", "purpose": "Sheet titles." },
-      "title-small": { "displayName": "Title Small", "purpose": "Centered form headers." },
-      "body": { "displayName": "Body", "purpose": "Base text, buttons, inputs, link rows." },
-      "body-small": { "displayName": "Body Small", "purpose": "Notices, tags and chips, section meta, hints, care-label lines, toast." },
-      "caption": { "displayName": "Caption", "purpose": "Band date meta, tag count badge, inline saved confirmation." },
-      "label": { "displayName": "Label Caps", "purpose": "Section titles; tab and care-symbol labels use the same caps voice at 0.08-0.12em." },
-      "label-small": { "displayName": "Label Small", "purpose": "The Pflicht marker beside a required form group." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "Greeting in the name band (capped at 40px) and page titles. 1.7647rem = 30px at the default text size."
+      },
+      "label-title": {
+        "displayName": "Label Title",
+        "purpose": "The name on a care label (piece or look) and in the settings preview."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Sheet titles and the first-run invitation."
+      },
+      "title-small": {
+        "displayName": "Title Small",
+        "purpose": "Form headers and sentence-case section titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Base size (17px at default, follows iOS Dynamic Type); buttons, rows, inputs (never under 16px)."
+      },
+      "body-small": {
+        "displayName": "Body Small",
+        "purpose": "Notices, tags, section meta, hints, care-label lines, the toast."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Count badges and the inline \"Gespeichert\" confirmation."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Letterspaced caps for tabs and care-symbol names only; growth capped."
+      },
+      "label-small": {
+        "displayName": "Label Small",
+        "purpose": "The muted \"wähl eine\" marker beside a required group."
+      }
+    },
+    "typeScale": {
+      "root": "17px at the default text size: font: -apple-system-body on iPhone/iPad (Dynamic Type), 106.25% elsewhere",
+      "steps": {
+        "1.7647rem": "30px",
+        "1.5294rem": "26px",
+        "1.2941rem": "22px",
+        "1.1765rem": "20px",
+        "1rem": "17px",
+        "0.8824rem": "15px",
+        "0.7647rem": "13px",
+        "0.7059rem": "12px"
+      },
+      "caps": {
+        "tab label": "13px",
+        "care-symbol label": "14px",
+        "swatch name": "16px",
+        "name-band greeting": "40px"
+      },
+      "inputMinimum": "16px"
     },
     "shadows": [
-      { "name": "band-lift", "value": "0 6px 18px var(--shadow)", "purpose": "The woven name band." },
-      { "name": "button-lift", "value": "0 6px 16px var(--shadow)", "purpose": "The round add button and the toast." },
-      { "name": "sheet-rise", "value": "0 -8px 30px var(--shadow)", "purpose": "Bottom sheets over a rgba(15, 21, 36, 0.45) backdrop." },
-      { "name": "shadow-color", "value": "rgba(31, 42, 68, 0.22) light / rgba(0, 0, 0, 0.45) dark", "purpose": "The --shadow token." }
+      {
+        "name": "band-lift",
+        "value": "0 6px 18px var(--shadow)",
+        "purpose": "The woven name band, as if stitched on top."
+      },
+      {
+        "name": "button-lift",
+        "value": "0 6px 16px var(--shadow)",
+        "purpose": "The round add button and the floating toast."
+      },
+      {
+        "name": "sheet-rise",
+        "value": "0 -8px 30px var(--shadow)",
+        "purpose": "Bottom sheets over a rgba(15, 21, 36, 0.45) backdrop."
+      }
     ],
     "motion": [
-      { "name": "stitch-in", "value": "clip-path inset(0 100% 0 0) -> inset(0 0 0 0), 900ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both", "purpose": "Greeting line in the name band reveals like a seam being sewn; replays when the line changes. None under prefers-reduced-motion." },
-      { "name": "sheet-in", "value": "translateY(24px) opacity 0.6 -> none, 240ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Bottom sheet entrance. None under prefers-reduced-motion." },
-      { "name": "tile-new", "value": "scale(0.94) -> none, 1.2s cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Just-saved tile settles into the grid with its kraft ring. None under prefers-reduced-motion." },
-      { "name": "chip-state", "value": "background-color 140ms ease-out", "purpose": "Chip selection." },
-      { "name": "care-symbol-state", "value": "background-color, color 160ms ease-out", "purpose": "Season symbol selection." }
+      {
+        "name": "stitch-in",
+        "value": "clip-path inset(0 100% 0 0) → inset(0), 900ms cubic-bezier(0.16, 1, 0.3, 1), 150ms delay",
+        "purpose": "Greeting line and a just-saved look label; off under reduced motion."
+      },
+      {
+        "name": "sheet-in",
+        "value": "translateY(24px), opacity 0.6 → 1, 240ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Bottom sheets rising."
+      },
+      {
+        "name": "tile-new",
+        "value": "scale(0.94) → none, 1.2s cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "A just-saved tile settling in."
+      },
+      {
+        "name": "state",
+        "value": "140–160ms ease-out",
+        "purpose": "Background and color changes of tags and care symbols."
+      },
+      {
+        "name": "toast-timing",
+        "value": "3.5s, 6s with an action",
+        "purpose": "How long a toast stays; \"Rückgängig\" gets more time."
+      }
     ],
     "breakpoints": [
-      { "name": "content-max", "value": "720px" },
-      { "name": "theme", "value": "prefers-color-scheme: dark" }
-    ],
-    "knownDrift": []
+      {
+        "name": "content",
+        "value": "720px",
+        "purpose": "Single column max width; bars center their content to it."
+      }
+    ]
   },
   "components": [
     {
       "name": "Name Band",
       "kind": "custom",
       "refersTo": "label-band",
-      "description": "Woven navy greeting band with an inset dashed stitch; the greeting line stitches in.",
-      "html": "<header class=\"ds-band\"><h1 class=\"ds-band__title\">Hallo, Lena</h1><p class=\"ds-band__line\">Was darf es heute sein?</p><p class=\"ds-band__meta\">Sonntag, 11. Oktober</p></header>",
-      "css": ".ds-band { position: relative; background: #1f2a44; color: #f5f6f8; border-radius: 4px; padding: 18px 22px; text-align: center; box-shadow: 0 6px 18px rgba(31,42,68,0.22); font-family: 'Jost Variable', 'Jost', sans-serif; } .ds-band::before { content: ''; position: absolute; inset: 7px; border: 1.5px dashed rgba(245,246,248,0.5); border-radius: 2px; pointer-events: none; } .ds-band__title { font-size: 30px; line-height: 1.1; margin: 0 0 4px; font-weight: 500; letter-spacing: -0.01em; } .ds-band__line { margin: 0; font-size: 17px; opacity: 0.92; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; animation: ds-stitch-in 900ms cubic-bezier(0.16,1,0.3,1) 150ms both; } .ds-band__meta { margin: 8px 0 0; font-size: 13px; opacity: 0.78; } @keyframes ds-stitch-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } } @media (prefers-reduced-motion: reduce) { .ds-band__line { animation: none; } }"
+      "description": "Woven band in the chosen season with an inset dashed stitch: greeting, one rotating line, the Season Row printed on it.",
+      "html": "<header class=\"ds-band\"><h1 class=\"ds-band__title\">Hallo, Lena</h1><p class=\"ds-band__line\">Layering-Saison ist eröffnet.</p></header>",
+      "css": ".ds-band { position: relative; background: var(--band, #f6e3c8); color: var(--band-ink, #1f2a44); border-radius: 4px; padding: 14px 20px 15px; text-align: center; box-shadow: 0 6px 18px var(--shadow, rgba(31,42,68,0.22)); font-family: var(--font, 'Jost Variable', 'Jost', -apple-system, sans-serif); } .ds-band::before { content: ''; position: absolute; inset: 7px; border: 1.5px dashed var(--stitch, #c98a3e); border-radius: 2px; pointer-events: none; } .ds-band__title { margin: 0 0 4px; font-size: min(1.7647rem, 40px); line-height: 1.1; font-weight: 500; letter-spacing: -0.01em; } .ds-band__line { margin: 0; font-size: 1rem; opacity: 0.92; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }"
     },
     {
       "name": "Care Label",
-      "kind": "custom",
+      "kind": "card",
       "refersTo": "care-label",
-      "description": "The piece's sewn-in label on its detail page: name, category, garment swatches, season symbols. Flat.",
-      "html": "<div class=\"ds-care-label\"><h1 class=\"ds-care-label__title\">Lederjacke</h1><p class=\"ds-care-label__kind\">Jacke/Mantel</p><p class=\"ds-care-label__line\"><span class=\"ds-swatch\" style=\"background:#8b5a2b\"></span>Braun</p><p class=\"ds-care-label__line\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 19C5 11 10.5 5 19 5c0 8.5-6 14-14 14ZM5 19l8.5-8.5M9.5 14.5h3.2M12 12V8.8\"/></svg>Herbst</p></div>",
-      "css": ".ds-care-label { position: relative; padding: 18px 20px 20px; background: #1f2a44; color: #f5f6f8; border-radius: 4px; display: flex; flex-direction: column; gap: 10px; font-family: 'Jost Variable', 'Jost', sans-serif; } .ds-care-label::before { content: ''; position: absolute; inset: 7px; border: 1.5px dashed rgba(245,246,248,0.5); border-radius: 2px; pointer-events: none; } .ds-care-label__title { margin: 0; font-size: 26px; line-height: 1.15; font-weight: 500; } .ds-care-label__kind { margin: -6px 0 0; font-size: 15px; opacity: 0.8; } .ds-care-label__line { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 15px; } .ds-swatch { width: 16px; height: 16px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(245,246,248,0.5); }"
+      "description": "A piece's sewn-in label under its photo, in the piece's own season; flat, with the favorite heart.",
+      "html": "<div class=\"ds-care\"><h2 class=\"ds-care__title\">Blaue Bluse</h2><p class=\"ds-care__kind\">Oberteil</p><p class=\"ds-care__line\">Blau · Herbst</p></div>",
+      "css": ".ds-care { position: relative; background: var(--band, #f6e3c8); color: var(--band-ink, #1f2a44); border-radius: 4px; padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; font-family: var(--font, 'Jost Variable', 'Jost', -apple-system, sans-serif); } .ds-care::before { content: ''; position: absolute; inset: 7px; border: 1.5px dashed var(--stitch, #c98a3e); border-radius: 2px; pointer-events: none; } .ds-care__title { margin: 0; font-size: 1.5294rem; line-height: 1.15; font-weight: 500; } .ds-care__kind { margin: -6px 0 0; font-size: 0.8824rem; opacity: 0.8; } .ds-care__line { margin: 0; font-size: 0.8824rem; }"
     },
     {
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The one thread-red action per screen; disabled turns to chip fill.",
-      "html": "<div style=\"display:flex;flex-direction:column;gap:8px\"><button class=\"ds-btn-primary\">Speichern</button><button class=\"ds-btn-primary\" disabled>Speichern</button></div>",
-      "css": ".ds-btn-primary { width: 100%; min-height: 48px; padding: 10px 20px; border-radius: 12px; border: 1px solid transparent; background: #b8322a; color: #ffffff; font: 600 17px 'Jost Variable', 'Jost', sans-serif; cursor: pointer; } .ds-btn-primary:focus-visible { outline: 2px solid #b8322a; outline-offset: 2px; } .ds-btn-primary:disabled { background: #e8ebf1; color: #56617a; cursor: default; }"
+      "description": "The one thread-red action per screen.",
+      "html": "<button class=\"ds-btn-primary\">Speichern</button>",
+      "css": ".ds-btn-primary { min-height: 48px; padding: 10px 20px; border: none; border-radius: 12px; background: var(--thread, #b8322a); color: var(--thread-ink, #ffffff); font: 600 1rem/1.2 var(--font, 'Jost Variable', 'Jost', -apple-system, sans-serif); cursor: pointer; } .ds-btn-primary:focus-visible { outline: 2px solid var(--thread, #b8322a); outline-offset: 2px; } .ds-btn-primary:disabled { background: var(--chip, #e8ebf1); color: var(--muted, #56617a); }"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Outlined surface button for non-primary actions.",
-      "html": "<button class=\"ds-btn\">Foto wählen</button>",
-      "css": ".ds-btn { min-height: 48px; padding: 10px 20px; border-radius: 12px; border: 1px solid #9aa3b5; background: #ffffff; color: #1f2a44; font: 500 17px 'Jost Variable', 'Jost', sans-serif; cursor: pointer; } .ds-btn:focus-visible { outline: 2px solid #b8322a; outline-offset: 2px; } .ds-btn:disabled { opacity: 0.45; cursor: default; }"
-    },
-    {
-      "name": "Confirm Sheet",
-      "kind": "custom",
-      "refersTo": "sheet",
-      "description": "Bottom sheet confirming a destructive step: danger-solid confirm, safe cancel focused.",
-      "html": "<div class=\"ds-sheet\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"ds-sheet-t\"><h2 id=\"ds-sheet-t\" class=\"ds-sheet__title\">Teil löschen?</h2><p class=\"ds-sheet__msg\">Das Teil wird auch aus allen Outfits entfernt.</p><div class=\"ds-sheet__actions\"><button class=\"ds-btn-danger\">Löschen</button><button class=\"ds-text-btn\">Abbrechen</button></div></div>",
-      "css": ".ds-sheet { max-width: 720px; background: #ffffff; border-radius: 20px 20px 0 0; padding: 20px 16px; box-shadow: 0 -8px 30px rgba(31,42,68,0.22); display: flex; flex-direction: column; gap: 16px; font-family: 'Jost Variable', 'Jost', sans-serif; color: #1f2a44; animation: ds-sheet-in 240ms cubic-bezier(0.16,1,0.3,1); } .ds-sheet__title { margin: 0; font-size: 22px; font-weight: 500; } .ds-sheet__msg { margin: 0; font-size: 15px; color: #56617a; } .ds-sheet__actions { display: flex; flex-direction: column; gap: 8px; } .ds-btn-danger { min-height: 48px; padding: 10px 20px; border-radius: 12px; border: 1px solid transparent; background: #8f1d17; color: #ffffff; font: 600 17px 'Jost Variable', 'Jost', sans-serif; cursor: pointer; } .ds-text-btn { align-self: center; min-height: 44px; padding: 0 8px; background: none; border: none; color: #1f2a44; font: 500 17px 'Jost Variable', 'Jost', sans-serif; cursor: pointer; } .ds-btn-danger:focus-visible, .ds-text-btn:focus-visible { outline: 2px solid #b8322a; outline-offset: 2px; } @keyframes ds-sheet-in { from { transform: translateY(24px); opacity: 0.6; } to { transform: none; opacity: 1; } } @media (prefers-reduced-motion: reduce) { .ds-sheet { animation: none; } }"
-    },
-    {
-      "name": "Add Button",
-      "kind": "button",
-      "refersTo": "fab",
-      "description": "Round thread-red add button in thumb reach.",
-      "html": "<button class=\"ds-fab\" aria-label=\"Teil hinzufügen\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg></button>",
-      "css": ".ds-fab { width: 60px; height: 60px; border: none; border-radius: 50%; background: #b8322a; color: #ffffff; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(31,42,68,0.22); cursor: pointer; } .ds-fab:focus-visible { outline: 2px solid #b8322a; outline-offset: 2px; }"
+      "description": "Surface button with a strong hairline: Bearbeiten, Foto ändern, Merken.",
+      "html": "<button class=\"ds-btn-secondary\">Bearbeiten</button>",
+      "css": ".ds-btn-secondary { min-height: 48px; padding: 10px 20px; border: 1px solid var(--line-strong, #9aa3b5); border-radius: 12px; background: var(--surface, #ffffff); color: var(--ink, #1f2a44); font: 500 1rem/1.2 var(--font, 'Jost Variable', 'Jost', -apple-system, sans-serif); cursor: pointer; } .ds-btn-secondary:focus-visible { outline: 2px solid var(--thread, #b8322a); outline-offset: 2px; }"
     },
     {
       "name": "Swing Tag",
       "kind": "chip",
       "refersTo": "swing-tag",
-      "description": "Kraft tag with notched edge and punched hole; resting, active and with a count badge.",
-      "html": "<div style=\"display:flex;gap:8px\"><button class=\"ds-tag\">Filter <span class=\"ds-tag__count\">2</span></button><button class=\"ds-tag ds-tag--on\">Hose</button></div>",
-      "css": ".ds-tag { position: relative; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px 0 26px; border: none; border-radius: 0 10px 10px 0; background: #eee2d2; color: #2a2016; font: 500 15px 'Jost Variable', 'Jost', sans-serif; cursor: pointer; clip-path: polygon(12px 0, 100% 0, 100% 100%, 12px 100%, 0 50%); transition: background-color 140ms ease-out; } .ds-tag::before { content: ''; position: absolute; left: 11px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%; background: #f5f6f8; box-shadow: inset 0 0 0 1px rgba(42,32,22,0.25); } .ds-tag--on { background: #c9a27a; } .ds-tag:focus-visible { outline: none; box-shadow: inset 0 0 0 2px #b8322a; } .ds-tag__count { min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; background: #1f2a44; color: #f5f6f8; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums; }"
+      "description": "Kraft tag with a notched left edge and a punched hole; every filter and selectable choice.",
+      "html": "<button class=\"ds-tag\">Filter</button> <button class=\"ds-tag ds-tag--on\" aria-pressed=\"true\">Hose</button>",
+      "css": ".ds-tag { position: relative; min-height: 44px; padding: 0 14px 0 26px; border: none; border-radius: 0 10px 10px 0; clip-path: polygon(12px 0, 100% 0, 100% 100%, 12px 100%, 0 50%); background: var(--kraft-soft, #f2e4db); color: var(--kraft-ink, #2e1f19); font: 500 0.8824rem/1 var(--font, 'Jost Variable', 'Jost', -apple-system, sans-serif); cursor: pointer; transition: background-color 140ms ease-out; } .ds-tag::before { content: ''; position: absolute; left: 11px; top: 50%; width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%; background: var(--ground, #f5f6f8); box-shadow: inset 0 0 0 1px rgba(42,32,22,0.25); } .ds-tag--on { background: var(--kraft, #d6ad94); font-weight: 600; } .ds-tag:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--thread, #b8322a); }"
     },
     {
-      "name": "Season Row",
+      "name": "Season Symbol",
       "kind": "custom",
       "refersTo": "care-symbol",
-      "description": "Seasons as care-label symbols; filled = chosen, dashed ring = the current season while another is chosen.",
-      "html": "<div class=\"ds-care-row\"><button class=\"ds-care\" aria-pressed=\"false\"><span class=\"ds-care__mark\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6\"/></svg></span><span class=\"ds-care__label\">Sommer</span></button><button class=\"ds-care ds-care--current\" aria-pressed=\"false\"><span class=\"ds-care__mark\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 19C5 11 10.5 5 19 5c0 8.5-6 14-14 14ZM5 19l8.5-8.5M9.5 14.5h3.2M12 12V8.8\"/></svg></span><span class=\"ds-care__label\">Herbst</span></button><button class=\"ds-care ds-care--on\" aria-pressed=\"true\"><span class=\"ds-care__mark\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M9.8 4.6 12 6.8l2.2-2.2M9.8 19.4l2.2-2.2 2.2 2.2\"/></svg></span><span class=\"ds-care__label\">Winter</span></button></div>",
-      "css": ".ds-care-row { display: flex; justify-content: center; gap: 12px; } .ds-care { display: flex; flex-direction: column; align-items: center; gap: 6px; background: none; border: none; padding: 0; min-width: 64px; cursor: pointer; color: #1f2a44; font-family: 'Jost Variable', 'Jost', sans-serif; } .ds-care__mark { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid #1f2a44; display: flex; align-items: center; justify-content: center; transition: background-color 160ms ease-out, color 160ms ease-out; } .ds-care--on .ds-care__mark { background: #1f2a44; color: #f5f6f8; } .ds-care--current:not(.ds-care--on) .ds-care__mark { border-style: dashed; border-width: 2px; } .ds-care__label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #56617a; } .ds-care--on .ds-care__label { color: #1f2a44; font-weight: 600; } .ds-care:focus-visible { outline: 2px solid #b8322a; outline-offset: 2px; }"
-    },
-    {
-      "name": "Link Rows",
-      "kind": "custom",
-      "refersTo": "link-row",
-      "description": "References to other screens as hairline rows with a muted chevron, not tags.",
-      "html": "<ul class=\"ds-rows\"><li><button class=\"ds-row\">Herbstspaziergang<svg class=\"ds-row__chev\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14.5 5.5 8 12l6.5 6.5\"/></svg></button></li><li><button class=\"ds-row\">Büro-Look<svg class=\"ds-row__chev\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14.5 5.5 8 12l6.5 6.5\"/></svg></button></li></ul>",
-      "css": ".ds-rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid #d8dce5; font-family: 'Jost Variable', 'Jost', sans-serif; } .ds-row { width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 2px; background: none; border: none; border-bottom: 1px solid #d8dce5; color: #1f2a44; font-size: 17px; text-align: left; cursor: pointer; } .ds-row__chev { transform: rotate(180deg); color: #56617a; } .ds-row:focus-visible { outline: 2px solid #b8322a; outline-offset: 2px; }"
+      "description": "A laundry care symbol with its season mark, always with its caps name; filled in its own season color when chosen.",
+      "html": "<button class=\"ds-symbol ds-symbol--on\" aria-pressed=\"true\"><span class=\"ds-symbol__mark\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 15h11l3-4H8a4 4 0 0 0-4 4Z\"/><path d=\"M12 8c1-2 3-3 5-3-0.5 2-2 3.5-5 3Z\"/></svg></span><span class=\"ds-symbol__label\">Herbst</span></button>",
+      "css": ".ds-symbol { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; background: none; border: none; color: var(--ink, #1f2a44); font-family: var(--font, 'Jost Variable', 'Jost', -apple-system, sans-serif); cursor: pointer; } .ds-symbol__mark { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid currentColor; display: flex; align-items: center; justify-content: center; transition: background-color 160ms ease-out; } .ds-symbol--on .ds-symbol__mark { background: var(--autumn, #e2ad6f); color: var(--on-season, #1f2a44); } .ds-symbol__label { font-size: min(0.7059rem, 14px); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted, #56617a); } .ds-symbol--on .ds-symbol__label { color: var(--ink, #1f2a44); font-weight: 600; } .ds-symbol:focus-visible { outline: 2px solid var(--thread, #b8322a); outline-offset: 2px; }"
     },
     {
       "name": "Text Field",
       "kind": "input",
       "refersTo": "input-field",
-      "description": "Surface input with strong hairline and thread caret.",
-      "html": "<label class=\"ds-field\"><span class=\"ds-field__label\">Notiz</span><input placeholder=\"z. B. von Oma, nur kalt waschen\"></label>",
-      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; font-family: 'Jost Variable', 'Jost', sans-serif; } .ds-field__label { font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #1f2a44; } .ds-field input { padding: 12px 14px; border-radius: 12px; border: 1px solid #9aa3b5; background: #ffffff; color: #1f2a44; font: inherit; font-size: 17px; caret-color: #b8322a; } .ds-field input::placeholder { color: #56617a; } .ds-field input:focus-visible { outline: 2px solid #b8322a; outline-offset: 2px; }"
+      "description": "Surface field with a strong hairline; never under 16px so iOS does not zoom.",
+      "html": "<label class=\"ds-field\"><span>Name</span><input placeholder=\"z. B. Grüne Strickjacke\"></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; font-family: var(--font, 'Jost Variable', 'Jost', -apple-system, sans-serif); color: var(--ink, #1f2a44); } .ds-field > span { font-size: 1rem; font-weight: 600; } .ds-field input { padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line-strong, #9aa3b5); background: var(--surface, #ffffff); color: inherit; font: inherit; font-size: max(1rem, 16px); caret-color: var(--thread, #b8322a); } .ds-field input::placeholder { color: var(--muted, #56617a); } .ds-field input:focus-visible { outline: 2px solid var(--thread, #b8322a); outline-offset: 2px; }"
     },
     {
       "name": "Tab Bar",
       "kind": "nav",
       "refersTo": "tab",
-      "description": "Text tabs; active label in thread red with a stitched underline.",
-      "html": "<nav class=\"ds-tabs\"><a class=\"ds-tab ds-tab--active\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10 6.5a2 2 0 1 1 2.8 1.8c-.5.3-.8.7-.8 1.3v1.2M12 10.8 3.6 16.6c-.9.6-.5 1.9.6 1.9h15.6c1.1 0 1.5-1.3.6-1.9L12 10.8Z\"/></svg><span class=\"ds-tab__label\">Schrank</span></a><a class=\"ds-tab\" href=\"#\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M9 4 4 6.5l1.6 3.8 2-.8V20h8.8V9.5l2 .8L20 6.5 15 4c-.4 1.6-1.6 2.6-3 2.6S9.4 5.6 9 4Z\"/></svg><span class=\"ds-tab__label\">Outfits</span></a></nav>",
-      "css": ".ds-tabs { display: flex; background: #ffffff; border-top: 1px solid #d8dce5; font-family: 'Jost Variable', 'Jost', sans-serif; } .ds-tab { flex: 1; height: 62px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #56617a; text-decoration: none; } .ds-tab__label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; padding-bottom: 2px; border-bottom: 1.5px dashed transparent; } .ds-tab--active { color: #b8322a; } .ds-tab--active .ds-tab__label { border-bottom-color: currentColor; font-weight: 600; } .ds-tab:focus-visible { outline: 2px solid #b8322a; outline-offset: 2px; }"
+      "description": "Three text tabs; the active one in thread red with a dashed stitch underline.",
+      "html": "<nav class=\"ds-tabs\"><a class=\"ds-tab ds-tab--on\" aria-current=\"page\">Schrank</a><a class=\"ds-tab\">Looks</a><a class=\"ds-tab\">Einstellungen</a></nav>",
+      "css": ".ds-tabs { display: flex; background: var(--surface, #ffffff); border-top: 1px solid var(--line, #d8dce5); font-family: var(--font, 'Jost Variable', 'Jost', -apple-system, sans-serif); } .ds-tab { flex: 1; height: 62px; display: flex; align-items: center; justify-content: center; color: var(--muted, #56617a); font-size: min(0.7059rem, 13px); letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; } .ds-tab--on { color: var(--thread, #b8322a); font-weight: 600; text-decoration: underline dashed 1.5px; text-underline-offset: 5px; }"
     },
     {
-      "name": "Photo Tile and Toast",
-      "kind": "card",
-      "refersTo": "photo-tile",
-      "description": "Frameless 3:4 photos: selected (ink ring + check) and just saved (kraft ring, settle) with the ink toast.",
-      "html": "<div style=\"display:flex;flex-direction:column;gap:16px;align-items:center\"><div style=\"display:grid;grid-template-columns:repeat(3,96px);gap:8px\"><button class=\"ds-tile\"></button><button class=\"ds-tile ds-tile--selected\"><span class=\"ds-tile__check\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5.5 12.5 10 17l8.5-9.5\"/></svg></span></button><button class=\"ds-tile ds-tile--new\"></button></div><p class=\"ds-toast\" role=\"status\">Teil gespeichert</p></div>",
-      "css": ".ds-tile { position: relative; display: block; width: 100%; aspect-ratio: 3 / 4; padding: 0; border: none; border-radius: 4px; overflow: hidden; background: #e8ebf1; cursor: pointer; } .ds-tile--selected { outline: 3px solid #1f2a44; outline-offset: -3px; } .ds-tile--new { outline: 3px solid #c9a27a; outline-offset: -3px; animation: ds-tile-new 1.2s cubic-bezier(0.16,1,0.3,1); } @keyframes ds-tile-new { from { transform: scale(0.94); } to { transform: none; } } .ds-tile__check { position: absolute; top: 6px; right: 6px; width: 26px; height: 26px; border-radius: 50%; background: #1f2a44; color: #f5f6f8; display: flex; align-items: center; justify-content: center; } .ds-tile:focus-visible { outline: 2px solid #b8322a; outline-offset: 2px; } .ds-toast { margin: 0; padding: 10px 18px; border-radius: 22px; background: #1f2a44; color: #f5f6f8; font: 500 15px 'Jost Variable', 'Jost', sans-serif; box-shadow: 0 6px 16px rgba(31,42,68,0.22); } @media (prefers-reduced-motion: reduce) { .ds-tile--new { animation: none; } }"
+      "name": "Toast with Undo",
+      "kind": "custom",
+      "refersTo": "toast",
+      "description": "Ink capsule; after a delete it carries one \"Rückgängig\" action with the dashed thread underline, never red.",
+      "html": "<div class=\"ds-toast\"><span>Teil gelöscht</span><button class=\"ds-toast__action\">Rückgängig</button></div>",
+      "css": ".ds-toast { display: inline-flex; align-items: center; gap: 4px; padding: 0 6px 0 18px; border-radius: 22px; background: var(--ink, #1f2a44); color: var(--ground, #f5f6f8); font: 500 0.8824rem/1.3 var(--font, 'Jost Variable', 'Jost', -apple-system, sans-serif); box-shadow: 0 6px 16px var(--shadow, rgba(31,42,68,0.22)); } .ds-toast > span { padding: 8px 0; } .ds-toast__action { min-height: 44px; padding: 0 12px; background: none; border: none; color: inherit; font: inherit; font-weight: 600; white-space: nowrap; text-decoration: underline dashed; text-underline-offset: 4px; cursor: pointer; } .ds-toast__action:focus-visible { outline: 2px solid var(--ground, #f5f6f8); outline-offset: -4px; border-radius: 22px; }"
+    },
+    {
+      "name": "Name Ask",
+      "kind": "custom",
+      "refersTo": "input-field",
+      "description": "First run only: below the primary action, behind a dashed seam, \"Wie heißt du?\" with a field and a secondary \"Merken\".",
+      "html": "<form class=\"ds-ask\"><label for=\"ds-ask-input\">Wie heißt du?</label><div class=\"ds-ask__row\"><input id=\"ds-ask-input\" placeholder=\"Dein Vorname\"><button type=\"button\">Merken</button></div></form>",
+      "css": ".ds-ask { max-width: 360px; padding-top: 22px; border-top: 1.5px dashed var(--line-strong, #9aa3b5); display: flex; flex-direction: column; gap: 10px; font-family: var(--font, 'Jost Variable', 'Jost', -apple-system, sans-serif); color: var(--ink, #1f2a44); } .ds-ask label { font-size: 1rem; font-weight: 500; } .ds-ask__row { display: flex; gap: 8px; } .ds-ask__row input { flex: 1; min-width: 0; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line-strong, #9aa3b5); background: var(--surface, #ffffff); font: inherit; font-size: max(1rem, 16px); } .ds-ask__row button { min-height: 48px; padding: 10px 20px; border-radius: 12px; border: 1px solid var(--line-strong, #9aa3b5); background: var(--surface, #ffffff); color: inherit; font: 500 1rem/1.2 var(--font, 'Jost Variable', 'Jost', -apple-system, sans-serif); }"
     }
   ],
   "narrative": {
     "northStar": "Pflegeetikett",
-    "overview": "The wardrobe is sewn like the label inside Lena's clothes. A woven navy name band with an inset dashed stitch greets her by name; each piece carries its own sewn-in care label on its detail page; seasons are drawn as care-label symbols in a single 1.5px stroke; filters hang as kraft swing tags with a punched hole; one red thread marks what to do next. Everything else steps back so the clothing photos carry the screen.\n\nThe ground is a cool porcelain, never cream, with white surfaces and hairline navy-grey lines. Density is calm and single-column (max 720px), built for one hand at the open wardrobe: 44px minimum targets, primary actions in thumb reach, text tab bar at the bottom. Photos are frameless at 3:4 with only a 4px corner. Type is one family, Jost Variable, self-hosted; hierarchy comes from size and from letterspaced caps labels, not from a second face.\n\nThe system refuses the iOS-settings grey grid: no pill chips, no emoji tabs, no grey-filled list rows.",
+    "overview": "Lena is 20; the world is a care label made young, not heritage workwear: soft seasonal thread, blush kraft, a friend's voice. The wardrobe is sewn like the label inside Lena's clothes. A woven name band in the color of the chosen season, with an inset dashed stitch, greets her by name; each piece carries its own sewn-in care label on its detail page; seasons are drawn as care-label symbols in a single 1.5px stroke; filters hang as kraft swing tags with a punched hole; one red thread marks what to do next. Everything else steps back so the clothing photos carry the screen.\n\nThe ground is a cool porcelain, never cream, with white surfaces and hairline navy-grey lines. Density is calm and single-column (max 720px), built for one hand at the open wardrobe: 44px minimum targets, primary actions in thumb reach, text tab bar at the bottom. Photos are frameless at 3:4 with only a 4px corner. Type is one family, Jost Variable, self-hosted, and grows with the iPhone's text size; hierarchy comes from size and weight in sentence case; letterspaced caps are kept for tabs and care-symbol names only, and there is no second face.\n\nThe system refuses the iOS-settings grey grid: no pill chips, no emoji tabs, no grey-filled list rows.",
     "keyCharacteristics": [
-      "Navy woven fabric with an inset dashed stitch as the only branded surface: the name band on the wardrobe, the care label on an item.",
+      "Woven fabric in the color of the chosen season (pale sage, apricot, ochre or ice blue; deep tinted versions in dark) with a stronger dashed stitch is the only branded surface: the name band on the wardrobe (and its preview in the settings), the care label on a piece or an outfit, the small woven name label of each outfit. Navy is the ink, no longer the fabric.",
       "Kraft swing tags (notched left edge, punched hole) for every filter and selectable choice.",
+      "A seasonal thread (sage, apricot, ochre, ice blue) sews every stitch and fills the chosen season; it follows the Season Row.",
       "Thread red reserved for the one primary action, the active tab, destructive actions, errors and the focus/caret affordance.",
       "One 1.5px round-capped stroke system for all pictograms.",
       "Frameless 3:4 photo tiles; the clothing is the star.",
       "Full light and dark token sets driven by `prefers-color-scheme`; garment swatches are a separate data palette."
     ],
     "rules": [
-      { "name": "The One Thread Rule", "body": "Thread red appears only on the primary action (primary button, add button), the active tab, destructive actions, error messages, and the focus ring/caret. Never on decoration, headings, icons at rest, or a second button on the same screen.", "section": "colors" },
-      { "name": "The Porcelain Rule", "body": "The ground is cool porcelain (`ground`), never cream or warm off-white. Warmth enters only through kraft.", "section": "colors" },
-      { "name": "The Data Palette Rule", "body": "Garment swatches describe clothing and appear only inside a swatch circle; they never color interface chrome, and no UI token stands in for a garment color.", "section": "colors" },
-      { "name": "The One Family Rule", "body": "Jost Variable only, self-hosted; no external font host at runtime and no second display face.", "section": "typography" },
-      { "name": "The Caps Are Labels Rule", "body": "Letterspaced caps name a section, a tab or a symbol. They are the heading or the label itself, never a decorative line stacked above another heading.", "section": "typography" },
-      { "name": "The Tabular Count Rule", "body": "Every count (section meta, tag badge, action-bar count, backup compare) uses `font-variant-numeric: tabular-nums`.", "section": "typography" },
-      { "name": "The Four Lifts Rule", "body": "Only the name band, the add button, the toast and sheets cast shadows. The care label is sewn into the page and stays flat, as do cards, tiles, chips, rows and buttons; inset shadows are used only for focus, the tag hole and swatch rings.", "section": "elevation" }
+      {
+        "name": "The One Thread Rule",
+        "body": "Thread red appears only on the primary action (primary button, add button), the active tab, destructive actions, error messages, and the focus ring/caret. Never on decoration, headings, icons at rest, or a second button on the same screen.",
+        "section": "colors"
+      },
+      {
+        "name": "The Porcelain Rule",
+        "body": "The ground is cool porcelain (`ground`), never cream or warm off-white. Warmth enters only through kraft and the seasonal thread.",
+        "section": "colors"
+      },
+      {
+        "name": "The Data Palette Rule",
+        "body": "Garment swatches describe clothing and appear only inside a swatch circle; they never color interface chrome, and no UI token stands in for a garment color.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "Jost Variable only, self-hosted; no external font host at runtime and no second display face.",
+        "section": "typography"
+      },
+      {
+        "name": "The Caps Are Labels Rule",
+        "body": "Letterspaced caps name a tab or a symbol, nothing else. Section titles are sentence case. Caps are never a decorative line stacked above another heading.",
+        "section": "typography"
+      },
+      {
+        "name": "The Growing Text Rule",
+        "body": "Every font size is a rem step on a 17px root, so the whole ramp follows the reader. On iPhone and iPad the root is `font: -apple-system-body` (Dynamic Type, 17px at the default size), guarded by `@supports (font: -apple-system-body) and (-webkit-touch-callout: none)` so a Mac keeps 17px; elsewhere it is `106.25%`. Fixed rows that cannot wrap (tab labels, care-symbol names, swatch names, the name-band greeting) cap their growth with `min(<rem>, <px>)`; inputs never drop below 16px (`max(1rem, 16px)`) so iOS does not zoom on focus. Never write a font size in px.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Count Rule",
+        "body": "Every count (section meta, tag badge, action-bar count, backup compare) uses `font-variant-numeric: tabular-nums`.",
+        "section": "typography"
+      },
+      {
+        "name": "The Four Lifts Rule",
+        "body": "Only the name band, the add button, the toast and sheets cast shadows. The care label, the outfit name label and the name-band preview in the settings are sewn into the page and stay flat, as do cards, tiles, chips, rows and buttons; inset shadows are used only for focus, the tag hole and swatch rings.",
+        "section": "elevation"
+      }
     ],
     "dos": [
       "**Do** keep thread red to the primary action, the active tab, destructive actions, errors and the focus ring/caret.",
@@ -205,7 +812,9 @@
       "**Do** keep every interactive target at 44px or more and put the primary action in thumb reach.",
       "**Do** define every new UI color in both the light and the dark token set; garment swatches stay theme-independent.",
       "**Do** confirm destructive steps in a confirm sheet with a danger-solid button and the safe action focused.",
-      "**Do** honor `prefers-reduced-motion` for the stitch-in, the sheet rise and the new-tile settle."
+      "**Do** honor `prefers-reduced-motion` for the stitch-in, the sheet rise and the new-tile settle.",
+      "**Do** write font sizes as rem steps of the 17px ramp and cap only rows that cannot wrap.",
+      "**Do** offer \"Rückgängig\" in the toast after deleting instead of a second confirmation."
     ],
     "donts": [
       "**Don't** use pill-shaped chips or a grey settings-style grid; choices are kraft tags.",
@@ -215,7 +824,8 @@
       "**Don't** load fonts from an external host or add a second typeface.",
       "**Don't** stack a small caps line above a heading as decoration; caps labels are the heading.",
       "**Don't** add shadows beyond the name band, the add button, the toast and sheets.",
-      "**Don't** use garment swatch colors for interface chrome."
+      "**Don't** use garment swatch colors for interface chrome.",
+      "**Don't** set a font size in px, or let an input fall below 16px."
     ]
   }
 }
