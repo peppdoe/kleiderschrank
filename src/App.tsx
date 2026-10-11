@@ -21,6 +21,7 @@ export default function App() {
   // Morgens zählt die aktuelle Saison: sie ist beim Öffnen vorausgewählt.
   const [wardrobeFilter, setWardrobeFilter] = useState<FilterState>(() => ({ ...EMPTY_FILTER, seasons: [seasonOf(new Date())] }));
   const [savedItemId, setSavedItemId] = useState<string | null>(null);
+  const [savedOutfitId, setSavedOutfitId] = useState<string | null>(null);
 
   useEffect(() => {
     requestPersistence().catch(() => undefined);
@@ -42,6 +43,12 @@ export default function App() {
     const timer = setTimeout(() => setSavedItemId(null), SAVED_NOTICE_MS);
     return () => clearTimeout(timer);
   }, [savedItemId]);
+
+  useEffect(() => {
+    if (!savedOutfitId) return undefined;
+    const timer = setTimeout(() => setSavedOutfitId(null), SAVED_NOTICE_MS);
+    return () => clearTimeout(timer);
+  }, [savedOutfitId]);
 
   // Ein neues Teil soll sichtbar sein: passt es nicht zum aktuellen Filter, wird der Filter gelöst.
   function itemCreated(item: Item) {
@@ -69,13 +76,13 @@ export default function App() {
       screen = <OutfitsScreen />;
       break;
     case 'outfitNew':
-      screen = <OutfitEditorScreen key="new" />;
+      screen = <OutfitEditorScreen key="new" onSaved={setSavedOutfitId} />;
       break;
     case 'outfit':
-      screen = <OutfitDetailScreen key={route.id} outfitId={route.id} />;
+      screen = <OutfitDetailScreen key={route.id} outfitId={route.id} justSaved={savedOutfitId === route.id} />;
       break;
     case 'outfitEdit':
-      screen = <OutfitEditorScreen key={`edit-${route.id}`} outfitId={route.id} />;
+      screen = <OutfitEditorScreen key={`edit-${route.id}`} outfitId={route.id} onSaved={setSavedOutfitId} />;
       break;
     case 'settings':
       screen = <SettingsScreen key="settings" />;
@@ -103,6 +110,11 @@ export default function App() {
       {savedItemId && route.name === 'wardrobe' && (
         <p className="toast" role="status">
           Teil gespeichert
+        </p>
+      )}
+      {savedOutfitId && route.name === 'outfit' && route.id === savedOutfitId && (
+        <p className="toast" role="status">
+          Look gespeichert
         </p>
       )}
       {!inForm && <TabBar active={tabOf(route)} />}

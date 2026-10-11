@@ -121,3 +121,14 @@ describe('backupFileName', () => {
     expect(backupFileName(new Date(2026, 9, 5, 23, 30))).toBe('kleiderschrank-backup-2026-10-05.json');
   });
 });
+
+describe('favorites in the backup', () => {
+  it('keeps favorites through export and import, still as version 1', async () => {
+    const a = await createItem({ category: 'top', colors: [], seasons: [], note: '' }, fakePhoto('a'));
+    await db.items.update(a, { favorite: true });
+    const json = await exportBackup();
+    expect(JSON.parse(json).version).toBe(1);
+    await importBackup(json, async () => new Blob(['t'], { type: 'image/jpeg' }));
+    expect((await db.items.get(a))!.favorite).toBe(true);
+  });
+});

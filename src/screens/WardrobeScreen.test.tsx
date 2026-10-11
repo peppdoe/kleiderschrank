@@ -137,3 +137,17 @@ describe('Schrank', () => {
     expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
   });
 });
+
+describe('Lieblinge', () => {
+  it('narrows the wardrobe to favorites with one tag', async () => {
+    await seedItem({ category: 'dress', colors: ['red'], favorite: true });
+    await seedItem({ category: 'pants', colors: ['black'] });
+    const user = userEvent.setup();
+    render(<App />);
+    expect(await screen.findByRole('button', { name: 'Hose, Schwarz' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Lieblinge' }));
+    expect(screen.getByRole('button', { name: 'Lieblinge' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByRole('button', { name: 'Hose, Schwarz' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Kleid, Rot/ })).toBeInTheDocument();
+  });
+});

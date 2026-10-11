@@ -162,6 +162,7 @@ p { margin: 0; }
 .tile { position: relative; display: block; width: 100%; aspect-ratio: 3 / 4; padding: 0; border: none; border-radius: 4px; overflow: hidden; background: var(--chip); cursor: pointer; }
 .tile--selected { outline: 3px solid var(--ink); outline-offset: -3px; }
 .tile__check { position: absolute; top: 6px; right: 6px; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: var(--ground); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; }
+.tile__fav { position: absolute; left: 6px; bottom: 6px; width: 24px; height: 24px; border-radius: 50%; background: var(--band); color: var(--accent); display: flex; align-items: center; justify-content: center; }
 .photo { display: block; width: 100%; height: 100%; object-fit: cover; background: var(--chip); }
 .photo--full { height: auto; max-height: 62vh; object-fit: contain; border-radius: var(--radius); background: var(--surface); }
 .photo--empty { aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; color: var(--muted); border-radius: var(--radius); border: 1.5px dashed var(--line-strong); background: transparent; }
@@ -278,6 +279,16 @@ p { margin: 0; }
 .care-label { position: relative; margin-top: 18px; padding: 18px 20px 20px; background: var(--band); color: var(--band-ink); border-radius: 4px; display: flex; flex-direction: column; gap: 10px; }
 .care-label::before { content: ''; position: absolute; inset: 7px; border: 1.5px dashed var(--accent); border-radius: 2px; pointer-events: none; }
 .care-label__title { font-size: 26px; line-height: 1.15; }
+.care-label > .care-label__fav + .care-label__title { padding-right: 40px; }
+/* Lieblingsteil: Herz im Saisonfaden, oben rechts im Etikett */
+.care-label__fav { position: absolute; top: 10px; right: 10px; z-index: 1; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; border: none; border-radius: 50%; background: none; color: var(--band-ink); cursor: pointer; transition: color 160ms ease-out, transform 160ms ease-out; }
+.care-label__fav--on { color: var(--accent); }
+.care-label__fav:active { transform: scale(0.9); }
+.care-label__fav--on svg { animation: fav-pop 420ms cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes fav-pop { from { transform: scale(0.6); } to { transform: scale(1); } }
+/* Gerade gespeicherter Look: die Naht wird eingenäht wie der Gruß im Namensband */
+.care-label--new::before { animation: stitch-in 900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both; }
+@media (prefers-reduced-motion: reduce) { .care-label__fav--on svg, .care-label--new::before { animation: none; } }
 .care-label__kind { margin-top: -6px; font-size: 15px; opacity: 0.8; }
 .care-label__colors { display: flex; align-items: center; gap: 10px; font-size: 15px; }
 .care-label__swatches { display: inline-flex; gap: 4px; }

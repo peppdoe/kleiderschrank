@@ -9,6 +9,8 @@ export interface Item {
   note: string;
   createdAt: string;
   updatedAt: string;
+  /** Lieblingsteil. Optional und ohne Index, daher keine neue Schema-Version; fehlt bei älteren Teilen. */
+  favorite?: boolean;
 }
 
 export interface Photo {

@@ -14,18 +14,19 @@ const PATHS = {
   hanger: 'M10 6.5a2 2 0 1 1 2.8 1.8c-.5.3-.8.7-.8 1.3v1.2M12 10.8 3.6 16.6c-.9.6-.5 1.9.6 1.9h15.6c1.1 0 1.5-1.3.6-1.9L12 10.8Z',
   outfit: 'M9 4 4 6.5l1.6 3.8 2-.8V20h8.8V9.5l2 .8L20 6.5 15 4c-.4 1.6-1.6 2.6-3 2.6S9.4 5.6 9 4Z',
   settings: 'M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1M15 5v4M9 10v4M17 15v4',
+  heart: 'M12 19.5c-.3 0-7.5-4.4-7.5-9.6A4 4 0 0 1 8.5 6c1.5 0 2.8.8 3.5 2 .7-1.2 2-2 3.5-2a4 4 0 0 1 4 3.9c0 5.2-7.2 9.6-7.5 9.6Z',
 } as const;
 
 export type IconName = keyof typeof PATHS;
 
-export function Icon({ name, size = 24, className }: { name: IconName | SeasonId; size?: number; className?: string }) {
+export function Icon({ name, size = 24, className, filled = false }: { name: IconName | SeasonId; size?: number; className?: string; filled?: boolean }) {
   return (
     <svg
       className={className}
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
+      fill={filled ? 'currentColor' : 'none'}
       stroke="currentColor"
       strokeWidth={1.5}
       strokeLinecap="round"

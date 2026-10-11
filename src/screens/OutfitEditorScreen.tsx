@@ -16,7 +16,7 @@ import { navigate } from '../lib/route';
 
 const sameSet = (a: readonly string[], b: readonly string[]) => a.length === b.length && a.every((x) => b.includes(x));
 
-export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
+export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; onSaved?: (id: string) => void }) {
   const existing = useLiveQuery(async () => (outfitId ? (await getOutfit(outfitId)) ?? null : null), [outfitId]);
   const items = useLiveQuery(listItems, []);
   const [step, setStep] = useState<'pick' | 'name'>('pick');
@@ -67,9 +67,11 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
     try {
       if (outfitId) {
         await updateOutfit(outfitId, name, selected);
+        onSaved?.(outfitId);
         navigate(`/outfit/${outfitId}`, { replace: true });
       } else {
         const id = await createOutfit(name, selected);
+        onSaved?.(id);
         navigate(`/outfit/${id}`, { replace: true });
       }
     } catch (e) {

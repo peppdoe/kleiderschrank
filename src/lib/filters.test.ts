@@ -47,3 +47,14 @@ describe('filters', () => {
     expect(list).toEqual(['a', 'b']);
   });
 });
+
+describe('favorites filter', () => {
+  it('shows only favorites when switched on and counts as active', () => {
+    const fav = makeItem({ favorite: true });
+    const plain = makeItem();
+    const filter = { ...EMPTY_FILTER, favorites: true };
+    expect(applyFilter([fav, plain], filter)).toEqual([fav]);
+    expect(isFilterActive(filter)).toBe(true);
+    expect(isFilterActive(EMPTY_FILTER)).toBe(false);
+  });
+});

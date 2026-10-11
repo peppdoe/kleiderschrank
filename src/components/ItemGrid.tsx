@@ -16,7 +16,8 @@ interface ItemGridProps {
 /** Name einer Kachel für Screenreader: Kategorie, Farben und – falls vorhanden – die erste Zeile der Notiz. */
 export function tileLabel(item: Item): string {
   const note = item.note.split('\n')[0].trim();
-  return note ? `${describeItem(item)} – ${note}` : describeItem(item);
+  const label = note ? `${describeItem(item)} – ${note}` : describeItem(item);
+  return item.favorite ? `${label}, Lieblingsteil` : label;
 }
 
 export function ItemGrid({ items, onItemClick, selectedIds, size = 'normal', highlightId }: ItemGridProps) {
@@ -42,6 +43,11 @@ export function ItemGrid({ items, onItemClick, selectedIds, size = 'normal', hig
               onClick={() => onItemClick(item)}
             >
               <ItemPhoto itemId={item.id} alt="" />
+              {item.favorite && (
+                <span className="tile__fav" aria-hidden="true">
+                  <Icon name="heart" size={14} filled />
+                </span>
+              )}
               {selected && (
                 <span className="tile__check" aria-hidden="true">
                   <Icon name="check" size={18} />

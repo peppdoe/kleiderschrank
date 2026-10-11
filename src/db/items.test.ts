@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { CategoryId, ColorId } from '../lib/constants';
 import { fakePhoto } from '../test/factories';
 import {
-  countItems, createItem, deleteItem, getItem, getItemsByIds, getPhoto, listItems, updateItem,
+  countItems, createItem, deleteItem, getItem, getItemsByIds, getPhoto, listItems, setFavorite, updateItem,
   type ItemInput,
 } from './items';
 import { db } from './schema';
@@ -93,5 +93,18 @@ describe('queries', () => {
     const a = await createItem(input, fakePhoto());
     const b = await createItem(input, fakePhoto());
     expect((await getItemsByIds([b, 'missing', a])).map((i) => i.id)).toEqual([b, a]);
+  });
+});
+
+describe('setFavorite', () => {
+  it('marks and unmarks a favorite and keeps it through edits', async () => {
+    const id = await createItem(input, fakePhoto());
+    expect((await getItem(id))!.favorite).toBeFalsy();
+    await setFavorite(id, true);
+    expect((await getItem(id))!.favorite).toBe(true);
+    await updateItem(id, { ...input, note: 'neu' });
+    expect((await getItem(id))!.favorite).toBe(true);
+    await setFavorite(id, false);
+    expect((await getItem(id))!.favorite).toBeFalsy();
   });
 });

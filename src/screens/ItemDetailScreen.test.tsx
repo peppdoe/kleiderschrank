@@ -94,3 +94,18 @@ describe('Teil-Details', () => {
     expect(await screen.findByText('Dieses Teil gibt es nicht mehr.')).toBeInTheDocument();
   });
 });
+
+describe('Lieblingsteil', () => {
+  it('marks a piece as favorite with the heart and unmarks it again', async () => {
+    const id = await seedItem({ category: 'dress', colors: ['red'] });
+    const user = userEvent.setup();
+    open(`/item/${id}`);
+    const heart = await screen.findByRole('button', { name: 'Lieblingsteil' });
+    expect(heart).toHaveAttribute('aria-pressed', 'false');
+    await user.click(heart);
+    await vi.waitFor(async () => expect((await db.items.get(id))!.favorite).toBe(true));
+    expect(await screen.findByRole('button', { name: 'Lieblingsteil', pressed: true })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Lieblingsteil' }));
+    await vi.waitFor(async () => expect((await db.items.get(id))!.favorite).toBeFalsy());
+  });
+});

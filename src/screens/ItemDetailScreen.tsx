@@ -4,7 +4,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Icon } from '../components/Icon';
 import { ItemPhoto } from '../components/ItemPhoto';
 import { NotFound } from '../components/NotFound';
-import { deleteItem, getItem } from '../db/items';
+import { deleteItem, getItem, setFavorite } from '../db/items';
 import { listOutfitsWithItem } from '../db/outfits';
 import { CATEGORIES, COLORS, SEASONS, labelOf } from '../lib/constants';
 import { describeItem, itemTitle, plural } from '../lib/describe';
@@ -19,6 +19,14 @@ export function ItemDetailScreen({ itemId }: { itemId: string }) {
 
   if (item === undefined) return null;
   if (item === null) return <NotFound text="Dieses Teil gibt es nicht mehr." backTo="/" />;
+
+  async function toggleFavorite() {
+    try {
+      await setFavorite(itemId, !item?.favorite);
+    } catch (e) {
+      setError(userMessage(e));
+    }
+  }
 
   async function remove() {
     setConfirming(false);
@@ -48,6 +56,15 @@ export function ItemDetailScreen({ itemId }: { itemId: string }) {
 
       {/* Das eingenähte Etikett: Name, Kategorie, Farben, Pflegesymbole, Notiz */}
       <div className="care-label">
+        <button
+          type="button"
+          className={`care-label__fav${item.favorite ? ' care-label__fav--on' : ''}`}
+          aria-label="Lieblingsteil"
+          aria-pressed={item.favorite === true}
+          onClick={() => void toggleFavorite()}
+        >
+          <Icon name="heart" size={24} filled={item.favorite === true} />
+        </button>
         <h1 className="care-label__title">{title}</h1>
         {title !== category && <p className="care-label__kind">{category}</p>}
         {item.colors.length > 0 && (

@@ -5,15 +5,18 @@ export interface FilterState {
   categories: CategoryId[];
   colors: ColorId[];
   seasons: SeasonId[];
+  /** Nur Lieblingsteile zeigen. */
+  favorites?: boolean;
 }
 
 export const EMPTY_FILTER: FilterState = { categories: [], colors: [], seasons: [] };
 
 export function isFilterActive(filter: FilterState): boolean {
-  return filter.categories.length + filter.colors.length + filter.seasons.length > 0;
+  return filter.categories.length + filter.colors.length + filter.seasons.length > 0 || filter.favorites === true;
 }
 
 export function matchesFilter(item: Item, filter: FilterState): boolean {
+  if (filter.favorites && !item.favorite) return false;
   if (filter.categories.length > 0 && !filter.categories.includes(item.category)) return false;
   if (filter.colors.length > 0 && !item.colors.some((c) => filter.colors.includes(c))) return false;
   // Teile ohne Saison sind ganzjährig und passen zu jeder Saison.

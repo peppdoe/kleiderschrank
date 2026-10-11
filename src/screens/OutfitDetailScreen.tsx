@@ -11,7 +11,7 @@ import { plural } from '../lib/describe';
 import { userMessage } from '../lib/errors';
 import { navigate } from '../lib/route';
 
-export function OutfitDetailScreen({ outfitId }: { outfitId: string }) {
+export function OutfitDetailScreen({ outfitId, justSaved = false }: { outfitId: string; justSaved?: boolean }) {
   const outfit = useLiveQuery(async () => (await getOutfit(outfitId)) ?? null, [outfitId]);
   const items = useLiveQuery(async () => (outfit ? getItemsByIds(outfit.itemIds) : []), [outfit]);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +39,7 @@ export function OutfitDetailScreen({ outfitId }: { outfitId: string }) {
         </a>
       </header>
       {/* Das eingenähte Etikett des Outfits: Name, Anzahl, wann es unter „Heute“ erscheint */}
-      <div className="care-label care-label--outfit">
+      <div className={`care-label care-label--outfit${justSaved ? ' care-label--new' : ''}`}>
         <h1 className="care-label__title">{outfit.name}</h1>
         <p className="care-label__kind">{plural(items.length, 'Teil', 'Teile')}</p>
         <OutfitSeasons itemIds={outfit.itemIds} items={items} />

@@ -48,6 +48,11 @@ export async function updateItem(id: string, input: ItemInput, photo?: PhotoBlob
   });
 }
 
+export async function setFavorite(id: string, on: boolean): Promise<void> {
+  // undefined entfernt das Feld wieder, so bleibt ein normales Teil wie bisher gespeichert.
+  await db.items.update(id, { favorite: on ? true : undefined });
+}
+
 export async function deleteItem(id: string): Promise<void> {
   await db.transaction('rw', db.items, db.photos, db.outfits, async () => {
     await db.items.delete(id);

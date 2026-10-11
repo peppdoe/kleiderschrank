@@ -1,4 +1,4 @@
-import { createItem, type ItemInput, type PhotoBlobs } from '../db/items';
+import { createItem, setFavorite, type ItemInput, type PhotoBlobs } from '../db/items';
 import type { Item } from '../db/schema';
 
 let sequence = 0;
@@ -24,6 +24,8 @@ export function fakePhoto(label = 'photo'): PhotoBlobs {
   };
 }
 
-export function seedItem(input: Partial<ItemInput> = {}): Promise<string> {
-  return createItem({ category: 'top', colors: [], seasons: [], note: '', ...input }, fakePhoto());
+export async function seedItem({ favorite, ...input }: Partial<ItemInput> & { favorite?: boolean } = {}): Promise<string> {
+  const id = await createItem({ category: 'top', colors: [], seasons: [], note: '', ...input }, fakePhoto());
+  if (favorite) await setFavorite(id, true);
+  return id;
 }

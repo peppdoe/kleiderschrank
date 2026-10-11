@@ -36,6 +36,15 @@ export function FilterTags({ value, onChange, resultCount, excludeSeasons = fals
           <Icon name="filter" size={20} />
           Filter{active.length > 0 && <span className="swing-tag__count" aria-hidden="true">{active.length}</span>}
         </button>
+        <button
+          type="button"
+          className={`swing-tag${value.favorites ? ' swing-tag--active' : ''}`}
+          aria-pressed={value.favorites === true}
+          onClick={() => onChange({ ...value, favorites: !value.favorites })}
+        >
+          <Icon name="heart" size={18} filled={value.favorites === true} />
+          Lieblinge
+        </button>
         {active.map((tag) => (
           <button
             key={tag.key}
