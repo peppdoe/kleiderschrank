@@ -17,8 +17,8 @@ function open(path: string) {
 describe('Outfits', () => {
   it('shows an empty state with a way to start', async () => {
     open('/outfits');
-    expect(await screen.findByText(/Noch keine Outfits/)).toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: 'Neues Outfit' }).length).toBeGreaterThan(0);
+    expect(await screen.findByText(/Noch keine Looks/)).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: 'Neuer Look' }).length).toBeGreaterThan(0);
   });
 
   it('creates an outfit from selected items', async () => {
@@ -36,7 +36,7 @@ describe('Outfits', () => {
     await user.click(next);
 
     const save = screen.getByRole('button', { name: 'Speichern' });
-    const name = screen.getByLabelText('Name des Outfits');
+    const name = screen.getByLabelText('Name des Looks');
     expect(save).toBeDisabled();
     await user.type(name, '   ');
     expect(save).toBeDisabled();
@@ -73,7 +73,7 @@ describe('Outfits', () => {
     open('/outfits');
     expect(await screen.findByText('Erscheint im Herbst und Winter')).toBeInTheDocument();
     expect(screen.getByText('Erscheint das ganze Jahr')).toBeInTheDocument();
-    expect(screen.getByText(/Erscheint nie unter/)).toBeInTheDocument();
+    expect(screen.getByText(/taucht der Look unter/)).toBeInTheDocument();
     // Sichtbar steht Text nur in den Sonderfällen, sonst sprechen die Symbole.
     expect(screen.getByText('Ganzjährig')).toBeVisible();
     expect(screen.getByText('Keine gemeinsame Saison')).toBeVisible();
@@ -117,7 +117,7 @@ describe('Outfits', () => {
     await user.click(await screen.findByRole('button', { name: 'Bearbeiten' }));
     expect(await screen.findByText('1 ausgewählt')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Weiter' }));
-    const name = screen.getByLabelText('Name des Outfits');
+    const name = screen.getByLabelText('Name des Looks');
     expect(name).toHaveValue('Alt');
     await user.clear(name);
     await user.type(name, 'Neu');
@@ -131,8 +131,8 @@ describe('Outfits', () => {
     const user = userEvent.setup();
     open(`/outfit/${id}`);
     await user.click(await screen.findByRole('button', { name: 'Löschen' }));
-    await user.click(within(await screen.findByRole('dialog', { name: 'Outfit löschen?' })).getByRole('button', { name: 'Löschen' }));
-    expect(await screen.findByText(/Noch keine Outfits/)).toBeInTheDocument();
+    await user.click(within(await screen.findByRole('dialog', { name: 'Look löschen?' })).getByRole('button', { name: 'Löschen' }));
+    expect(await screen.findByText(/Noch keine Looks/)).toBeInTheDocument();
     expect(await db.outfits.count()).toBe(0);
     expect(await db.items.count()).toBe(1);
   });
@@ -144,7 +144,7 @@ describe('Outfits', () => {
     await user.click(await screen.findByRole('button', { name: 'Oberteil, Blau' }));
     await user.click(screen.getByRole('button', { name: 'Abbrechen' }));
     await user.click(within(await screen.findByRole('dialog', { name: 'Änderungen verwerfen?' })).getByRole('button', { name: 'Verwerfen' }));
-    expect(await screen.findByText(/Noch keine Outfits/)).toBeInTheDocument();
+    expect(await screen.findByText(/Noch keine Looks/)).toBeInTheDocument();
   });
 
   it('keeps selected pieces visible even when a filter hides them', async () => {
@@ -171,6 +171,6 @@ describe('Outfits', () => {
 
   it('shows a hint for an outfit that no longer exists', async () => {
     open('/outfit/gibt-es-nicht');
-    expect(await screen.findByText('Dieses Outfit gibt es nicht mehr.')).toBeInTheDocument();
+    expect(await screen.findByText('Diesen Look gibt es nicht mehr.')).toBeInTheDocument();
   });
 });

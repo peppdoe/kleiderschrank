@@ -14,15 +14,15 @@ export function OutfitsScreen() {
   return (
     <section className="screen-content">
       <header className="page-header">
-        <h1 className="page-header__title">Outfits</h1>
+        <h1 className="page-header__title">Looks</h1>
         <span className="section-meta">{outfits.length > 0 ? `${outfits.length} gespeichert` : ''}</span>
       </header>
 
       {outfits.length === 0 ? (
         <div className="empty">
-          <p>Noch keine Outfits. Kombinier deine Lieblingsteile zu deinem ersten Look.</p>
+          <p>Noch keine Looks. Kombinier deine Lieblingsteile zu deinem ersten.</p>
           <button type="button" className="button" onClick={() => navigate('/outfit/new')}>
-            Neues Outfit
+            Neuer Look
           </button>
         </div>
       ) : (
@@ -46,7 +46,7 @@ export function OutfitsScreen() {
       )}
 
       {outfits.length > 0 && (
-        <button type="button" className="fab" aria-label="Neues Outfit" onClick={() => navigate('/outfit/new')}>
+        <button type="button" className="fab" aria-label="Neuer Look" onClick={() => navigate('/outfit/new')}>
           <Icon name="plus" size={28} />
         </button>
       )}

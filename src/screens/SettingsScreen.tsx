@@ -112,7 +112,7 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
       setPrepared(null);
       setMessage({
         kind: 'ok',
-        text: `Backup eingespielt: ${plural(result.items, 'Teil', 'Teile')}, ${plural(result.outfits, 'Outfit', 'Outfits')}.`,
+        text: `Backup eingespielt: ${plural(result.items, 'Teil', 'Teile')}, ${plural(result.outfits, 'Look', 'Looks')}.`,
       });
     } catch (e) {
       setMessage({ kind: 'error', text: userMessage(e) });
@@ -186,7 +186,7 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
         <h2 className="section-title">Auf diesem iPhone</h2>
         {itemCount !== undefined && outfitCount !== undefined && (
           <p>
-            {`${plural(itemCount, 'Teil', 'Teile')} · ${plural(outfitCount, 'Outfit', 'Outfits')}`}
+            {`${plural(itemCount, 'Teil', 'Teile')} · ${plural(outfitCount, 'Look', 'Looks')}`}
             {usage !== undefined && ` · ${formatUsage(usage)}`}
           </p>
         )}

@@ -63,7 +63,7 @@ describe('Teil-Details', () => {
     await screen.findByRole('button', { name: 'Büro' });
     await user.click(screen.getByRole('button', { name: 'Löschen' }));
     const sheet = await screen.findByRole('dialog', { name: 'Teil löschen?' });
-    expect(sheet).toHaveTextContent('Es wird auch aus 1 Outfit entfernt.');
+    expect(sheet).toHaveTextContent('Es wird auch aus 1 Look entfernt.');
     await user.click(within(sheet).getByRole('button', { name: 'Löschen' }));
     expect(await screen.findByText(/Noch leer hier/)).toBeInTheDocument();
     expect(await db.items.count()).toBe(0);

@@ -35,7 +35,7 @@ export function OutfitDetailScreen({ outfitId, justSaved = false, onNotice }: Ou
   const [confirmingPhoto, setConfirmingPhoto] = useState(false);
 
   if (outfit === undefined || items === undefined || photo === undefined) return null;
-  if (outfit === null) return <NotFound text="Dieses Outfit gibt es nicht mehr." backTo="/outfits" />;
+  if (outfit === null) return <NotFound text="Diesen Look gibt es nicht mehr." backTo="/outfits" />;
 
   async function remove() {
     setConfirming(false);
@@ -74,7 +74,7 @@ export function OutfitDetailScreen({ outfitId, justSaved = false, onNotice }: Ou
       <header className="form-header">
         <a className="text-button text-button--back" href="#/outfits">
           <Icon name="back" size={20} />
-          Outfits
+          Looks
         </a>
       </header>
       {photo ? (
@@ -125,7 +125,7 @@ export function OutfitDetailScreen({ outfitId, justSaved = false, onNotice }: Ou
 
       {confirming && (
         <ConfirmSheet
-          title="Outfit löschen?"
+          title="Look löschen?"
           message={`„${outfit.name}“ wird gelöscht. Die Teile bleiben in deinem Schrank.`}
           confirmLabel="Löschen"
           destructive
@@ -136,7 +136,7 @@ export function OutfitDetailScreen({ outfitId, justSaved = false, onNotice }: Ou
       {confirmingPhoto && (
         <ConfirmSheet
           title="Foto entfernen?"
-          message="Das Foto von dir im Look wird gelöscht. Das Outfit und seine Teile bleiben."
+          message="Das Foto von dir im Look wird gelöscht. Der Look und seine Teile bleiben."
           confirmLabel="Entfernen"
           cancelLabel="Behalten"
           destructive

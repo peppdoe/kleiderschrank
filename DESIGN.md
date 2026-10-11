@@ -312,8 +312,8 @@ The `garment-*` colors are data, not interface: each names a clothing color Lena
 - **Display** (500, 30px, 1.1, -0.01em): the greeting in the name band and page titles.
 - **Label Title** (500, 26px, 1.15): the name on a care label (a piece or an outfit) and in the name-band preview in the settings; one step under Display so it sits inside the stitch.
 - **Title** (500, 22px): sheet titles.
-- **Title Small** (500, 20px, 1.2): centered form headers ("Neues Teil", "Neues Outfit") and section titles in sentence case ("Heute", "Schrank", "In diesen Outfits", "Du", "Backup", "Auf diesem iPhone").
-- **Group Label** (600, 17px): form group and filter-sheet group titles ("Kategorie", "Farbe", "Saison", "Notiz", "Name des Outfits").
+- **Title Small** (500, 20px, 1.2): centered form headers ("Neues Teil", "Neuer Look") and section titles in sentence case ("Heute", "Schrank", "In diesen Looks", "Du", "Backup", "Auf diesem iPhone").
+- **Group Label** (600, 17px): form group and filter-sheet group titles ("Kategorie", "Farbe", "Saison", "Name", "Notiz", "Name des Looks").
 - **Body** (400, 17px, 1.45): base size; buttons, text buttons and link rows at 500, primary at 600. Outfit card names at 500.
 - **Body Small** (400, 15px): notices, chips and tags (tags at 500), section meta, action-bar hints, care-label lines, the toast (500).
 - **Caption** (400, 13px): the tag count badge (600, tabular) and the inline "Gespeichert" confirmation.
@@ -417,7 +417,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 ### Outfit Seasons Line
 - Says when an outfit shows up under "Heute". The seasons are derived from its pieces (every piece with seasons must include the season; pieces without seasons always fit); outfits have no season of their own.
 - **Compact (outfit list):** only the pictograms, plus visible 13px text in the two exceptions ("Ganzjährig", "Keine gemeinsame Saison"); the full sentence stays as visually hidden text and describes the card.
-- Full: 18px ink care pictograms of the matching seasons, 4px apart, then a 15px muted sentence: "Erscheint im Herbst und Winter", "Erscheint das ganze Jahr", or, when the pieces share no season, "Erscheint nie unter „Heute“: Die Teile haben keine gemeinsame Saison." The conflict stays muted, not red; it is a hint, not an error.
+- Full: 18px ink care pictograms of the matching seasons, 4px apart, then a 15px muted sentence: "Erscheint im Herbst und Winter", "Erscheint das ganze Jahr", or, when the pieces share no season, "Die Teile teilen keine Saison, darum taucht der Look unter „Heute“ nicht auf." The conflict stays muted, not red; it is a hint, not an error.
 - Sits under the name label in the outfit list, inside the care label on the outfit detail, and in the editor under the selection strip and under the preview on the naming step, updating live. Hidden when no pieces remain.
 
 ### Outfit Look (collage)

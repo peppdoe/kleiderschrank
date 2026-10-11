@@ -26,7 +26,7 @@ describe('plural', () => {
   it('uses singular only for exactly one', () => {
     expect(plural(1, 'Teil', 'Teile')).toBe('1 Teil');
     expect(plural(0, 'Teil', 'Teile')).toBe('0 Teile');
-    expect(plural(12, 'Outfit', 'Outfits')).toBe('12 Outfits');
+    expect(plural(12, 'Look', 'Looks')).toBe('12 Looks');
   });
 });
 

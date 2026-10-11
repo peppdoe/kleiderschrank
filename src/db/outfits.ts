@@ -9,7 +9,7 @@ export type PhotoChange = PhotoBlobs | null | undefined;
 
 async function normalize(name: string, itemIds: string[]): Promise<{ name: string; itemIds: string[] }> {
   const trimmed = name.trim();
-  if (!trimmed) throw new OutfitValidationError('Bitte gib dem Outfit einen Namen.');
+  if (!trimmed) throw new OutfitValidationError('Gib dem Look noch einen Namen.');
   const unique = [...new Set(itemIds)];
   const existing = await db.items.bulkGet(unique);
   const ids = unique.filter((_, index) => existing[index] !== undefined);

@@ -38,6 +38,6 @@ Jeder Push auf `main` wird automatisch getestet und auf GitHub Pages veröffentl
 - [ ] „+“ → „Foto aufnehmen“: Kamera öffnet sich, Teil lässt sich speichern.
 - [ ] „+“ → „Fotomediathek“: Foto auswählen und speichern; Hochformat-Fotos stehen richtig herum.
 - [ ] Filter nach Kategorie, Farbe, Saison funktionieren.
-- [ ] Outfit erstellen, umbenennen, löschen.
+- [ ] Look erstellen, umbenennen, löschen; Foto von dir im Look hinzufügen.
 - [ ] Flugmodus an → App vom Home-Bildschirm starten → alles sichtbar.
 - [ ] Backup sichern in iCloud Drive; ein Teil löschen; Backup zurückholen → Teil ist wieder da.

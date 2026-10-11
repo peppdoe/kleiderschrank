@@ -3,7 +3,7 @@ import { Icon, type IconName } from './Icon';
 
 const TABS: { id: TabId; label: string; icon: IconName; href: string }[] = [
   { id: 'wardrobe', label: 'Schrank', icon: 'hanger', href: '#/' },
-  { id: 'outfits', label: 'Outfits', icon: 'outfit', href: '#/outfits' },
+  { id: 'outfits', label: 'Looks', icon: 'outfit', href: '#/outfits' },
   { id: 'settings', label: 'Einstellungen', icon: 'settings', href: '#/settings' },
 ];
 

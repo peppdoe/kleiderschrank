@@ -11,7 +11,7 @@ interface ImportSheetProps {
   onCancel: () => void;
 }
 
-const counts = (items: number, outfits: number) => `${plural(items, 'Teil', 'Teile')}, ${plural(outfits, 'Outfit', 'Outfits')}`;
+const counts = (items: number, outfits: number) => `${plural(items, 'Teil', 'Teile')}, ${plural(outfits, 'Look', 'Looks')}`;
 
 /** Bevor ein Backup alles ersetzt: was drin ist, was jetzt da ist, und der Weg, erst zu sichern. */
 export function ImportSheet({ backup, currentItems, currentOutfits, onConfirm, onBackupFirst, onCancel }: ImportSheetProps) {

@@ -133,7 +133,7 @@ describe('Editor: Foto von dir im Look', () => {
     await toNameStep(user);
     await user.upload(screen.getByLabelText('Foto von dir im Look'), selfie());
     expect(await screen.findByRole('img', { name: 'Vorschau: du im Look' })).toBeInTheDocument();
-    await user.type(screen.getByLabelText('Name des Outfits'), 'Spiegel-Look');
+    await user.type(screen.getByLabelText('Name des Looks'), 'Spiegel-Look');
     await user.click(screen.getByRole('button', { name: 'Speichern' }));
     const heading = await screen.findByRole('heading', { name: 'Spiegel-Look' });
     expect(heading).toBeInTheDocument();
@@ -147,7 +147,7 @@ describe('Editor: Foto von dir im Look', () => {
     open(`/outfit/${id}/edit`);
     await user.click(await screen.findByRole('button', { name: 'Weiter' }));
     expect(await screen.findByRole('img', { name: 'Vorschau: du im Look' })).toBeInTheDocument();
-    const name = screen.getByLabelText('Name des Outfits');
+    const name = screen.getByLabelText('Name des Looks');
     await user.clear(name);
     await user.type(name, 'Neu');
     await user.click(screen.getByRole('button', { name: 'Speichern' }));
@@ -188,10 +188,10 @@ describe('Editor: Foto von dir im Look', () => {
     const user = userEvent.setup();
     open('/outfit/new');
     await toNameStep(user);
-    await user.type(screen.getByLabelText('Name des Outfits'), 'Trotzdem');
+    await user.type(screen.getByLabelText('Name des Looks'), 'Trotzdem');
     await user.upload(screen.getByLabelText('Foto von dir im Look'), selfie());
     expect(await screen.findByRole('alert')).toHaveTextContent('Dieses Foto konnte nicht geladen werden');
-    expect(screen.getByLabelText('Name des Outfits')).toHaveValue('Trotzdem');
+    expect(screen.getByLabelText('Name des Looks')).toHaveValue('Trotzdem');
     expect(screen.getByRole('button', { name: 'Speichern' })).toBeEnabled();
   });
 });

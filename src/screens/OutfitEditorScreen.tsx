@@ -50,7 +50,7 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
   }, [existing, loaded]);
 
   if (items === undefined || existingPhoto === undefined || (outfitId && existing === undefined)) return null;
-  if (outfitId && existing === null) return <NotFound text="Dieses Outfit gibt es nicht mehr." backTo="/outfits" />;
+  if (outfitId && existing === null) return <NotFound text="Diesen Look gibt es nicht mehr." backTo="/outfits" />;
 
   const cancelTarget = outfitId ? `/outfit/${outfitId}` : '/outfits';
   const canSave = name.trim().length > 0 && selected.length > 0 && !saving && !processingPhoto;
@@ -63,7 +63,7 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
   const discardSheet = confirmDiscard && (
     <ConfirmSheet
       title="Änderungen verwerfen?"
-      message={outfitId ? 'Deine Änderungen an diesem Outfit gehen verloren.' : 'Das neue Outfit wird nicht gespeichert.'}
+      message={outfitId ? 'Deine Änderungen an diesem Look gehen verloren.' : 'Der neue Look wird nicht gespeichert.'}
       confirmLabel="Verwerfen"
       cancelLabel="Weiter bearbeiten"
       destructive
@@ -122,7 +122,7 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
       <section className="screen-content form">
         <header className="form-header">
           <button type="button" className="text-button" onClick={() => setStep('pick')}>Zurück</button>
-          <h1 className="form-header__title">{outfitId ? 'Outfit bearbeiten' : 'Neues Outfit'}</h1>
+          <h1 className="form-header__title">{outfitId ? 'Look bearbeiten' : 'Neuer Look'}</h1>
         </header>
         {photoUrl ? (
           <img className="photo photo--full look-photo look-photo--draft" src={photoUrl} alt="Vorschau: du im Look" />
@@ -131,7 +131,7 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
         )}
         <OutfitSeasons itemIds={selected} items={items} />
         <label className="field">
-          <span className="section-title">Name des Outfits</span>
+          <span className="section-title">Name des Looks</span>
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="z. B. Uni-Look, Date Night" autoFocus />
         </label>
         <div className="field">
@@ -173,7 +173,7 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
         <button type="button" className="text-button" onClick={cancel}>
           Abbrechen
         </button>
-        <h1 className="form-header__title">{outfitId ? 'Outfit bearbeiten' : 'Neues Outfit'}</h1>
+        <h1 className="form-header__title">{outfitId ? 'Look bearbeiten' : 'Neuer Look'}</h1>
       </header>
       {items.length === 0 ? (
         <div className="empty"><p>Du hast noch keine Teile im Schrank.</p></div>

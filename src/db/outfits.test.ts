@@ -19,7 +19,7 @@ describe('createOutfit', () => {
   it('rejects a name made only of spaces', async () => {
     const a = await seedItem();
     await expect(createOutfit('   ', [a])).rejects.toThrow(OutfitValidationError);
-    await expect(createOutfit('   ', [a])).rejects.toThrow('Bitte gib dem Outfit einen Namen.');
+    await expect(createOutfit('   ', [a])).rejects.toThrow('Gib dem Look noch einen Namen.');
     expect(await countOutfits()).toBe(0);
   });
 

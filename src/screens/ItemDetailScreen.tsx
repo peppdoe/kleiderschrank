@@ -92,7 +92,7 @@ export function ItemDetailScreen({ itemId }: { itemId: string }) {
 
       {outfits && outfits.length > 0 && (
         <>
-          <h2 className="section-title">In diesen Outfits</h2>
+          <h2 className="section-title">In diesen Looks</h2>
           <ul className="link-rows">
             {outfits.map((outfit) => (
               <li key={outfit.id}>
@@ -122,7 +122,7 @@ export function ItemDetailScreen({ itemId }: { itemId: string }) {
           title="Teil löschen?"
           message={
             outfitCount > 0
-              ? `„${title}“ wird gelöscht. Es wird auch aus ${plural(outfitCount, 'Outfit', 'Outfits')} entfernt.`
+              ? `„${title}“ wird gelöscht. Es wird auch aus ${plural(outfitCount, 'Look', 'Looks')} entfernt.`
               : `„${title}“ wird gelöscht.`
           }
           confirmLabel="Löschen"

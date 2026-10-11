@@ -38,7 +38,7 @@ describe('Einstellungen', () => {
     await seedItem();
     await createOutfit('Büro', [a]);
     render(<App />);
-    expect(await screen.findByText('2 Teile · 1 Outfit')).toBeInTheDocument();
+    expect(await screen.findByText('2 Teile · 1 Look')).toBeInTheDocument();
     expect(await screen.findByText('Noch kein Backup')).toBeInTheDocument();
   });
 
@@ -125,10 +125,10 @@ describe('Einstellungen', () => {
       new File([json], 'kleiderschrank-backup-2026-10-03.json', { type: 'application/json' }),
     );
     const sheet = await screen.findByRole('dialog', { name: 'Backup zurückholen?' });
-    expect(sheet).toHaveTextContent('Backup vom 03.10.2026: 1 Teil, 0 Outfits');
-    expect(sheet).toHaveTextContent('Dein aktueller Stand: 2 Teile, 0 Outfits');
+    expect(sheet).toHaveTextContent('Backup vom 03.10.2026: 1 Teil, 0 Looks');
+    expect(sheet).toHaveTextContent('Dein aktueller Stand: 2 Teile, 0 Looks');
     await user.click(within(sheet).getByRole('button', { name: 'Ersetzen' }));
-    expect(await screen.findByRole('status')).toHaveTextContent('Backup eingespielt: 1 Teil, 0 Outfits.');
+    expect(await screen.findByRole('status')).toHaveTextContent('Backup eingespielt: 1 Teil, 0 Looks.');
     expect(await db.items.count()).toBe(1);
     expect((await db.items.toArray())[0].category).toBe('top');
   });

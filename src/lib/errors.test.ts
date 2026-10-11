@@ -18,7 +18,7 @@ describe('errors', () => {
     expect(userMessage(quota)).toMatch(/Speicher auf dem iPhone ist voll/);
     expect(userMessage(new PhotoError('x'))).toBe('Dieses Foto konnte nicht geladen werden, bitte ein anderes wählen.');
     expect(userMessage(new BackupError('x'))).toBe('Das ist keine gültige Kleiderschrank-Sicherung.');
-    expect(userMessage(new OutfitValidationError('Bitte gib dem Outfit einen Namen.'))).toBe('Bitte gib dem Outfit einen Namen.');
+    expect(userMessage(new OutfitValidationError('Gib dem Look noch einen Namen.'))).toBe('Gib dem Look noch einen Namen.');
     expect(userMessage(new Error('boom'))).toBe('Etwas ist schiefgelaufen. Bitte versuche es noch einmal.');
   });
 });
