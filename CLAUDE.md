@@ -45,7 +45,7 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
 
 - Welt „Pflegeetikett“: flaches Namensband in der Farbe der gewählten Saison (Salbei, Apricot, Ocker, Eisblau; Schrift navy) mit gestrichelter Naht (Begrüßung mit Namen + wechselnder Spruch), Saisons als Pflegesymbole, Auswahl und Filter als Karton-Anhänger mit Lochung, Porzellan-Grund `#f5f6f8` (nie Creme).
 - **Sprache: „Look“, nicht „Outfit“.** In der Oberfläche heißt eine Kombination immer Look (Tab „Looks“, „Neuer Look“, „Look gespeichert“). Im Code, in Routen (`#/outfits`) und im Datenmodell bleibt `outfit`.
-- **Teile können einen Namen haben** (optionales Feld `name`, ohne Index wie `favorite`, Backup v1 über `parseItem`). Titel: Name, sonst erste Notizzeile, sonst Kategorie (`itemTitle` in `lib/describe.ts`).
+- **Teile können einen Namen haben** (optionales Feld `name`, ohne Index wie `favorite`, Backup v1 über `parseItem`). Titel: Name, sonst Kategorie (`itemTitle` in `lib/describe.ts`); die Notiz wird nie zum Titel. Im Formular steht nach dem Foto zuerst die Pflicht-Kategorie, Name und Notiz kommen zuletzt.
 - **Lena ist 20.** Ton wie eine Freundin mit Gespür für Mode (siehe `PRODUCT.md`), nie wie Verkäuferin, Amt oder Eltern. Ein Test in `lib/greeting.test.ts` sperrt typische Eltern-/Verkäufer-Floskeln.
 - **Fadenrot nur für:** die eine Hauptaktion (Hinzufügen, Speichern, Backup erstellen), den aktiven Tab, zerstörerische Aktionen, Fehler und Fokus. Nichts anderes wird rot.
 - **Saisonfaden:** Nähte (Namensband, Etiketten), Herz und gewählte Saison tragen die Farbe der gewählten Saison (`--accent`, gesetzt als `data-season` am Root in `App.tsx`). Nie für Aktionen oder Text.

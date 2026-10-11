@@ -12,13 +12,9 @@ describe('describeItem', () => {
 });
 
 describe('itemTitle', () => {
-  it('uses the first line of the note as the name of the piece', () => {
-    expect(itemTitle({ category: 'pants', note: 'Lieblingsjeans\nvon Mama' })).toBe('Lieblingsjeans');
-  });
-
-  it('falls back to the category and shortens very long notes', () => {
+  it('never turns the note into a title: without a name it is the category', () => {
+    expect(itemTitle({ category: 'pants', note: 'Lieblingsjeans\nvon Mama' })).toBe('Hose');
     expect(itemTitle({ category: 'bag', note: '' })).toBe('Tasche');
-    expect(itemTitle({ category: 'bag', note: 'x'.repeat(60) })).toBe(`${'x'.repeat(39)}…`);
   });
 });
 

@@ -129,3 +129,16 @@ describe('Foto-Rahmen', () => {
     expect(screen.getAllByLabelText('Foto wählen')).toHaveLength(1);
   });
 });
+
+describe('Reihenfolge im Formular', () => {
+  it('asks for the required category right after the photo, name and note come last', async () => {
+    window.location.hash = '#/item/new';
+    render(<App />);
+    const category = await screen.findByRole('group', { name: 'Kategorie' });
+    const name = screen.getByLabelText('Name');
+    const note = screen.getByLabelText('Notiz');
+    expect(category.compareDocumentPosition(name) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.getByRole('group', { name: 'Saison' }).compareDocumentPosition(name) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(name.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+});

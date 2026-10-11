@@ -152,11 +152,6 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
         )}
       </div>
 
-      <label className="field">
-        <span className="section-title">Name</span>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="z. B. Grüne Strickjacke" autoComplete="off" />
-      </label>
-
       <h2 className="section-title">
         Kategorie <span className="required">wähl eine</span>
       </h2>
@@ -166,6 +161,11 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
       <h2 className="section-title">Saison</h2>
       <SeasonSymbols label="Saison" selected={seasons} onToggle={(id) => setSeasons(toggleValue(seasons, id))} />
       {seasons.length === 0 && <p className="field-hint">Ohne Saison passt das Teil das ganze Jahr.</p>}
+
+      <label className="field">
+        <span className="section-title">Name</span>
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="z. B. Grüne Strickjacke" autoComplete="off" />
+      </label>
 
       <label className="field">
         <span className="section-title">Notiz</span>

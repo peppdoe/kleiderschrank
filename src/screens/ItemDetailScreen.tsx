@@ -42,7 +42,7 @@ export function ItemDetailScreen({ itemId, chosenSeason }: { itemId: string; cho
 
   const category = labelOf(CATEGORIES, item.category);
   const title = itemTitle(item);
-  const noteRest = item.note.split('\n').slice(item.note.trim() ? 1 : 0).join('\n').trim();
+  const noteRest = item.note.trim();
   const colorText = item.colors.map((c) => labelOf(COLORS, c)).join(', ');
   const outfitCount = outfits?.length ?? 0;
 

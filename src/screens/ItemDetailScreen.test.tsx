@@ -18,8 +18,7 @@ describe('Teil-Details', () => {
     const id = await seedItem({ category: 'top', colors: ['blue', 'white'], seasons: ['summer'], note: 'Leinen' });
     await createOutfit('Strand', [id]);
     open(`/item/${id}`);
-    expect(await screen.findByRole('heading', { name: 'Leinen' })).toBeInTheDocument();
-    expect(screen.getByText('Oberteil')).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Oberteil' })).toBeInTheDocument();
     expect(screen.getByText('Blau, Weiß')).toBeInTheDocument();
     expect(screen.getByText('Sommer')).toBeInTheDocument();
     expect(screen.getByText('Leinen')).toBeInTheDocument();

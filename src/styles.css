@@ -264,6 +264,8 @@ p { margin: 0; }
 .form .section-title { display: block; margin: 26px 0 10px; font-size: 17px; font-weight: 600; }
 .required { margin-left: 8px; font-size: 13px; font-weight: 400; color: var(--muted); }
 .form__photo { display: flex; flex-direction: column; gap: 12px; }
+/* Beim Erfassen ist das Foto kleiner, damit die Pflicht-Kategorie ohne Scrollen erreichbar bleibt */
+.form__photo .photo--full { max-height: 40vh; }
 .field { display: flex; flex-direction: column; gap: 8px; }
 .field input, .field textarea { padding: 12px 14px; border-radius: var(--radius); border: 1px solid var(--line-strong); background: var(--surface); font-size: 17px; }
 .field input::placeholder, .field textarea::placeholder { color: var(--muted); }
