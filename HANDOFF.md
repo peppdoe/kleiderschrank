@@ -13,7 +13,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 - **Erfolg heißt:** Ein Teil ist in Sekunden erfasst, ein passendes Outfit in Sekunden gefunden, und es gehen keine Daten verloren.
 - Produktbeschreibung mit Prinzipien: [PRODUCT.md](PRODUCT.md)
 
-**Live:** https://peppdoe.github.io/kleiderschrank/ (zeigt noch den **alten** Stand, siehe Abschnitt 3)
+**Live:** https://peppdoe.github.io/kleiderschrank/ (aktueller Stand mit Gestaltung „Pflegeetikett“, siehe Abschnitt 3)
 **Repo:** https://github.com/peppdoe/kleiderschrank (öffentlich, enthält keine persönlichen Daten)
 
 ---
@@ -57,10 +57,9 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 3. Aktueller Stand
 
-- **Branch `feature/pflegeetikett`:** 18 Commits vor `main`. Er enthält die komplette neue Gestaltung, alle Verbesserungen aus zwei Kritik-Runden , die Saison-Anzeige für Outfits und die weitergetragene Etikett-Welt (Punkt 2).
-- **`main` / Live-App:** noch der alte Stand (Commit `603d641`, schlichter iOS-Look). **Der Branch ist nicht gemergt und nicht gepusht**, auf Wunsch des Nutzers.
+- **`main` = `origin/main` = `feature/pflegeetikett`** (Commit `453ac87`). Die neue Gestaltung mit allen Kritik-Runden, Saison-Anzeige für Outfits, Looks und Lieblingsteilen ist gemergt und gepusht. Der Deploy vom 11.10.2026 war erfolgreich, und die Live-Seite zeigt den neuen Stand (am 11.10. im Browser geprüft). Bereits installierte Apps holen sich das Update beim nächsten Start. Im Browser kann dafür ein zweites Neuladen nötig sein, weil der Service Worker die alte Version noch einmal ausliefert.
 - **Qualität:**
-  - 174 Tests grün, Build sauber.
+  - 183 Tests grün, `tsc --noEmit` sauber.
   - `impeccable detect --json src index.html` meldet 0 Befunde.
   - Der letzte Finish-Review endete mit **ship**. Er hat aber nur die letzten Korrekturen bewertet, keine komplett neue Gesamtprüfung.
 - **Design-Kritik:** 22/40 (Ausgangsstand) → 26/40 (nach dem ersten Umbau). Die zweite Runde ist umgesetzt, aber noch nicht neu bewertet.
@@ -78,7 +77,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
    - Outfit-Detailansicht: wie die Teil-Detailansicht als Etikett.
    - Einstellungen: das Namensband dort zeigen, wo Lena ihren Namen einträgt.
 3. **Erledigt (11.10.): neue Kritik mit Fokus „Lena ist 20“** → 28/40 (vorher 26). Danach alle fünf Befunde umgesetzt, ohne Rückfrage am Stück: Sprache wie eine Freundin, Saisonfaden-Farben und Blush-Kraft, Abschnittstitel ohne Versalien und flacheres Band, Outfits als Collage/Looks, Lieblingsteile mit Herz und „Lieblinge“-Filter, Speicher-Moment beim Outfit. Ursprünglich: **Optional: neue Kritik** mit `/impeccable critique`, um zu messen, wo die App nach Runde 2 steht (zuletzt 26/40).
-4. **Erst nach ausdrücklicher Freigabe („hochladen“):** `feature/pflegeetikett` per Fast-Forward in `main` übernehmen, pushen, den Deploy prüfen (`gh run list --workflow Deploy`) und die Live-Seite kontrollieren.
+4. **Erledigt (11.10.): hochgeladen.** `feature/pflegeetikett` ist per Fast-Forward in `main`, gepusht und deployt. Die Live-Seite ist kontrolliert. Künftige Änderungen weiterhin erst nach ausdrücklicher Freigabe pushen.
 5. **Nach Lenas Test klären:** Möchte sie „Heute“ nach Anlass/Vibe (Uni, Abends, Cozy …) statt nur nach Saison? Fehlen ihr Kategorien oder Farben (z. B. Jeans, Blazer, Schmuck; Denim, Creme, Oliv, Bordeaux)? Will sie „Heute getragen“ / „Lange nicht getragen“? Braucht jeweils eine Datenmodell-Änderung, deshalb bewusst erst mit ihren echten Wörtern. Die App ist ein Geschenk.
 6. **Abnahme auf Lenas iPhone** mit der Checkliste in `README.md`. Besonders prüfen:
    - Hochformat- und HEIC-Fotos (richtige Drehung)
