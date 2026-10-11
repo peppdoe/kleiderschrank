@@ -108,3 +108,18 @@ describe('setFavorite', () => {
     expect((await getItem(id))!.favorite).toBeFalsy();
   });
 });
+
+describe('item names', () => {
+  it('stores a trimmed name and leaves it out when empty', async () => {
+    const named = await createItem({ ...input, name: '  Grüne Strickjacke ' }, fakePhoto());
+    const plain = await createItem({ ...input, name: '   ' }, fakePhoto());
+    expect((await getItem(named))!.name).toBe('Grüne Strickjacke');
+    expect('name' in (await getItem(plain))!).toBe(false);
+  });
+
+  it('removes the name when it is cleared on update', async () => {
+    const id = await createItem({ ...input, name: 'Alt' }, fakePhoto());
+    await updateItem(id, { ...input, name: '' });
+    expect('name' in (await getItem(id))!).toBe(false);
+  });
+});

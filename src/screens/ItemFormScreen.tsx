@@ -35,6 +35,7 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
   const [colors, setColors] = useState<ColorId[]>([]);
   const [seasons, setSeasons] = useState<SeasonId[]>([]);
   const [note, setNote] = useState('');
+  const [name, setName] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [loaded, setLoaded] = useState(!itemId);
@@ -47,6 +48,7 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
       setColors(existing.colors);
       setSeasons(existing.seasons);
       setNote(existing.note);
+      setName(existing.name ?? '');
       setLoaded(true);
     }
   }, [existing, loaded]);
@@ -83,7 +85,7 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
     savingRef.current = true;
     setSaving(true);
     setError(null);
-    const input = { category, colors, seasons, note };
+    const input = { category, colors, seasons, note, name };
     try {
       if (itemId) {
         await updateItem(itemId, input, photo ?? undefined);
@@ -102,13 +104,14 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
   }
 
   // Hat sich gegenüber dem Ausgangsstand etwas geändert? Dann vor dem Verwerfen fragen.
-  const initial = existing ?? { category: null, colors: [], seasons: [], note: '' };
+  const initial = existing ?? { category: null, colors: [], seasons: [], note: '', name: '' };
   const dirty =
     photo !== null ||
     category !== initial.category ||
     !sameSet(colors, initial.colors) ||
     !sameSet(seasons, initial.seasons) ||
-    note.trim() !== initial.note.trim();
+    note.trim() !== initial.note.trim() ||
+    name.trim() !== (initial.name ?? '').trim();
   const cancel = () => (dirty ? setConfirmDiscard(true) : navigate(cancelTarget, { replace: true }));
 
   const hint = processing
@@ -140,6 +143,11 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
           {hasPhoto ? 'Foto ändern' : 'Foto wählen'}
         </FilePicker>
       </div>
+
+      <label className="field">
+        <span className="section-title">Name</span>
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="z. B. Grüne Strickjacke" autoComplete="off" />
+      </label>
 
       <h2 className="section-title">
         Kategorie <span className="required">wähl eine</span>

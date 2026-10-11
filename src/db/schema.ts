@@ -11,6 +11,8 @@ export interface Item {
   updatedAt: string;
   /** Lieblingsteil. Optional und ohne Index, daher keine neue Schema-Version; fehlt bei älteren Teilen. */
   favorite?: boolean;
+  /** Eigener Name, z. B. „Grüne Strickjacke“. Optional und ohne Index wie `favorite`; fehlt, wenn nicht vergeben. */
+  name?: string;
 }
 
 export interface Photo {

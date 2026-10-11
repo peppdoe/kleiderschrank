@@ -15,7 +15,9 @@ interface ItemGridProps {
 /** Name einer Kachel für Screenreader: Kategorie, Farben und – falls vorhanden – die erste Zeile der Notiz. */
 export function tileLabel(item: Item): string {
   const note = item.note.split('\n')[0].trim();
-  const label = note ? `${describeItem(item)} – ${note}` : describeItem(item);
+  const label = item.name
+    ? `${item.name} – ${describeItem(item)}`
+    : note ? `${describeItem(item)} – ${note}` : describeItem(item);
   return item.favorite ? `${label}, Lieblingsteil` : label;
 }
 

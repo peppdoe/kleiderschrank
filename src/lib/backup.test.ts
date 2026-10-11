@@ -183,3 +183,14 @@ describe('wear photos in the backup', () => {
     await expectRejectedWithoutChanges(JSON.stringify({ ...raw, outfitPhotos: [{ outfitId: outfit, full: '###' }] }));
   });
 });
+
+describe('item names in the backup', () => {
+  it('keeps names through export and import, still as version 1', async () => {
+    const a = await createItem({ category: 'top', colors: [], seasons: [], note: '', name: 'Lieblingsbluse' }, fakePhoto('a'));
+    const json = await exportBackup();
+    expect(JSON.parse(json).version).toBe(1);
+    await clearAll();
+    await importBackup(json, fakeThumb);
+    expect((await db.items.get(a))!.name).toBe('Lieblingsbluse');
+  });
+});

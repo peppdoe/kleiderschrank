@@ -9,8 +9,9 @@ export function describeItem(item: Pick<Item, 'category' | 'colors'>): string {
 
 const TITLE_MAX = 40;
 
-/** Name eines Teils: erste Zeile der Notiz (gekürzt), sonst die Kategorie. */
-export function itemTitle(item: Pick<Item, 'category' | 'note'>): string {
+/** Name eines Teils: der eigene Name, sonst die erste Zeile der Notiz (gekürzt), sonst die Kategorie. */
+export function itemTitle(item: Pick<Item, 'category' | 'note' | 'name'>): string {
+  if (item.name) return item.name;
   const first = item.note.split('\n')[0].trim();
   if (!first) return labelOf(CATEGORIES, item.category);
   return first.length > TITLE_MAX ? `${first.slice(0, TITLE_MAX - 1)}…` : first;

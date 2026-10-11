@@ -10,6 +10,7 @@ export interface ItemInput {
   colors: ColorId[];
   seasons: SeasonId[];
   note: string;
+  name?: string;
 }
 
 export interface PhotoBlobs {
@@ -19,11 +20,14 @@ export interface PhotoBlobs {
 
 function normalize(input: ItemInput): ItemInput {
   if (!isCategoryId(input.category)) throw new Error(`Unbekannte Kategorie: ${String(input.category)}`);
+  const name = input.name?.trim();
   return {
     category: input.category,
     colors: [...new Set(input.colors)].filter(isColorId),
     seasons: [...new Set(input.seasons)].filter(isSeasonId),
     note: input.note.trim(),
+    // Ein leerer Name wird gar nicht gespeichert, so bleibt ein Teil ohne Namen wie bisher.
+    ...(name ? { name } : {}),
   };
 }
 
@@ -43,7 +47,9 @@ export async function updateItem(id: string, input: ItemInput, photo?: PhotoBlob
   await db.transaction('rw', db.items, db.photos, async () => {
     const existing = await db.items.get(id);
     if (!existing) throw new Error(`Teil nicht gefunden: ${id}`);
-    await db.items.put({ ...existing, ...data, updatedAt: new Date().toISOString() });
+    // Den alten Namen nicht übernehmen: fehlt er in den neuen Daten, wurde er gelöscht.
+    const { name: _previousName, ...rest } = existing;
+    await db.items.put({ ...rest, ...data, updatedAt: new Date().toISOString() });
     if (photo) await db.photos.put({ itemId: id, full: photo.full, thumb: photo.thumb });
   });
 }

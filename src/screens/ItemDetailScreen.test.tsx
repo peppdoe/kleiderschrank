@@ -40,6 +40,21 @@ describe('Teil-Details', () => {
     expect(await (await db.photos.get(id))!.full.text()).toBe('photo-full');
   });
 
+  it('gives a piece its own name and shows it on the label', async () => {
+    const id = await seedItem({ category: 'top', note: 'Von Oma' });
+    const user = userEvent.setup();
+    open(`/item/${id}/edit`);
+    const name = await screen.findByLabelText('Name');
+    expect(name).toHaveValue('');
+    await user.type(name, 'Grüne Strickjacke');
+    await user.click(screen.getByRole('button', { name: 'Speichern' }));
+    expect(await screen.findByRole('heading', { name: 'Grüne Strickjacke' })).toBeInTheDocument();
+    expect((await db.items.get(id))!.name).toBe('Grüne Strickjacke');
+
+    await user.click(screen.getByRole('button', { name: 'Bearbeiten' }));
+    expect(await screen.findByLabelText('Name')).toHaveValue('Grüne Strickjacke');
+  });
+
   it('deletes after confirmation and removes the item from outfits', async () => {
     const id = await seedItem();
     const outfitId = await createOutfit('Büro', [id]);

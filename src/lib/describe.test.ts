@@ -41,3 +41,9 @@ describe('sinceBackup', () => {
     expect(sinceBackup('2026-09-01T12:00:00', now)).toBe('am 1.9.2026');
   });
 });
+
+describe('itemTitle with a name', () => {
+  it('prefers the name Lena gave the piece over the note', () => {
+    expect(itemTitle({ category: 'top', note: 'Vintage-Fund', name: 'Grüne Strickjacke' })).toBe('Grüne Strickjacke');
+  });
+});

@@ -55,6 +55,12 @@ describe('ItemGrid', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Oberteil, Blau' }));
     expect(onItemClick).toHaveBeenCalledWith(blueTop);
   });
+
+  it('reads a named piece by its name first', () => {
+    const cardigan = makeItem({ category: 'top', colors: ['green'], name: 'Grüne Strickjacke', note: 'Von Oma' });
+    render(<ItemGrid items={[cardigan]} onItemClick={() => {}} />);
+    expect(screen.getByRole('button', { name: 'Grüne Strickjacke – Oberteil, Grün' })).toBeInTheDocument();
+  });
 });
 
 describe('ItemPhoto', () => {

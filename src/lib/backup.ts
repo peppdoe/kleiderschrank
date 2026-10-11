@@ -76,7 +76,7 @@ const fail = (detail: string): never => { throw new BackupError(`Ungültige Sich
 
 function parseItem(raw: unknown): Item {
   if (!isRecord(raw)) return fail('Teil ist kein Objekt');
-  const { id, category, colors, seasons, note, createdAt, updatedAt, favorite } = raw;
+  const { id, category, colors, seasons, note, createdAt, updatedAt, favorite, name } = raw;
   if (!isText(id) || !id) return fail('Teil ohne ID');
   if (!isCategoryId(category)) return fail(`unbekannte Kategorie ${String(category)}`);
   if (!Array.isArray(colors) || !Array.isArray(seasons)) return fail('Farben/Saisons fehlen');
@@ -87,6 +87,7 @@ function parseItem(raw: unknown): Item {
     seasons: [...new Set(seasons.filter(isSeasonId))],
     // Optionales Feld, Backup bleibt Version 1: ältere Sicherungen haben es nicht.
     ...(favorite === true ? { favorite: true } : {}),
+    ...(isText(name) && name.trim() ? { name: name.trim() } : {}),
   };
 }
 
