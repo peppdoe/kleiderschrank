@@ -60,7 +60,7 @@ describe('Outfits', () => {
     open('/outfits');
     expect(await screen.findByText('Sommer')).toBeInTheDocument();
     expect(screen.getByText('Weg')).toBeInTheDocument();
-    expect(screen.getByText('Keine Teile mehr')).toBeInTheDocument();
+    expect(await screen.findByText('Keine Teile mehr')).toBeInTheDocument();
   });
 
   it('shows in which seasons each outfit appears', async () => {

@@ -319,6 +319,13 @@ p { margin: 0; }
 .today__strip .outfit-preview { height: 168px; width: auto; }
 .today__strip .outfit-look { height: 168px; width: auto; }
 .outfit-preview + .care-label--outfit { margin: -14px 8px 0; }
+.look-photo { width: 100%; max-height: 70vh; }
+.look-photo + .care-label--outfit { margin: -14px 8px 0; }
+.look-photo__actions { display: flex; gap: 24px; margin-top: 6px; }
+.look-photo__actions .quiet-link { display: inline-flex; align-items: center; }
+.look-picker { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 88px; margin-top: 16px; padding: 12px 16px; border: 1.5px dashed var(--line-strong); border-radius: var(--radius); color: var(--muted); font-size: 15px; text-align: center; cursor: pointer; }
+.look-picker:focus-within { outline: 2px solid var(--thread); outline-offset: 2px; }
+.look-picker--busy { cursor: progress; opacity: 0.7; }
 .care-label--outfit { margin: 4px 0 0; }
 .care-label .outfit-seasons { gap: 10px; color: var(--band-ink); opacity: 0.9; }
 .care-label .outfit-seasons__marks { gap: 6px; color: inherit; }
