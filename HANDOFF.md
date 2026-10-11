@@ -1,6 +1,6 @@
 # Übergabe: Kleiderschrank-App für Lena
 
-Stand: 11.10.2026 (spätabends, Runde „offene Punkte“ veröffentlicht und live geprüft). Diese Datei richtet sich an einen neuen Chat ohne Vorwissen. Lies zuerst diese Datei, dann [CLAUDE.md](CLAUDE.md) (Befehle, Regeln, Stolperfallen) und vor jeder Änderung an der Oberfläche [DESIGN.md](DESIGN.md).
+Stand: 11.10.2026 (spätabends). **Die App ist bereit zur Übergabe an Lena**: auf dem iPhone des Auftraggebers komplett getestet, Anleitung und Anleitungsbild liegen bereit. Diese Datei richtet sich an einen neuen Chat ohne Vorwissen. Lies zuerst diese Datei, dann [CLAUDE.md](CLAUDE.md) (Befehle, Regeln, Stolperfallen) und vor jeder Änderung an der Oberfläche [DESIGN.md](DESIGN.md).
 
 ---
 
@@ -59,6 +59,9 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 | **„Speichern und nächstes Teil fotografieren“** als stiller Link über der Formularleiste (nur bei neuen Teilen, nur wenn speicherbar) | Mehrere Teile hintereinander erfassen, ohne den Umweg über den Schrank; ein zweiter roter Knopf hätte die Regel „ein Rot pro Seite“ gebrochen. |
 | **Schrift in rem, Wurzel = iOS-Textgröße** (`-apple-system-body`, nur auf Apple-Touch-Geräten), feste Reihen gedeckelt, Eingaben ≥ 16 px | Kritik: Schrift wuchs nicht mit. Auf dem Mac wäre die Systemgröße 13 px, daher die Einschränkung; unter 16 px zoomt iOS beim Antippen. |
 
+| **Alte Backups löscht die App nicht automatisch**; Dateiname bleibt mit Datum (`kleiderschrank-backup-JJJJ-MM-TT.json`) | Technisch nicht möglich: Nach dem Teilen-Menü hat eine Web-App keinen Zugriff mehr auf die Datei in iCloud Drive. Ein fester Dateiname würde beim Sichern „Ersetzen“ anbieten, aber ein kaputtes Backup könnte das gute überschreiben. Ein Backup mit 100 Teilen ist grob 30–50 MB (geschätzt, nicht mit echten Fotos gemessen). Lena räumt bei Bedarf in der Dateien-App auf. Nutzer am 11.10.: „passt so erstmal“ (auch kein Hinweis in den Einstellungen). |
+| **Übergabe per WhatsApp**: Anleitungsbild + Link statt QR-Code | Wunsch des Nutzers. Das Bild (`docs/uebergabe/Kleiderschrank-Anleitung.png`) zeigt Installation, „Erst installieren, dann loslegen“ und das erste Backup nach 10 Teilen. |
+
 ### Arbeitsweise
 - **TDD:** Erst ein fehlschlagender Test, dann der Code. Vor jedem Commit laufen `npm test` und `npx tsc --noEmit`.
 - **Design-Arbeit über das Impeccable-Plugin:** Kritik, Entscheidungsseite, Umsetzung, unabhängiger Finish-Review, danach `DESIGN.md` aktualisieren.
@@ -68,13 +71,15 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 3. Aktueller Stand (11.10.2026, spätabends)
 
-- **`main` = `origin/main` = Live**, Commit `0cec0c3`. Beide Deploy-Läufe (Funktionen, danach die Testkorrektur) waren erfolgreich.
+- **`main` = `origin/main` = Live.** Alle Deploy-Läufe vom 11.10. waren erfolgreich. Letzte Änderung an der App selbst: oberer Abstand in der installierten App (`259ecff`); danach nur Doku.
 - **Live im Browser-Pane geprüft (nach dem Update):** Der Server liefert das neue Bundle `index-BA4yspRC.js` mit Namensfrage und Rückgängig aus. Erst nach dem **dritten Laden** stellte der Service Worker um, danach erschien „Wie heißt du?“. IndexedDB weiter Version 20 (Dexie v2). Lenas installierte App braucht also ggf. zwei, drei Starts.
 - **Qualität:** 258 Tests grün, zehn volle Durchläufe hintereinander stabil, `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde (CLI und Browser-Overlay auf vier Seiten).
 - **Design-Kritik (Verlauf):** 22 → 26 → 28 → 28 → 26 → **28/40** (Runde 5, 11.10., `.impeccable/critique/2026-10-11T11-54-08Z__src.md`). Ohne Sub-Agenten im selben Kontext gelaufen und im Bericht so gekennzeichnet. Der Befund „Rückgängig-Zeitfenster“ ist danach behoben.
 - **Branches:** nur `main`. `feature/pflegeetikett` und `feature/offene-punkte` sind gemergt und gelöscht. Neue Arbeit auf einem neuen Feature-Branch beginnen.
 - **Datenmodell:** unverändert Dexie **Version 2**, Backup **v1**.
-- **Abnahme auf echtem iPhone:** noch **nicht** erfolgt (Checkliste in [README.md](README.md), um die neuen Funktionen ergänzt).
+- **Gerätetest durch den Auftraggeber (iPhone 14 Pro, iOS 27): bestanden.** Mit der Demo-Sicherung (`scripts/demo-backup.mjs`) und der Testliste aus dem Chat hat alles funktioniert: Saison-Wechsel, Filter, Teil ansehen/bearbeiten, Löschen + Rückgängig, „Speichern und nächstes Teil“, Look anlegen, Tragebild, Textgröße, Dunkelmodus, Offline, Backup nach iCloud Drive und zurück. Gefunden und behoben wurde dabei nur die angeschnittene Begrüßung (siehe Abschnitt 6).
+- **Auf Lenas eigenem iPhone:** noch nicht. Sie startet dort mit leerem Schrank; die Testdaten liegen nur auf dem Gerät des Auftraggebers.
+- **Lenas Anleitung** in der [README.md](README.md) („Für Lena“) ist aktuell: erst installieren, Teilen ggf. unter •••, Namensfrage, Rückgängig, mehrere Teile hintereinander, Textgröße, erstes Backup nach 10 Teilen.
 
 ### Was in der Runde „offene Punkte“ dazukam
 
@@ -102,15 +107,16 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 4. Offene Aufgaben (in Reihenfolge)
 
-1. **Abnahme auf Lenas iPhone** (siehe Punkt 3), danach erst weiterbauen. Empfehlung an den Nutzer war: die Kritikpunkte bis nach Lenas Test zurückstellen.
+1. **Übergabe an Lena** (macht der Auftraggeber): Anleitungsbild `docs/uebergabe/Kleiderschrank-Anleitung.png` und den Link `https://peppdoe.github.io/kleiderschrank/` per WhatsApp schicken. Danach erst weiterbauen, mit ihren echten Rückmeldungen.
 2. **Aus Kritik Runde 5 (28/40), noch offen, zur Auswahl durch den Nutzer:**
    - Keine Suche nach Namen oder Notizen. Bei 100+ Teilen hilft nur der Filter.
    - Die Saison-Reihe auf dem Band ist als Regler nicht selbsterklärend.
    - Hilfe gibt es nur als Einzeiler (Installation, Backup).
    - Unter „Heute“ wird der Name des angeschnittenen zweiten Looks mitten im Wort abgeschnitten (P3).
-3. **Abnahme auf Lenas iPhone** mit der Checkliste in `README.md`. Besonders: Hochformat- und HEIC-Fotos (Drehung), Kamera, Offline-Start, Backup nach iCloud Drive und zurück (inkl. Tragebild), Namensfrage, Saison-Regler, Tragebild als Spiegel-Selfie, **iOS-Textgröße**, **Rückgängig**, **mehrere Teile hintereinander**.
+3. **Falls Probleme auf Lenas iPhone auftauchen**, zuerst die Checkliste in `README.md` durchgehen. Besonders: Hochformat- und HEIC-Fotos (Drehung), Kamera, Offline-Start, Backup nach iCloud Drive und zurück (inkl. Tragebild), Namensfrage, Saison-Regler, Tragebild als Spiegel-Selfie, **iOS-Textgröße**, **Rückgängig**, **mehrere Teile hintereinander**.
 4. **Nach Lenas Test klären:** „Heute“ nach Anlass/Vibe (Uni, Abends, Cozy …)? Fehlende Kategorien/Farben (Jeans, Blazer, Schmuck; Denim, Creme, Oliv, Bordeaux)? „Heute getragen“ / „Lange nicht getragen“? Eigene Saison für Looks? Jeweils Datenmodell-Änderung, deshalb erst mit ihren echten Wörtern. Die App ist ein Geschenk.
-5. Nach der Abnahme: Probleme beheben, `CLAUDE.md` und `DESIGN.md` nachziehen.
+5. Nach Lenas Rückmeldungen: Probleme beheben, `CLAUDE.md` und `DESIGN.md` nachziehen.
+6. **Zurückgestellt (Nutzer: „passt so erstmal“):** Hinweis in den Einstellungen, dass alte Backups in der Dateien-App gelöscht werden können.
 
 **Arbeitsweise, die sich bewährt hat:** Feature-Branch → TDD (erst fehlschlagender Test) → Sichtprüfung im Browser-Pane (375×812, hell und dunkel) → `impeccable detect` → DESIGN.md/CLAUDE.md nachziehen → Commit. Größere Features über Brainstorming → Spec → Plan → Umsetzung. **Mergen und Pushen nach `main` nur nach ausdrücklicher Freigabe** („hochladen“).
 
@@ -138,6 +144,9 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 | `src/components/` | u. a. `Toast` (inkl. `useNoticeTimer`, Rückgängig), `NameAsk` (Namensfrage beim ersten Start), `LabelBand`, `SeasonSymbols`, `FilterTags`, `FilterSheet`, `SwatchGroup`, `Sheet`, `ConfirmSheet`, `ImportSheet`, `ItemGrid`, `OutfitLook`, `OutfitPhotoPicker`, `DetailBar`, `Toast`, `Icon` (eigene SVG-Symbole) |
 | `src/screens/` | Schrank, Teil-Formular/-Detail, Looks (Dateien heißen `Outfit…`), Look-Editor/-Detail, Einstellungen |
 | `src/styles.css` | Gesamte Gestaltung inkl. Dark Mode |
+| `docs/uebergabe/` | Anleitungsbild für Lena (PNG, 1080×1920) und seine Quelle `anleitung.html` (Pflegeetikett-Stil, Jost über den Dev-Server). Neu aufnehmen: Dev-Server starten, dann `node scripts/shot.mjs "http://localhost:5173/kleiderschrank/@fs/<absoluter Pfad>/docs/uebergabe/anleitung.html" <ziel.png> 540 960 2` |
+| `scripts/demo-backup.mjs` | Erzeugt eine Demo-Sicherung mit Schaubild-Fotos (14 Teile, 5 Looks, 1 Tragebild) zum Testen auf dem iPhone: `node scripts/demo-backup.mjs "$(pwd)" <ziel.json>`. Braucht `sharp` (liegt in `node_modules`). |
+| `scripts/shot.mjs` | Nimmt eine Seite mit Edge headless in exakter Größe auf (`<url> <out.png> <breite> <höhe> <skalierung>`). |
 | `.github/workflows/deploy.yml` | Test, Build, Deploy auf GitHub Pages |
 | `.claude/launch.json` | Dev-/Preview-Server für das Browser-Fenster |
 | `.impeccable/review/` | Review-Screenshots (nicht versioniert) |
@@ -152,7 +161,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 6. Bekannte Probleme und Stolperfallen
 
-- **Nicht auf echtem iPhone getestet.** Ob EXIF-Drehung, HEIC, Teilen-Menü, Download in der Home-Bildschirm-App und `navigator.storage.persist()` wirklich funktionieren, ist offen.
+- **Auf echtem iPhone getestet (Auftraggeber, iPhone 14 Pro, iOS 27).** Offen bleibt nur Lenas eigenes Gerät, etwa ältere iOS-Version oder volle iCloud.
 - **Safari und die Home-Bildschirm-App haben getrennte Speicher.** Daten aus Safari werden nicht übernommen. Die App weist darauf hin. Lena muss zuerst installieren, dann erfassen.
 - **Ältere Vorschaubilder sind quadratisch** (vor der 3:4-Umstellung erfasst). Sie werden zugeschnitten angezeigt und können leicht unscharf wirken. Betrifft nur Teile, die Lena eventuell schon mit der alten Live-Version erfasst hat.
 - **Bash-Werkzeug und deutsche Anführungszeichen/Backticks:** Inline-`node -e`- oder Heredoc-Befehle mit „“, `’` oder Backticks scheitern oft. Änderungen deshalb mit dem Edit/Write-Werkzeug oder über ein `.cjs`-Skript in einer Datei machen.
@@ -167,7 +176,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 - **Bash-Heredocs mit `\n` in Template-Strings** gehen in Node-Skripten oft schief (der Ersatztext passt dann nicht). Mehrzeilige Code-Ersetzungen mit dem Edit-Werkzeug machen oder Zeilen per `[...].join('\n')` zusammensetzen.
 - **Screenshots im Browser-Pane hinken manchmal einen Schritt hinterher** (zeigen noch die vorige Seite). Nach `navigate` kurz warten oder den Screenshot einzeln wiederholen.
 - **Alter Service Worker auf `localhost:4173`** (Preview) kann eine uralte Version ausliefern. Dann im Pane `navigator.serviceWorker.getRegistrations()` abmelden, `caches` leeren und neu laden. Der Preview-Port hat eine eigene, leere Datenbank – gut, um den ersten Start zu prüfen.
-- **Demo-Daten** liegen in der IndexedDB von `localhost:5173` (12 Teile, 3 Looks, ein Look mit Demo-Tragebild). Frische Demo-Daten erzeugt `node scripts/capture-review.mjs <ordner>` in einem eigenen Edge-Profil.
+- **Demo-Daten:** In der IndexedDB von `localhost:5173` (Browser-Pane) liegt die Demo-Sicherung (14 Teile, 5 Looks). Für das iPhone erzeugt `scripts/demo-backup.mjs` eine Datei zum Einspielen; Review-Aufnahmen mit eigenen Demo-Daten macht `node scripts/capture-review.mjs <ordner>`. Im Pane lässt sich eine Sicherung direkt einspielen: `importBackup(text, makeThumb)` aus `lib/backup.ts` / `lib/image.ts`, Datei per `fetch('/kleiderschrank/@fs/<absoluter Pfad>')`.
 - **Oberer Rand in der installierten App (beobachtet auf iOS 27):** iOS blendet unter der Statusleiste weich aus, bis etwa 20pt unter den Sicherheitsbereich. Auf dem iPhone 14 Pro des Auftraggebers wirkte die Begrüßung dadurch oben angeschnitten. Deshalb gilt in `display-mode: standalone` ein oberer Abstand von Sicherheitsbereich + 32px statt + 12px. Am 11.10. auf dem iPhone 14 Pro (iOS 27) bestätigt: Die Begrüßung ist jetzt ganz sichtbar.
 - **Fest positionierte Leisten:** Detail-Leiste (über der Tab-Leiste) und Formular-Leiste (ganz unten) sind `position: fixed`; `.app` bzw. `.app--form` reservieren unten Platz. Neue Elemente am Seitenende darauf prüfen.
 - **Testlauf in Befehlsketten:** `npm test | grep …` meldet Erfolg, auch wenn Tests fehlschlagen (so ist am 11.10. einmal mit einem roten Test gepusht worden; der Deploy hat es abgefangen). Vor einem Push `npm test` allein laufen lassen oder `set -o pipefail` setzen und die Zeile „Tests … passed“ lesen.

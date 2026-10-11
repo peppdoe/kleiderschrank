@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anleitung Kleiderschrank</title>
+<style>
+  @font-face {
+    font-family: 'Jost';
+    src: url('/kleiderschrank/@fs/C:/Claude Projekte/Kleiderschrank App Lena/node_modules/@fontsource-variable/jost/files/jost-latin-wght-normal.woff2') format('woff2');
+    font-weight: 100 900;
+  }
+  :root {
+    --ground: #f5f6f8; --surface: #ffffff; --ink: #1f2a44; --muted: #56617a; --line: #d8dce5;
+    --band: #f6e3c8; --stitch: #c98a3e; --kraft-soft: #f2e4db; --kraft-ink: #2e1f19; --thread: #b8322a;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 540px; height: 960px; background: var(--ground); color: var(--ink); font-family: 'Jost', sans-serif; }
+  body { padding: 34px 28px 28px; display: flex; flex-direction: column; gap: 22px; }
+
+  .band { position: relative; background: var(--band); border-radius: 4px; padding: 26px 24px 24px; text-align: center; box-shadow: 0 6px 18px rgba(31, 42, 68, 0.18); }
+  .band::before { content: ''; position: absolute; inset: 8px; border: 1.5px dashed var(--stitch); border-radius: 2px; }
+  .band__icon { display: block; margin: 0 auto 6px; }
+  .band h1 { font-size: 38px; font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; }
+  .band p { margin-top: 6px; font-size: 19px; opacity: 0.9; }
+
+  h2 { font-size: 22px; font-weight: 500; }
+  ol { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
+  li { display: grid; grid-template-columns: 38px 1fr; gap: 14px; align-items: start; }
+  .num { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--ink); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; }
+  .step { font-size: 20px; line-height: 1.3; padding-top: 5px; }
+  .step b { font-weight: 600; }
+  .step small { display: block; margin-top: 3px; font-size: 16px; color: var(--muted); line-height: 1.35; }
+  .inline { display: inline-block; vertical-align: -4px; }
+
+  .label { position: relative; border-radius: 4px; padding: 18px 20px 18px; }
+  .label::before { content: ''; position: absolute; inset: 7px; border: 1.5px dashed var(--stitch); border-radius: 2px; }
+  .label--important { background: var(--band); }
+  .label--backup { background: var(--kraft-soft); color: var(--kraft-ink); }
+  .label strong { display: block; font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .label span { font-size: 17px; line-height: 1.4; }
+
+  footer { margin-top: auto; text-align: center; font-size: 20px; font-weight: 500; }
+  footer svg { vertical-align: -4px; margin-left: 4px; }
+</style>
+</head>
+<body>
+  <header class="band">
+    <svg class="band__icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6.5a2 2 0 1 1 2.8 1.8c-.5.3-.8.7-.8 1.3v1.2M12 10.8 3.6 16.6c-.9.6-.5 1.9.6 1.9h15.6c1.1 0 1.5-1.3.6-1.9L12 10.8Z"/></svg>
+    <h1>Hallo Lena</h1>
+    <p>Dein Kleiderschrank fürs iPhone ist da.</p>
+  </header>
+
+  <section>
+    <h2>So kommt er auf dein iPhone</h2>
+    <ol>
+      <li><span class="num">1</span><p class="step">Den Link in <b>Safari</b> öffnen<small>Öffnet er sich in einem anderen Browser: Link kopieren und in Safari einfügen.</small></p></li>
+      <li><span class="num">2</span><p class="step">Auf <b>Teilen</b> tippen
+        <svg class="inline" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M7 10H5.5A1.5 1.5 0 0 0 4 11.5v8A1.5 1.5 0 0 0 5.5 21h13a1.5 1.5 0 0 0 1.5-1.5v-8a1.5 1.5 0 0 0-1.5-1.5H17"/></svg>
+        <small>Steckt es nicht unten in der Leiste, erst auf ••• tippen.</small></p></li>
+      <li><span class="num">3</span><p class="step"><b>„Zum Home-Bildschirm“</b> → <b>Hinzufügen</b></p></li>
+      <li><span class="num">4</span><p class="step">Ab jetzt nur noch über das neue Symbol öffnen<small>Beim ersten Start fragt die App nach deinem Namen.</small></p></li>
+    </ol>
+  </section>
+
+  <div class="label label--important">
+    <strong>Erst installieren, dann loslegen</strong>
+    <span>Was du in Safari anlegst, kommt nicht mit in die App auf dem Home-Bildschirm.</span>
+  </div>
+
+  <div class="label label--backup">
+    <strong>Nach den ersten 10 Teilen: Backup</strong>
+    <span>Einstellungen → Backup erstellen → Backup sichern → In Dateien sichern → iCloud Drive. Deine Fotos liegen nur auf deinem iPhone.</span>
+  </div>
+
+  <footer>Viel Spaß beim Stylen
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="#c98a3e" stroke="#1f2a44" stroke-width="1.5" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.6 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10Z"/></svg>
+  </footer>
+</body>
+</html>

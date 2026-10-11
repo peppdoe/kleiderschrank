@@ -109,5 +109,6 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter (Saison = Heute-Regler), Fot
 
 Die vollständige, geordnete Liste steht in `HANDOFF.md` (Abschnitt 4). Kurz:
 
-- Abnahme auf Lenas echtem iPhone: Checkliste in `README.md`, besonders Hochformat-/HEIC-Fotos, Tragebild als Spiegel-Selfie und Backup über iCloud Drive.
+- Gerätetest auf dem iPhone des Auftraggebers (14 Pro, iOS 27) bestanden. Als Nächstes übergibt er die App an Lena (Anleitungsbild in `docs/uebergabe/`, Link per WhatsApp); danach mit ihren Rückmeldungen weiterbauen.
+- Testen auf dem iPhone: `scripts/demo-backup.mjs` erzeugt eine Demo-Sicherung zum Einspielen über „Backup zurückholen“.
 - Aus der Kritik Runde 5 (28/40): keine Suche nach Namen/Notizen, Saison-Reihe als Regler nicht selbsterklärend, Hilfe nur als Einzeiler.
