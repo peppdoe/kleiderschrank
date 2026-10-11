@@ -23,6 +23,14 @@ export function centerCrop(width: number, height: number, ratio: number): { sx: 
   return { sx: 0, sy: Math.floor((height - sh) / 2), sw: width, sh };
 }
 
+export type CropAnchor = 'center' | 'top';
+export interface CropOptions { anchor?: CropAnchor }
+
+/** Wie centerCrop, aber oben bündig: bei Spiegel-Selfies bleibt der Kopf im Bild. */
+export function topCrop(width: number, height: number, ratio: number): { sx: number; sy: number; sw: number; sh: number } {
+  return { ...centerCrop(width, height, ratio), sy: 0 };
+}
+
 type Source = ImageBitmap | HTMLImageElement;
 
 async function decode(blob: Blob): Promise<Source> {
@@ -79,30 +87,31 @@ function draw(
   });
 }
 
-function drawThumb(source: Source, width: number, height: number): Promise<Blob> {
-  const { sx, sy, sw, sh } = centerCrop(width, height, THUMB_WIDTH / THUMB_HEIGHT);
+function drawThumb(source: Source, width: number, height: number, anchor: CropAnchor): Promise<Blob> {
+  const crop = anchor === 'top' ? topCrop : centerCrop;
+  const { sx, sy, sw, sh } = crop(width, height, THUMB_WIDTH / THUMB_HEIGHT);
   return draw(source, sx, sy, sw, sh, THUMB_WIDTH, THUMB_HEIGHT);
 }
 
-export async function processPhoto(file: Blob): Promise<PhotoBlobs> {
+export async function processPhoto(file: Blob, { anchor = 'center' }: CropOptions = {}): Promise<PhotoBlobs> {
   const source = await decode(file);
   try {
     const { width, height } = sizeOf(source);
     if (!width || !height) throw new PhotoError('Foto hat keine Größe');
     const target = fitWithin(width, height, FULL_MAX);
     const full = await draw(source, 0, 0, width, height, target.width, target.height);
-    const thumb = await drawThumb(source, width, height);
+    const thumb = await drawThumb(source, width, height, anchor);
     return { full, thumb };
   } finally {
     release(source);
   }
 }
 
-export async function makeThumb(full: Blob): Promise<Blob> {
+export async function makeThumb(full: Blob, { anchor = 'center' }: CropOptions = {}): Promise<Blob> {
   const source = await decode(full);
   try {
     const { width, height } = sizeOf(source);
-    return await drawThumb(source, width, height);
+    return await drawThumb(source, width, height, anchor);
   } finally {
     release(source);
   }

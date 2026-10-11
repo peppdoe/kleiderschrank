@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { FULL_MAX, THUMB_HEIGHT, THUMB_WIDTH, centerCrop, fitWithin } from './image';
+import { FULL_MAX, THUMB_HEIGHT, THUMB_WIDTH, centerCrop, fitWithin, topCrop } from './image';
 
 describe('fitWithin', () => {
   it('scales a 48 MP iPhone photo down to 1200 px on the long edge', () => {
@@ -37,5 +37,19 @@ describe('thumbnail size', () => {
   it('is portrait 3:4 so the grid tiles stay sharp', () => {
     expect(THUMB_WIDTH / THUMB_HEIGHT).toBeCloseTo(3 / 4);
     expect(THUMB_WIDTH).toBeGreaterThanOrEqual(330);
+  });
+});
+
+describe('topCrop', () => {
+  it('keeps the head of a tall mirror selfie (9:16)', () => {
+    expect(topCrop(1080, 1920, 3 / 4)).toEqual({ sx: 0, sy: 0, sw: 1080, sh: 1440 });
+  });
+
+  it('centres a landscape photo horizontally like centerCrop', () => {
+    expect(topCrop(4032, 3024, 3 / 4)).toEqual(centerCrop(4032, 3024, 3 / 4));
+  });
+
+  it('keeps an exact 3:4 photo whole', () => {
+    expect(topCrop(3024, 4032, 3 / 4)).toEqual({ sx: 0, sy: 0, sw: 3024, sh: 4032 });
   });
 });
