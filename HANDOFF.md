@@ -1,6 +1,6 @@
 # Übergabe: Kleiderschrank-App für Lena
 
-Stand: 11.10.2026 (spätabends). **Die App ist bereit zur Übergabe an Lena**: auf dem iPhone des Auftraggebers komplett getestet, zuletzt kam noch die Hell/Dunkel-Auswahl dazu; beide Anleitungsbilder liegen bereit. Diese Datei richtet sich an einen neuen Chat ohne Vorwissen. Lies zuerst diese Datei, dann [CLAUDE.md](CLAUDE.md) (Befehle, Regeln, Stolperfallen) und vor jeder Änderung an der Oberfläche [DESIGN.md](DESIGN.md).
+Stand: 11.10.2026 (spätabends). **Die App ist bereit zur Übergabe an Lena**: auf dem iPhone des Auftraggebers komplett getestet, zuletzt kamen noch die Hell/Dunkel-Auswahl und die wechselnde Begrüßung dazu; beide Anleitungsbilder liegen bereit. Diese Datei richtet sich an einen neuen Chat ohne Vorwissen. Lies zuerst diese Datei, dann [CLAUDE.md](CLAUDE.md) (Befehle, Regeln, Stolperfallen) und vor jeder Änderung an der Oberfläche [DESIGN.md](DESIGN.md).
 
 ---
 
@@ -72,13 +72,13 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 3. Aktueller Stand (11.10.2026, spätabends)
 
-- **`main` = `origin/main` = Live** (`9758300`). Alle Deploy-Läufe vom 11.10. waren erfolgreich. Letzte Änderung an der App: **Hell/Dunkel-Auswahl** in den Einstellungen (siehe unten), davor der obere Abstand in der installierten App (`259ecff`).
+- **Live** ist `e4a2057`. Alle Deploy-Läufe vom 11.10. waren erfolgreich. Letzte Änderungen an der App: **wechselnde Begrüßung** (`e4a2057`), davor **Hell/Dunkel-Auswahl** (`9758300`) und der obere Abstand in der installierten App (`259ecff`). Lokal liegen danach nur Doku-Commits (Regex-Hinweis in `CLAUDE.md`, diese Übergabe), die beim nächsten Upload mitgehen.
 - **Live im Browser-Pane geprüft (nach dem Update):** Der Server liefert das neue Bundle `index-BA4yspRC.js` mit Namensfrage und Rückgängig aus. Erst nach dem **dritten Laden** stellte der Service Worker um, danach erschien „Wie heißt du?“. IndexedDB weiter Version 20 (Dexie v2). Lenas installierte App braucht also ggf. zwei, drei Starts.
-- **Qualität:** 264 Tests grün (die zehn vollen Durchläufe nach der Testkorrektur waren mit 258 Tests stabil), `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde (CLI und Browser-Overlay auf vier Seiten).
+- **Qualität:** 269 Tests grün (die zehn vollen Durchläufe nach der Testkorrektur waren mit 258 Tests stabil), `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde (CLI und Browser-Overlay auf vier Seiten).
 - **Design-Kritik (Verlauf):** 22 → 26 → 28 → 28 → 26 → **28/40** (Runde 5, 11.10., `.impeccable/critique/2026-10-11T11-54-08Z__src.md`). Ohne Sub-Agenten im selben Kontext gelaufen und im Bericht so gekennzeichnet. Der Befund „Rückgängig-Zeitfenster“ ist danach behoben.
 - **Branches:** nur `main`. Alle Feature-Branches des 11.10. sind gemergt und gelöscht. Neue Arbeit auf einem neuen Feature-Branch beginnen.
 - **Datenmodell:** unverändert Dexie **Version 2**, Backup **v1**.
-- **Gerätetest durch den Auftraggeber (iPhone 14 Pro, iOS 27): bestanden.** Mit der Demo-Sicherung (`scripts/demo-backup.mjs`) und der Testliste aus dem Chat hat alles funktioniert: Saison-Wechsel, Filter, Teil ansehen/bearbeiten, Löschen + Rückgängig, „Speichern und nächstes Teil“, Look anlegen, Tragebild, Textgröße, Dunkelmodus, Offline, Backup nach iCloud Drive und zurück. Gefunden und behoben wurde dabei nur die angeschnittene Begrüßung (siehe Abschnitt 6). **Die Hell/Dunkel-Auswahl kam erst danach** und ist auf dem iPhone noch nicht geprüft.
+- **Gerätetest durch den Auftraggeber (iPhone 14 Pro, iOS 27): bestanden.** Mit der Demo-Sicherung (`scripts/demo-backup.mjs`) und der Testliste aus dem Chat hat alles funktioniert: Saison-Wechsel, Filter, Teil ansehen/bearbeiten, Löschen + Rückgängig, „Speichern und nächstes Teil“, Look anlegen, Tragebild, Textgröße, Dunkelmodus, Offline, Backup nach iCloud Drive und zurück. Gefunden und behoben wurde dabei nur die angeschnittene Begrüßung (siehe Abschnitt 6). **Hell/Dunkel-Auswahl und wechselnde Begrüßung kamen erst danach** und sind auf dem iPhone noch nicht geprüft.
 - **Auf Lenas eigenem iPhone:** noch nicht. Sie startet dort mit leerem Schrank; die Testdaten liegen nur auf dem Gerät des Auftraggebers.
 - **Lenas Anleitung** in der [README.md](README.md) („Für Lena“) ist aktuell: erst installieren, Teilen ggf. unter •••, Namensfrage, Rückgängig, mehrere Teile hintereinander, Hell/Dunkel, Textgröße, erstes Backup nach 10 Teilen. Die beiden Bilder in `docs/uebergabe/` erwähnen Hell/Dunkel nicht (bewusst knapp gehalten).
 
@@ -118,7 +118,9 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 4. Offene Aufgaben (in Reihenfolge)
 
-1. **Hell/Dunkel kurz auf dem iPhone prüfen** (Auftraggeber): Einstellungen → Darstellung → „Dunkel“, App schließen und neu öffnen (bleibt dunkel). Dann „Automatisch“, im Kontrollzentrum den Dunkelmodus umschalten, zurück in die App (zieht mit).
+1. **Kurz auf dem iPhone prüfen** (Auftraggeber), nach ein, zwei Neustarts der App:
+   - Hell/Dunkel: Einstellungen → Darstellung → „Dunkel“, App schließen und neu öffnen (bleibt dunkel). Dann „Automatisch“, im Kontrollzentrum den Dunkelmodus umschalten, zurück in die App (zieht mit).
+   - Begrüßung: Die App ein paarmal neu öffnen, die Begrüßung wechselt (tagsüber Hallo/Hey/Hi). Nach 23 Uhr steht „Noch wach, …?“ in einer Zeile im Band.
 2. **Übergabe an Lena** (macht der Auftraggeber): die beiden Bilder in `docs/uebergabe/` (Installation, „So funktioniert’s“) und den Link `https://peppdoe.github.io/kleiderschrank/` per WhatsApp schicken. Danach erst weiterbauen, mit ihren echten Rückmeldungen.
 3. **Aus Kritik Runde 5 (28/40), noch offen, zur Auswahl durch den Nutzer:**
    - Keine Suche nach Namen oder Notizen. Bei 100+ Teilen hilft nur der Filter.
@@ -193,6 +195,8 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 - **Oberer Rand in der installierten App (beobachtet auf iOS 27):** iOS blendet unter der Statusleiste weich aus, bis etwa 20pt unter den Sicherheitsbereich. Auf dem iPhone 14 Pro des Auftraggebers wirkte die Begrüßung dadurch oben angeschnitten. Deshalb gilt in `display-mode: standalone` ein oberer Abstand von Sicherheitsbereich + 32px statt + 12px. Am 11.10. auf dem iPhone 14 Pro (iOS 27) bestätigt: Die Begrüßung ist jetzt ganz sichtbar.
 - **Fest positionierte Leisten:** Detail-Leiste (über der Tab-Leiste) und Formular-Leiste (ganz unten) sind `position: fixed`; `.app` bzw. `.app--form` reservieren unten Platz. Neue Elemente am Seitenende darauf prüfen.
 - **Testlauf in Befehlsketten:** `npm test | grep …` meldet Erfolg, auch wenn Tests fehlschlagen (so ist am 11.10. einmal mit einem roten Test gepusht worden; der Deploy hat es abgefangen). Vor einem Push `npm test` allein laufen lassen oder `set -o pipefail` setzen und die Zeile „Tests … passed“ lesen.
+- **Begrüßung in Tests:** Sie wird beim Öffnen ausgelost und nachts zur Frage („Noch wach, Lena?“). Prüfungen auf den Namen deshalb mit `/, Lena\??$/`, eine bestimmte Begrüßung nur mit fester Uhrzeit (`vi.setSystemTime`) und über `titlePick` in `greetingFor`.
+- **Backslashes in Ersetz-Skripten:** Bei Node-Skripten aus einem Bash-Heredoc ging am 11.10. mehrfach der Backslash in Regex-Texten verloren (`\??` wurde `??`). Regexe mit Backslash daher mit dem Edit-Werkzeug ändern und danach per `grep` prüfen.
 - **Ansagebereich in Tests:** `role="status"` ist immer eingehängt; `findByRole('status')` kehrt sofort zurück. Auf Text immer per `waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(…))` warten.
 - **Fokus im Browser-Pane:** Das Pane-Fenster hat keinen Fokus, ein programmatisches `focus()` löst dort keine Fokus-Ereignisse aus. Für Fokus-Verhalten Unit-Tests nutzen, im Pane per `hover` (echter Zeiger) prüfen.
 - **Impeccable-Live-Server** (`live-server --background`) meldet seinen Port nicht zuverlässig und blockiert die Bash; Port per `Get-NetTCPConnection` finden (zuletzt 8400), danach den Prozess beenden.
