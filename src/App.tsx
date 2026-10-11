@@ -78,7 +78,7 @@ export default function App() {
   let screen: ReactElement;
   switch (route.name) {
     case 'item':
-      screen = <ItemDetailScreen key={route.id} itemId={route.id} />;
+      screen = <ItemDetailScreen key={route.id} itemId={route.id} chosenSeason={threadSeason} />;
       break;
     case 'itemNew':
       screen = <ItemFormScreen key="new" initialFile={draftPhoto} onCreated={itemCreated} />;

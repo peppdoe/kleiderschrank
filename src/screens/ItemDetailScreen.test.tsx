@@ -135,3 +135,25 @@ describe('Daumenreichweite', () => {
     expect(document.querySelectorAll('.text-button--back')).toHaveLength(1);
   });
 });
+
+describe('Nahtfarbe des Etiketts', () => {
+  afterEach(() => vi.useRealTimers());
+
+  it('sews a piece in its own season, not in the one chosen on the wardrobe', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-10T07:40:00'));
+    const dress = await seedItem({ category: 'dress', seasons: ['summer'] });
+    open(`/item/${dress}`);
+    await screen.findByRole('heading', { name: 'Kleid' });
+    expect(document.querySelector<HTMLElement>('.care-label')!.dataset.season).toBe('summer');
+  });
+
+  it('keeps the chosen season when the piece belongs to it too, and for all-year pieces', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-10T07:40:00'));
+    const coat = await seedItem({ category: 'jacket', seasons: ['winter', 'autumn'] });
+    open(`/item/${coat}`);
+    await screen.findByRole('heading', { name: 'Jacke & Mantel' });
+    expect(document.querySelector<HTMLElement>('.care-label')!.dataset.season).toBe('autumn');
+  });
+});

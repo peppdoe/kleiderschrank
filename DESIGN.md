@@ -369,7 +369,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - **Preview (settings):** below the name field in "Du" (input first, then result; the caps label never sits directly above the greeting) the band repeats as a live preview of the greeting (title updates while Lena types; fixed first line, no date). Same size as the real band, title at Display, so a long name wraps exactly as it will on the wardrobe; flat (no lift), no stitch-in. A group named "Vorschau der Begrüßung", not a heading.
 
 ### Care Label (item and outfit detail)
-- The piece's own sewn-in label under its photo: the band's seasonal weave and inset stitch, 4px corners, 18px/20px/20px padding, 10px gaps, flat (no lift).
+- The piece's own sewn-in label under its photo, woven in the **piece's own season** (`data-season` on the label via `stitchSeason`: the chosen season if the piece belongs to it or is all-year, otherwise its first own season), so a summer dress keeps its apricot label in autumn; the band's seasonal weave and inset stitch, 4px corners, 18px/20px/20px padding, 10px gaps, flat (no lift).
 - **Favorite:** a 44px heart button top right on the piece's label (`aria-label="Lieblingsteil"`, `aria-pressed`); outline in band ink at rest, filled in the seasonal thread when on, with a 420ms pop from `scale(0.6)` (none under reduced motion). The title keeps 40px clear on the right.
 - **Just saved (outfit):** after saving a look its label's stitch draws in left to right with the stitch-in curve (900ms, 120ms delay), paired with the toast "Look gespeichert"; none under reduced motion.
 - **Outfit:** the same label is sewn onto the lower edge of the outfit's look (see Outfit Look): name at Label Title, the piece count as the 15px kind line, then the Outfit Seasons Line in band ink at 0.9 opacity with 22px pictograms.
@@ -477,7 +477,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - Quiet link: muted 15px with a dashed underline at 4px offset, 44px tall.
 
 ### Pictograms
-- One stroke system: 24px grid, 1.5px stroke, round caps and joins, `currentColor`, inline SVG. Seasons are drawn as care-label symbols.
+- One stroke system: 24px grid, 1.5px stroke, round caps and joins, `currentColor`, inline SVG. Seasons are real laundry care symbols carrying a small season mark: spring a wash tub with a sprout, summer the tumble-dry square whose circle becomes a sun, autumn an iron with a leaf, winter the bleach triangle with a snowflake. The season name always sits beside or below, so the symbol never has to explain itself.
 
 ## Do's and Don'ts
 

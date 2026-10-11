@@ -7,12 +7,13 @@ import { ItemPhoto } from '../components/ItemPhoto';
 import { NotFound } from '../components/NotFound';
 import { deleteItem, getItem, setFavorite } from '../db/items';
 import { listOutfitsWithItem } from '../db/outfits';
-import { CATEGORIES, COLORS, SEASONS, labelOf } from '../lib/constants';
+import { CATEGORIES, COLORS, SEASONS, labelOf, type SeasonId } from '../lib/constants';
 import { describeItem, itemTitle, plural } from '../lib/describe';
 import { userMessage } from '../lib/errors';
 import { navigate } from '../lib/route';
+import { stitchSeason } from '../lib/today';
 
-export function ItemDetailScreen({ itemId }: { itemId: string }) {
+export function ItemDetailScreen({ itemId, chosenSeason }: { itemId: string; chosenSeason: SeasonId }) {
   const item = useLiveQuery(async () => (await getItem(itemId)) ?? null, [itemId]);
   const outfits = useLiveQuery(() => listOutfitsWithItem(itemId), [itemId]);
   const [error, setError] = useState<string | null>(null);
@@ -50,7 +51,8 @@ export function ItemDetailScreen({ itemId }: { itemId: string }) {
       <ItemPhoto itemId={itemId} variant="full" alt={describeItem(item)} />
 
       {/* Das eingenähte Etikett: Name, Kategorie, Farben, Pflegesymbole, Notiz */}
-      <div className="care-label">
+      {/* Das Etikett ist in der Saison des Teils genäht, nicht in der gerade gewählten. */}
+      <div className="care-label" data-season={stitchSeason(item.seasons, chosenSeason)}>
         <button
           type="button"
           className={`care-label__fav${item.favorite ? ' care-label__fav--on' : ''}`}

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Outfit } from '../db/schema';
 import { makeItem } from '../test/factories';
-import { describeOutfitSeasons, outfitSeasons, outfitsForSeason } from './today';
+import { describeOutfitSeasons, outfitSeasons, outfitsForSeason, stitchSeason } from './today';
 
 const stamp = '2026-01-01T00:00:00.000Z';
 const outfit = (id: string, itemIds: string[]): Outfit => ({ id, name: id, itemIds, createdAt: stamp, updatedAt: stamp });
@@ -62,5 +62,14 @@ describe('describeOutfitSeasons', () => {
 
   it('explains when the outfit never shows up', () => {
     expect(describeOutfitSeasons([])).toBe('Die Teile teilen keine Saison, darum taucht der Look unter „Heute“ nicht auf.');
+  });
+});
+
+describe('stitchSeason', () => {
+  it('sews in the chosen season if the piece has it or has no season, otherwise in its first own season', () => {
+    expect(stitchSeason(['summer'], 'autumn')).toBe('summer');
+    expect(stitchSeason(['winter', 'autumn'], 'autumn')).toBe('autumn');
+    expect(stitchSeason(['winter', 'summer'], 'autumn')).toBe('summer');
+    expect(stitchSeason([], 'autumn')).toBe('autumn');
   });
 });

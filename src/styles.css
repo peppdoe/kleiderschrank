@@ -60,15 +60,15 @@
   .swing-tag:not(.swing-tag--active), .chip:not(.chip--on) { color: #f2e4db; }
 }
 /* Gewebte Flächen in der Farbe der gewählten Saison: helles Band, kräftigerer Faden */
-:root[data-season='spring'] { --accent: var(--spring); --band: #e4eedb; --stitch: #7fa06c; }
-:root[data-season='summer'] { --accent: var(--summer); --band: #fde3d0; --stitch: #d98a55; }
-:root[data-season='autumn'] { --accent: var(--autumn); --band: #f6e3c8; --stitch: #c98a3e; }
-:root[data-season='winter'] { --accent: var(--winter); --band: #e3e9f9; --stitch: #7b8fc9; }
+[data-season='spring'] { --accent: var(--spring); --band: #e4eedb; --stitch: #7fa06c; }
+[data-season='summer'] { --accent: var(--summer); --band: #fde3d0; --stitch: #d98a55; }
+[data-season='autumn'] { --accent: var(--autumn); --band: #f6e3c8; --stitch: #c98a3e; }
+[data-season='winter'] { --accent: var(--winter); --band: #e3e9f9; --stitch: #7b8fc9; }
 @media (prefers-color-scheme: dark) {
-  :root[data-season='spring'] { --band: #2b3627; --stitch: var(--spring); }
-  :root[data-season='summer'] { --band: #3d2c22; --stitch: var(--summer); }
-  :root[data-season='autumn'] { --band: #3a3022; --stitch: var(--autumn); }
-  :root[data-season='winter'] { --band: #262f47; --stitch: var(--winter); }
+  [data-season='spring'] { --band: #2b3627; --stitch: var(--spring); }
+  [data-season='summer'] { --band: #3d2c22; --stitch: var(--summer); }
+  [data-season='autumn'] { --band: #3a3022; --stitch: var(--autumn); }
+  [data-season='winter'] { --band: #262f47; --stitch: var(--winter); }
 }
 
 * { box-sizing: border-box; }

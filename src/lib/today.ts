@@ -24,3 +24,12 @@ export function describeOutfitSeasons(seasons: readonly SeasonId[]): string {
   const list = names.length === 1 ? names[0] : `${names.slice(0, -1).join(', ')} und ${names[names.length - 1]}`;
   return `Erscheint im ${list}`;
 }
+
+/**
+ * In welcher Saison das Etikett eines Teils genäht ist: in der gewählten, wenn das Teil dazugehört
+ * oder ganzjährig ist, sonst in seiner ersten eigenen Saison (Jahresreihenfolge).
+ */
+export function stitchSeason(seasons: readonly SeasonId[], chosen: SeasonId): SeasonId {
+  if (seasons.length === 0 || seasons.includes(chosen)) return chosen;
+  return SEASONS.find((s) => seasons.includes(s.id))!.id;
+}
