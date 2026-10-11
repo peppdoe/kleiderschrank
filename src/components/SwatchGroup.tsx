@@ -9,10 +9,9 @@ interface SwatchGroupProps {
   counts?: ReadonlyMap<ColorId, number>;
 }
 
-/** Farben als Farbfelder statt als Anhänger: die Farbe selbst ist das Erkennungszeichen, der Name steht darunter. */
+/** Farben als Farbfelder statt als Anhänger: die Farbe ist das Erkennungszeichen, ihr Name steht immer darunter (auch für Farbenblinde). */
 export function SwatchGroup({ label, selected, onToggle, counts }: SwatchGroupProps) {
   const options = counts ? COLORS.filter((c) => (counts.get(c.id) ?? 0) > 0 || selected.includes(c.id)) : COLORS;
-  const picked = COLORS.filter((c) => selected.includes(c.id)).map((c) => c.label);
   return (
     <div className="swatch-group">
       <div className="swatch-group__grid" role="group" aria-label={label}>
@@ -29,15 +28,11 @@ export function SwatchGroup({ label, selected, onToggle, counts }: SwatchGroupPr
               onClick={() => onToggle(option.id)}
             >
               <span className="swatch__dot" style={{ background: option.swatch }} aria-hidden="true" />
+              <span className="swatch__name" aria-hidden="true">{option.label}</span>
             </button>
           );
         })}
       </div>
-      {picked.length > 0 && (
-        <p className="swatch-group__picked" aria-hidden="true">
-          {picked.join(', ')}
-        </p>
-      )}
     </div>
   );
 }

@@ -90,7 +90,9 @@ describe('SwatchGroup', () => {
     expect(within(group).getAllByRole('button')).toHaveLength(14);
     expect(within(group).getByRole('button', { name: 'Grün' })).toHaveAttribute('aria-pressed', 'true');
     expect(within(group).getByRole('button', { name: 'Rot' })).toHaveAttribute('aria-pressed', 'false');
-    expect(screen.getByText('Grün, Blau')).toBeInTheDocument();
+    // Jede Farbe trägt ihren Namen sichtbar – nicht nur die gewählten (Farbenblindheit).
+    expect(within(group).getByText('Rot')).toBeVisible();
+    expect(within(group).getByText('Gemustert')).toBeVisible();
     await userEvent.click(within(group).getByRole('button', { name: 'Rot' }));
     expect(onToggle).toHaveBeenCalledWith('red');
   });

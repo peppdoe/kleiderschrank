@@ -406,8 +406,8 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - The swing tag is reserved for categories, the "Filter"/"Lieblinge" tags and active filters, so it stays special.
 
 ### Color Swatches
-- Colors are chosen as swatches, not tags (item form and filter sheet): a grid of 7 per row, 44px round tap targets 4px apart, a 30px garment dot with a 1px `line-strong` ring.
-- **Chosen:** a 2px ink ring 3px outside the dot (gap in the surface or ground color); the chosen names follow below in muted 15px ("Grün, Blau"). Buttons are named by color (in the filter sheet with the count: "Blau, 2 Teile"), `aria-pressed`.
+- Colors are chosen as swatches, not tags (item form and filter sheet): an auto-fill grid of cells at least 64px wide (5 per row on a phone), each a 30px garment dot with a 1px `line-strong` ring and its **name always visible** below at 13px muted (chosen: ink, 600), so no one has to tell red from orange by hue alone.
+- **Chosen:** a 2px ink ring 3px outside the dot (gap in the surface or ground color) and the name in ink. Buttons are named by color (in the filter sheet with the count: "Blau, 2 Teile"), `aria-pressed`.
 - **Focus:** 2px thread-red outline. In the filter sheet only colors present among the remaining pieces show, plus chosen ones.
 
 ### Photo Tiles
@@ -422,7 +422,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 
 ### Outfit Seasons Line
 - Says when an outfit shows up under "Heute". The seasons are derived from its pieces (every piece with seasons must include the season; pieces without seasons always fit); outfits have no season of their own.
-- **Compact (outfit list):** only the pictograms, plus visible 13px text in the two exceptions ("Ganzjährig", "Keine gemeinsame Saison"); the full sentence stays as visually hidden text and describes the card.
+- **Compact (look list):** the pictograms always followed by the short season names at 13px ("Herbst · Winter", wrapping if needed), or "Ganzjährig" / "Keine gemeinsame Saison". Care symbols never stand alone: nobody reads an iron as "autumn". The full sentence stays as visually hidden text and describes the card.
 - Full: 18px ink care pictograms of the matching seasons, 4px apart, then a 15px muted sentence: "Erscheint im Herbst und Winter", "Erscheint das ganze Jahr", or, when the pieces share no season, "Die Teile teilen keine Saison, darum taucht der Look unter „Heute“ nicht auf." The conflict stays muted, not red; it is a hint, not an error.
 - Sits under the name label in the outfit list, inside the care label on the outfit detail, and in the editor under the selection strip and under the preview on the naming step, updating live. Hidden when no pieces remain.
 

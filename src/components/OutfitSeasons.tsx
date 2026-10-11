@@ -1,5 +1,5 @@
 import type { Item } from '../db/schema';
-import { SEASONS } from '../lib/constants';
+import { SEASONS, labelOf } from '../lib/constants';
 import { describeOutfitSeasons, outfitSeasons } from '../lib/today';
 import { Icon } from './Icon';
 
@@ -8,7 +8,7 @@ interface OutfitSeasonsProps {
   items: readonly Item[];
   as?: 'p' | 'span';
   id?: string;
-  /** Liste: nur Symbole, sichtbarer Text nur in den Sonderfällen; der ganze Satz bleibt für Screenreader. */
+  /** Liste: Symbole mit kurzen Namen („Herbst · Winter“); der ganze Satz bleibt für Screenreader. */
   compact?: boolean;
 }
 
@@ -17,7 +17,12 @@ export function OutfitSeasons({ itemIds, items, as: Tag = 'p', id: elementId, co
   if (!itemIds.some((id) => items.some((item) => item.id === id))) return null;
   const seasons = outfitSeasons(itemIds, items);
   const sentence = describeOutfitSeasons(seasons);
-  const short = seasons.length === 0 ? 'Keine gemeinsame Saison' : seasons.length === SEASONS.length ? 'Ganzjährig' : null;
+  // Die Pflegesymbole stehen nie allein: ein Bügeleisen liest niemand als „Herbst“.
+  const short = seasons.length === 0
+    ? 'Keine gemeinsame Saison'
+    : seasons.length === SEASONS.length
+      ? 'Ganzjährig'
+      : seasons.map((id) => labelOf(SEASONS, id)).join(' · ');
   return (
     <Tag className={`outfit-seasons${compact ? ' outfit-seasons--compact' : ''}`} id={elementId}>
       {seasons.length > 0 && (
@@ -29,7 +34,7 @@ export function OutfitSeasons({ itemIds, items, as: Tag = 'p', id: elementId, co
       )}
       {compact ? (
         <>
-          {short && <span aria-hidden="true">{short}</span>}
+          <span aria-hidden="true">{short}</span>
           <span className="visually-hidden">{sentence}</span>
         </>
       ) : (
