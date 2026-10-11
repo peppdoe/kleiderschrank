@@ -276,6 +276,7 @@ p { margin: 0; }
 .outfit-preview--3 > :first-child { grid-row: 1 / 3; }
 .outfit-preview__cell { min-width: 0; min-height: 0; overflow: hidden; }
 .outfit-preview__more { display: flex; align-items: center; justify-content: center; background: var(--kraft-soft); color: var(--kraft-ink); font-weight: 600; }
+.outfit-look { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 4px; background: var(--chip); }
 .text-button--center { align-self: center; }
 @media (prefers-color-scheme: dark) { .swing-tag:not(.swing-tag--active) .swing-tag__count { color: var(--ground); } .outfit-preview__more { color: #eee2d2; } }
 
@@ -316,6 +317,7 @@ p { margin: 0; }
 .outfit-card .outfit-seasons { margin-top: -2px; }
 .outfit-seasons--compact { min-height: 22px; font-size: 13px; }
 .today__strip .outfit-preview { height: 168px; width: auto; }
+.today__strip .outfit-look { height: 168px; width: auto; }
 .outfit-preview + .care-label--outfit { margin: -14px 8px 0; }
 .care-label--outfit { margin: 4px 0 0; }
 .care-label .outfit-seasons { gap: 10px; color: var(--band-ink); opacity: 0.9; }

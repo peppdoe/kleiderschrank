@@ -1,6 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { Icon } from '../components/Icon';
-import { OutfitPreview } from '../components/OutfitPreview';
+import { OutfitLook } from '../components/OutfitLook';
 import { OutfitSeasons } from '../components/OutfitSeasons';
 import { listItems } from '../db/items';
 import { listOutfits } from '../db/outfits';
@@ -36,7 +36,7 @@ export function OutfitsScreen() {
                 aria-describedby={`outfit-seasons-${outfit.id}`}
                 onClick={() => navigate(`/outfit/${outfit.id}`)}
               >
-                <OutfitPreview itemIds={outfit.itemIds} />
+                <OutfitLook outfitId={outfit.id} itemIds={outfit.itemIds} />
                 <span className="outfit-card__name" id={`outfit-name-${outfit.id}`}>{outfit.name}</span>
                 <OutfitSeasons itemIds={outfit.itemIds} items={items} as="span" id={`outfit-seasons-${outfit.id}`} compact />
               </button>

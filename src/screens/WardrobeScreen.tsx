@@ -6,7 +6,7 @@ import { Icon } from '../components/Icon';
 import { InstallNotice } from '../components/InstallNotice';
 import { ItemGrid } from '../components/ItemGrid';
 import { LabelBand } from '../components/LabelBand';
-import { OutfitPreview } from '../components/OutfitPreview';
+import { OutfitLook } from '../components/OutfitLook';
 import { SeasonSymbols } from '../components/SeasonSymbols';
 import { listItems } from '../db/items';
 import { META_INSTALL_HINT_DISMISSED, META_LAST_BACKUP, META_USER_NAME, getMeta, setMeta } from '../db/meta';
@@ -80,7 +80,7 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
             {today.map((outfit) => (
               <li key={outfit.id}>
                 <button type="button" className="today__strip" onClick={() => navigate(`/outfit/${outfit.id}`)}>
-                  <OutfitPreview itemIds={outfit.itemIds} />
+                  <OutfitLook outfitId={outfit.id} itemIds={outfit.itemIds} />
                   <span className="today__name">{outfit.name}</span>
                 </button>
               </li>
