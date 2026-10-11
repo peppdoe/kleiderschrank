@@ -3,7 +3,7 @@ import {
   type CategoryId, type ColorId, type SeasonId,
 } from '../lib/constants';
 import { newId } from '../lib/id';
-import { db, type Item, type Photo } from './schema';
+import { db, type Item, type Outfit, type Photo } from './schema';
 
 export interface ItemInput {
   category: CategoryId;
@@ -59,14 +59,51 @@ export async function setFavorite(id: string, on: boolean): Promise<void> {
   await db.items.update(id, { favorite: on ? true : undefined });
 }
 
-export async function deleteItem(id: string): Promise<void> {
-  await db.transaction('rw', db.items, db.photos, db.outfits, async () => {
+/** Alles, was zum Rückgängigmachen eines Löschens nötig ist: Teil, Foto und die Looks, in denen es steckte. */
+export interface DeletedItem {
+  item: Item;
+  photo?: Photo;
+  outfits: Outfit[];
+}
+
+export async function deleteItem(id: string): Promise<DeletedItem | undefined> {
+  return db.transaction('rw', db.items, db.photos, db.outfits, async () => {
+    const item = await db.items.get(id);
+    const photo = await db.photos.get(id);
     await db.items.delete(id);
     await db.photos.delete(id);
     const affected = await db.outfits.where('itemIds').equals(id).toArray();
     const now = new Date().toISOString();
     for (const outfit of affected) {
       await db.outfits.put({ ...outfit, itemIds: outfit.itemIds.filter((x) => x !== id), updatedAt: now });
+    }
+    return item ? { item, photo, outfits: affected } : undefined;
+  });
+}
+
+const sameIds = (a: string[], b: string[]) => a.length === b.length && a.every((x, i) => x === b[i]);
+
+/** Macht deleteItem rückgängig. Looks, die inzwischen geändert wurden, behalten ihre Änderungen. */
+export async function restoreItem(deleted: DeletedItem | undefined): Promise<void> {
+  if (!deleted) return;
+  const { item, photo, outfits } = deleted;
+  await db.transaction('rw', db.items, db.photos, db.outfits, async () => {
+    await db.items.put(item);
+    if (photo) await db.photos.put(photo);
+    for (const before of outfits) {
+      const current = await db.outfits.get(before.id);
+      if (!current || current.itemIds.includes(item.id)) continue;
+      const untouched = current.name === before.name && sameIds(current.itemIds, before.itemIds.filter((x) => x !== item.id));
+      if (untouched) {
+        await db.outfits.put(before);
+        continue;
+      }
+      // An die alte Stelle zurück: vor das Teil, das vorher direkt dahinter stand (sofern noch da).
+      const position = before.itemIds.indexOf(item.id);
+      const next = before.itemIds.slice(position + 1).find((x) => current.itemIds.includes(x));
+      const itemIds = [...current.itemIds];
+      itemIds.splice(next ? itemIds.indexOf(next) : itemIds.length, 0, item.id);
+      await db.outfits.put({ ...current, itemIds, updatedAt: new Date().toISOString() });
     }
   });
 }

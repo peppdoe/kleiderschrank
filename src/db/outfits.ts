@@ -64,10 +64,31 @@ export function getOutfitPhoto(outfitId: string): Promise<OutfitPhoto | undefine
   return db.outfitPhotos.get(outfitId);
 }
 
-export async function deleteOutfit(id: string): Promise<void> {
-  await db.transaction('rw', db.outfits, db.outfitPhotos, async () => {
+/** Alles, was zum Rückgängigmachen nötig ist: der Look und sein Tragebild. */
+export interface DeletedOutfit {
+  outfit: Outfit;
+  photo?: OutfitPhoto;
+}
+
+export async function deleteOutfit(id: string): Promise<DeletedOutfit | undefined> {
+  return db.transaction('rw', db.outfits, db.outfitPhotos, async () => {
+    const outfit = await db.outfits.get(id);
+    const photo = await db.outfitPhotos.get(id);
     await db.outfits.delete(id);
     await db.outfitPhotos.delete(id);
+    return outfit ? { outfit, photo } : undefined;
+  });
+}
+
+/** Macht deleteOutfit rückgängig; inzwischen gelöschte Teile bleiben draußen. */
+export async function restoreOutfit(deleted: DeletedOutfit | undefined): Promise<void> {
+  if (!deleted) return;
+  const { outfit, photo } = deleted;
+  await db.transaction('rw', db.items, db.outfits, db.outfitPhotos, async () => {
+    const existing = await db.items.bulkGet(outfit.itemIds);
+    const itemIds = outfit.itemIds.filter((_, index) => existing[index] !== undefined);
+    await db.outfits.put(itemIds.length === outfit.itemIds.length ? outfit : { ...outfit, itemIds });
+    if (photo) await db.outfitPhotos.put(photo);
   });
 }
 

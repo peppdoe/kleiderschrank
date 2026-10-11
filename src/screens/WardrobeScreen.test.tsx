@@ -29,6 +29,22 @@ describe('Schrank', () => {
     expect(await screen.findByRole('heading', { name: 'Neues Teil' })).toBeInTheDocument();
   });
 
+  it('asks for a name on the first start and greets with it right away', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.type(await screen.findByLabelText('Wie heißt du?'), '  Lena ');
+    await user.click(screen.getByRole('button', { name: 'Merken' }));
+    expect(await screen.findByRole('heading', { level: 1, name: /, Lena$/ })).toBeInTheDocument();
+    expect(screen.queryByLabelText('Wie heißt du?')).not.toBeInTheDocument();
+  });
+
+  it('does not ask for a name that is already set', async () => {
+    await setMeta(META_USER_NAME, 'Lena');
+    render(<App />);
+    await screen.findByText('Noch ganz viel Platz hier.');
+    expect(screen.queryByLabelText('Wie heißt du?')).not.toBeInTheDocument();
+  });
+
   it('greets Lena by her chosen name', async () => {
     await setMeta(META_USER_NAME, 'Lena');
     render(<App />);

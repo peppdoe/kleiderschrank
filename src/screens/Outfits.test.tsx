@@ -148,6 +148,19 @@ describe('Outfits', () => {
     expect(await db.items.count()).toBe(1);
   });
 
+  it('offers to undo deleting a look', async () => {
+    const a = await seedItem();
+    const id = await createOutfit('Zurückholen', [a]);
+    const user = userEvent.setup();
+    open(`/outfit/${id}`);
+    await user.click(await screen.findByRole('button', { name: 'Löschen' }));
+    await user.click(within(await screen.findByRole('dialog', { name: 'Look löschen?' })).getByRole('button', { name: 'Löschen' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('Look gelöscht');
+    await user.click(await screen.findByRole('button', { name: 'Rückgängig' }));
+    expect(await screen.findByText('Zurückholen')).toBeInTheDocument();
+    expect(await db.outfits.count()).toBe(1);
+  });
+
   it('asks before discarding a half-built outfit', async () => {
     await seedItem({ category: 'top', colors: ['blue'] });
     const user = userEvent.setup();

@@ -69,6 +69,22 @@ describe('Teil-Details', () => {
     expect((await db.outfits.get(outfitId))!.itemIds).toEqual([]);
   });
 
+  it('offers to undo a delete and brings the item back into its looks', async () => {
+    const id = await seedItem();
+    const outfitId = await createOutfit('Büro', [id]);
+    const user = userEvent.setup();
+    open(`/item/${id}`);
+    await user.click(await screen.findByRole('button', { name: 'Löschen' }));
+    await user.click(within(await screen.findByRole('dialog', { name: 'Teil löschen?' })).getByRole('button', { name: 'Löschen' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('Teil gelöscht');
+    await user.click(await screen.findByRole('button', { name: 'Rückgängig' }));
+    expect(await screen.findByRole('button', { name: 'Oberteil' })).toBeInTheDocument();
+    expect(await db.items.count()).toBe(1);
+    expect((await db.outfits.get(outfitId))!.itemIds).toEqual([id]);
+    expect(await screen.findByRole('status')).toHaveTextContent('Teil ist wieder da');
+    expect(screen.queryByRole('button', { name: 'Rückgängig' })).not.toBeInTheDocument();
+  });
+
   it('keeps the item when deletion is not confirmed', async () => {
     const id = await seedItem();
     const user = userEvent.setup();

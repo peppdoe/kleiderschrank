@@ -6,6 +6,7 @@ import { Icon } from '../components/Icon';
 import { InstallNotice } from '../components/InstallNotice';
 import { ItemGrid } from '../components/ItemGrid';
 import { LabelBand } from '../components/LabelBand';
+import { NameAsk } from '../components/NameAsk';
 import { OutfitLook } from '../components/OutfitLook';
 import { SeasonSymbols } from '../components/SeasonSymbols';
 import { listItems } from '../db/items';
@@ -124,6 +125,8 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
             <Icon name="camera" size={22} />
             Erstes Teil fotografieren
           </FilePicker>
+          {/* Einmal nach dem Namen fragen, damit das Band richtig grüßt; später in den Einstellungen änderbar. */}
+          {!name && <NameAsk onSave={(value) => setMeta(META_USER_NAME, value)} />}
         </div>
       ) : (
         <>

@@ -8,8 +8,9 @@ import { NotFound } from '../components/NotFound';
 import { OutfitPhotoPicker } from '../components/OutfitPhotoPicker';
 import { OutfitPreview } from '../components/OutfitPreview';
 import { OutfitSeasons } from '../components/OutfitSeasons';
+import type { Notice } from '../components/Toast';
 import { getItemsByIds } from '../db/items';
-import { deleteOutfit, getOutfit, getOutfitPhoto, removeOutfitPhoto, setOutfitPhoto } from '../db/outfits';
+import { deleteOutfit, getOutfit, getOutfitPhoto, removeOutfitPhoto, restoreOutfit, setOutfitPhoto } from '../db/outfits';
 import { plural } from '../lib/describe';
 import { userMessage } from '../lib/errors';
 import { processPhoto } from '../lib/image';
@@ -20,7 +21,7 @@ interface OutfitDetailScreenProps {
   outfitId: string;
   justSaved?: boolean;
   /** Kurze Bestätigung über den gemeinsamen Ansagebereich der App. */
-  onNotice?: (message: string) => void;
+  onNotice?: (text: string, action?: Notice['action']) => void;
 }
 
 export function OutfitDetailScreen({ outfitId, justSaved = false, onNotice }: OutfitDetailScreenProps) {
@@ -40,8 +41,17 @@ export function OutfitDetailScreen({ outfitId, justSaved = false, onNotice }: Ou
   async function remove() {
     setConfirming(false);
     try {
-      await deleteOutfit(outfitId);
+      const deleted = await deleteOutfit(outfitId);
       navigate('/outfits', { replace: true });
+      onNotice?.('Look gelöscht', {
+        label: 'Rückgängig',
+        run: () => {
+          restoreOutfit(deleted).then(
+            () => onNotice?.('Look ist wieder da'),
+            (e: unknown) => onNotice?.(userMessage(e)),
+          );
+        },
+      });
     } catch (e) {
       setError(userMessage(e));
     }

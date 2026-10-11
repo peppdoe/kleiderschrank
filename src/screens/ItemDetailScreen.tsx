@@ -3,9 +3,10 @@ import { useState } from 'react';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { DetailBar } from '../components/DetailBar';
 import { Icon } from '../components/Icon';
+import type { Notice } from '../components/Toast';
 import { ItemPhoto } from '../components/ItemPhoto';
 import { NotFound } from '../components/NotFound';
-import { deleteItem, getItem, setFavorite } from '../db/items';
+import { deleteItem, getItem, restoreItem, setFavorite } from '../db/items';
 import { listOutfitsWithItem } from '../db/outfits';
 import { CATEGORIES, COLORS, SEASONS, labelOf, type SeasonId } from '../lib/constants';
 import { describeItem, itemTitle, plural } from '../lib/describe';
@@ -13,7 +14,14 @@ import { userMessage } from '../lib/errors';
 import { navigate } from '../lib/route';
 import { stitchSeason } from '../lib/today';
 
-export function ItemDetailScreen({ itemId, chosenSeason }: { itemId: string; chosenSeason: SeasonId }) {
+interface ItemDetailScreenProps {
+  itemId: string;
+  chosenSeason: SeasonId;
+  /** Kurze Meldung über den gemeinsamen Ansagebereich der App, z. B. „Teil gelöscht“ mit Rückgängig. */
+  onNotice?: (text: string, action?: Notice['action']) => void;
+}
+
+export function ItemDetailScreen({ itemId, chosenSeason, onNotice }: ItemDetailScreenProps) {
   const item = useLiveQuery(async () => (await getItem(itemId)) ?? null, [itemId]);
   const outfits = useLiveQuery(() => listOutfitsWithItem(itemId), [itemId]);
   const [error, setError] = useState<string | null>(null);
@@ -33,8 +41,17 @@ export function ItemDetailScreen({ itemId, chosenSeason }: { itemId: string; cho
   async function remove() {
     setConfirming(false);
     try {
-      await deleteItem(itemId);
+      const deleted = await deleteItem(itemId);
       navigate('/', { replace: true });
+      onNotice?.('Teil gelöscht', {
+        label: 'Rückgängig',
+        run: () => {
+          restoreItem(deleted).then(
+            () => onNotice?.('Teil ist wieder da'),
+            (e: unknown) => onNotice?.(userMessage(e)),
+          );
+        },
+      });
     } catch (e) {
       setError(userMessage(e));
     }

@@ -10,6 +10,8 @@ if (typeof window !== 'undefined') {
   let counter = 0;
   URL.createObjectURL = () => `blob:test/${++counter}`;
   URL.revokeObjectURL = () => {};
+  // jsdom kann nicht scrollen und meldet sonst „Not implemented“.
+  window.scrollTo = () => {};
 }
 
 beforeEach(async () => {

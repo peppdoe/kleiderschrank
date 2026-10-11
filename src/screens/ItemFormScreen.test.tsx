@@ -47,6 +47,29 @@ describe('Teil erfassen', () => {
     expect(await (await db.photos.get(items[0].id))!.full.text()).toBe('full');
   });
 
+  it('saves and goes straight on to the next piece with a fresh form', async () => {
+    const user = userEvent.setup();
+    await startNewItem(user);
+    expect(screen.queryByLabelText('Speichern und nächstes Teil fotografieren')).not.toBeInTheDocument();
+    await user.click(within(screen.getByRole('group', { name: 'Kategorie' })).getByRole('button', { name: 'Oberteil' }));
+    await user.click(within(screen.getByRole('group', { name: 'Saison' })).getByRole('button', { name: 'Winter' }));
+    await user.upload(await screen.findByLabelText('Speichern und nächstes Teil fotografieren'), photoFile());
+
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Teil gespeichert'));
+    expect(await db.items.count()).toBe(1);
+    expect(screen.getByRole('heading', { name: 'Neues Teil' })).toBeInTheDocument();
+    const categories = screen.getByRole('group', { name: 'Kategorie' });
+    expect(within(categories).getByRole('button', { name: 'Oberteil' })).toHaveAttribute('aria-pressed', 'false');
+    expect(await screen.findByAltText('Vorschau')).toBeInTheDocument();
+
+    await user.click(within(categories).getByRole('button', { name: 'Hose' }));
+    const save = screen.getByRole('button', { name: 'Speichern' });
+    await waitFor(() => expect(save).toBeEnabled());
+    await user.click(save);
+    expect(await screen.findByRole('button', { name: 'Hose' })).toBeInTheDocument();
+    expect(await db.items.count()).toBe(2);
+  });
+
   it('saves only once when Speichern is tapped twice', async () => {
     const user = userEvent.setup();
     await startNewItem(user);

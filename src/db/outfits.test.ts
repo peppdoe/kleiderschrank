@@ -3,7 +3,7 @@ import { fakePhoto, seedItem } from '../test/factories';
 import { deleteItem } from './items';
 import {
   OutfitValidationError, countOutfits, createOutfit, deleteOutfit, getOutfit,
-  getOutfitPhoto, listOutfits, listOutfitsWithItem, removeOutfitPhoto, setOutfitPhoto, updateOutfit,
+  getOutfitPhoto, listOutfits, listOutfitsWithItem, removeOutfitPhoto, restoreOutfit, setOutfitPhoto, updateOutfit,
 } from './outfits';
 
 afterEach(() => vi.useRealTimers());
@@ -63,6 +63,22 @@ describe('updateOutfit / deleteOutfit', () => {
     await deleteOutfit(id);
     expect(await getOutfit(id)).toBeUndefined();
     expect(await listOutfitsWithItem(a)).toEqual([]);
+  });
+
+  it('restores a deleted look with its photo, leaving out items deleted since', async () => {
+    const a = await seedItem();
+    const b = await seedItem();
+    const id = await createOutfit('Zurück', [a, b], fakePhoto('look'));
+    const before = await getOutfit(id);
+    const deleted = await deleteOutfit(id);
+    await restoreOutfit(deleted);
+    expect(await getOutfit(id)).toEqual(before);
+    expect(await (await getOutfitPhoto(id))!.full.text()).toBe('look-full');
+
+    const again = await deleteOutfit(id);
+    await deleteItem(b);
+    await restoreOutfit(again);
+    expect((await getOutfit(id))!.itemIds).toEqual([a]);
   });
 });
 

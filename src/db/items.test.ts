@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { CategoryId, ColorId } from '../lib/constants';
 import { fakePhoto } from '../test/factories';
 import {
-  countItems, createItem, deleteItem, getItem, getItemsByIds, getPhoto, listItems, setFavorite, updateItem,
+  countItems, createItem, deleteItem, getItem, getItemsByIds, getPhoto, listItems, restoreItem, setFavorite, updateItem,
   type ItemInput,
 } from './items';
 import { db } from './schema';
@@ -75,6 +75,43 @@ describe('deleteItem', () => {
     expect(await getPhoto(gone)).toBeUndefined();
     expect((await db.outfits.get('o1'))!.itemIds).toEqual([keep]);
     expect((await db.outfits.get('o2'))!.itemIds).toEqual([]);
+  });
+});
+
+describe('restoreItem', () => {
+  it('brings back item, photo, favorite and its place in looks after a delete', async () => {
+    const keep = await createItem(input, fakePhoto());
+    const gone = await createItem({ ...input, name: 'Blazer' }, fakePhoto('g'));
+    await setFavorite(gone, true);
+    const stamp = '2026-01-01T00:00:00.000Z';
+    await db.outfits.bulkAdd([
+      { id: 'o1', name: 'Mix', itemIds: [gone, keep], createdAt: stamp, updatedAt: stamp },
+      { id: 'o2', name: 'Solo', itemIds: [gone], createdAt: stamp, updatedAt: stamp },
+    ]);
+    const before = await getItem(gone);
+    const deleted = await deleteItem(gone);
+    await restoreItem(deleted);
+    expect(await getItem(gone)).toEqual(before);
+    expect(await (await getPhoto(gone))!.full.text()).toBe('g-full');
+    expect((await db.outfits.get('o1'))!.itemIds).toEqual([gone, keep]);
+    expect((await db.outfits.get('o2'))!.itemIds).toEqual([gone]);
+  });
+
+  it('keeps changes made to a look in the meantime and skips deleted looks', async () => {
+    const a = await createItem(input, fakePhoto());
+    const b = await createItem(input, fakePhoto());
+    const gone = await createItem(input, fakePhoto());
+    const stamp = '2026-01-01T00:00:00.000Z';
+    await db.outfits.bulkAdd([
+      { id: 'o1', name: 'Mix', itemIds: [a, gone], createdAt: stamp, updatedAt: stamp },
+      { id: 'o2', name: 'Weg', itemIds: [gone], createdAt: stamp, updatedAt: stamp },
+    ]);
+    const deleted = await deleteItem(gone);
+    await db.outfits.update('o1', { itemIds: [b] });
+    await db.outfits.delete('o2');
+    await restoreItem(deleted);
+    expect((await db.outfits.get('o1'))!.itemIds).toEqual([b, gone]);
+    expect(await db.outfits.get('o2')).toBeUndefined();
   });
 });
 

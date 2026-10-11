@@ -22,8 +22,8 @@ import { useObjectUrl } from '../lib/useObjectUrl';
 interface ItemFormScreenProps {
   itemId?: string;
   initialFile?: File | null;
-  /** Neues Teil gespeichert: der Schrank markiert es. */
-  onCreated?: (item: Item) => void;
+  /** Neues Teil gespeichert: der Schrank markiert es. Mit `next` geht es gleich mit diesem Foto weiter. */
+  onCreated?: (item: Item, next?: File) => void;
 }
 
 const sameSet = (a: readonly string[], b: readonly string[]) => a.length === b.length && a.every((x) => b.includes(x));
@@ -82,7 +82,7 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
   const canSave = hasPhoto && category !== null && !saving && !processing;
   const cancelTarget = itemId ? `/item/${itemId}` : '/';
 
-  async function save() {
+  async function save(next?: File) {
     if (!canSave || category === null || savingRef.current) return;
     savingRef.current = true;
     setSaving(true);
@@ -95,8 +95,9 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
       } else {
         const id = await createItem(input, photo!);
         const created = await getItem(id);
-        if (created) onCreated?.(created);
-        navigate('/', { replace: true });
+        if (created) onCreated?.(created, next);
+        // Mit dem nächsten Foto bleibt das Formular offen und beginnt von vorn.
+        if (!next) navigate('/', { replace: true });
       }
     } catch (e) {
       setError(userMessage(e));
@@ -174,11 +175,17 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
       {/* Abbrechen und Speichern unten in Daumenreichweite, wie Zurück und Bearbeiten auf den Detailseiten */}
       <div className="action-bar">
         {hint && <p className="action-bar__hint">{hint}</p>}
+        {/* Mehrere Teile hintereinander: speichern und sofort das nächste Foto machen. */}
+        {!itemId && canSave && (
+          <FilePicker className="quiet-link action-bar__next" label="Speichern und nächstes Teil fotografieren" accept="image/*" onPick={(file) => void save(file)}>
+            Speichern und nächstes Teil fotografieren
+          </FilePicker>
+        )}
         <div className="action-bar__row">
           <button type="button" className="text-button" onClick={cancel}>
             Abbrechen
           </button>
-          <button type="button" className="button button--primary" disabled={!canSave} onClick={save}>
+          <button type="button" className="button button--primary" disabled={!canSave} onClick={() => void save()}>
             {saving ? 'Speichert …' : 'Speichern'}
           </button>
         </div>
