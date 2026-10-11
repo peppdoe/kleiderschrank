@@ -99,7 +99,7 @@ export function OutfitDetailScreen({ outfitId, justSaved = false }: { outfitId: 
           <FilePicker className="quiet-link" label="Foto ändern" accept="image/*" onPick={(file) => void pickPhoto(file)} disabled={photoBusy}>
             {photoBusy ? 'Foto wird vorbereitet …' : 'Foto ändern'}
           </FilePicker>
-          <button type="button" className="quiet-link" onClick={() => setConfirmingPhoto(true)}>
+          <button type="button" className="quiet-link" onClick={() => setConfirmingPhoto(true)} disabled={photoBusy}>
             Foto entfernen
           </button>
         </div>

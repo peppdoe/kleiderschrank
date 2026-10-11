@@ -195,3 +195,26 @@ describe('Editor: Foto von dir im Look', () => {
     expect(screen.getByRole('button', { name: 'Speichern' })).toBeEnabled();
   });
 });
+
+describe('Foto entfernen während ein neues vorbereitet wird', () => {
+  it('is not possible on the detail', async () => {
+    vi.mocked(processPhoto).mockImplementationOnce(() => new Promise(() => {}));
+    const a = await seedItem();
+    const id = await createOutfit('Uni', [a], fakePhoto('alt'));
+    const user = userEvent.setup();
+    open(`/outfit/${id}`);
+    await user.upload(await screen.findByLabelText('Foto ändern'), selfie());
+    expect(await screen.findByRole('button', { name: 'Foto entfernen' })).toBeDisabled();
+  });
+
+  it('is not possible in the editor', async () => {
+    vi.mocked(processPhoto).mockImplementationOnce(() => new Promise(() => {}));
+    const a = await seedItem({ category: 'top' });
+    const id = await createOutfit('Look', [a], fakePhoto('alt'));
+    const user = userEvent.setup();
+    open(`/outfit/${id}/edit`);
+    await user.click(await screen.findByRole('button', { name: 'Weiter' }));
+    await user.upload(await screen.findByLabelText('Foto von dir im Look ändern'), selfie());
+    expect(screen.getByRole('button', { name: 'Entfernen' })).toBeDisabled();
+  });
+});

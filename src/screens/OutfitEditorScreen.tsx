@@ -143,7 +143,7 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
               <FilePicker className="quiet-link" label="Foto von dir im Look ändern" accept="image/*" onPick={(file) => void pickPhoto(file)} disabled={processingPhoto}>
                 {processingPhoto ? 'Foto wird vorbereitet …' : 'Ändern'}
               </FilePicker>
-              <button type="button" className="quiet-link" onClick={dropPhoto}>Entfernen</button>
+              <button type="button" className="quiet-link" onClick={dropPhoto} disabled={processingPhoto}>Entfernen</button>
             </div>
           ) : (
             <OutfitPhotoPicker label="Foto von dir im Look" text="Zeig, wie du den Look trägst" busy={processingPhoto} onPick={(file) => void pickPhoto(file)} />
