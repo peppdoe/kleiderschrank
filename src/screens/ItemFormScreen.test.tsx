@@ -115,7 +115,17 @@ describe('Teil erfassen', () => {
     await user.click(screen.getByRole('button', { name: 'Speichern' }));
     await screen.findByText('1 Teil');
     window.location.hash = '#/item/new';
-    expect(await screen.findByText('Noch kein Foto')).toBeInTheDocument();
+    expect(await screen.findByText('Foto aufnehmen oder wählen')).toBeInTheDocument();
     expect(processPhoto).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('Foto-Rahmen', () => {
+  it('opens the photo picker from the whole empty frame, without a second button', async () => {
+    window.location.hash = '#/item/new';
+    render(<App />);
+    const frameText = await screen.findByText('Foto aufnehmen oder wählen');
+    expect(frameText.closest('label')).not.toBeNull();
+    expect(screen.getAllByLabelText('Foto wählen')).toHaveLength(1);
   });
 });

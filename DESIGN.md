@@ -415,7 +415,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - **Selected:** 3px inset ink outline and a 26px ink check circle top right.
 - **Favorite:** a 24px circle in the seasonal weave bottom left with a filled 14px heart in `stitch`; the tile's accessible name ends in ", Lieblingsteil".
 - **Just saved:** 3px inset kraft outline and a 1.2s settle from `scale(0.94)` on `cubic-bezier(0.16, 1, 0.3, 1)`, paired with the toast; no motion under reduced motion.
-- Empty photo: 4:3 dashed `line-strong` frame, muted centered text.
+- Empty photo (new piece): the 4:3 dashed `line-strong` frame is itself the photo picker: camera pictogram (28px) over "Foto aufnehmen oder wählen", the whole frame tappable, thread-red focus ring. Only with a photo does the secondary button "Foto ändern" appear below.
 
 ### Selection Strip (outfit editor)
 - Above the pick grid, the chosen pieces stay visible as a sideways row of 48px-wide 3:4 thumbnails, 4px corners, 6px apart, chip fill. Each is a button that removes the piece, marked by an 18px ink circle with a ground-colored cross top right. The split action bar below counts "N ausgewählt".

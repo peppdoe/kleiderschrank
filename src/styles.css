@@ -183,6 +183,9 @@ p { margin: 0; }
 .photo { display: block; width: 100%; height: 100%; object-fit: cover; background: var(--chip); }
 .photo--full { height: auto; max-height: 62vh; object-fit: contain; border-radius: var(--radius); background: var(--surface); }
 .photo--empty { aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; color: var(--muted); border-radius: var(--radius); border: 1.5px dashed var(--line-strong); background: transparent; }
+.photo--pick { flex-direction: column; gap: 10px; cursor: pointer; }
+.photo--pick:focus-within { outline: 2px solid var(--thread); outline-offset: 2px; }
+.photo--pick:has(input:disabled) { cursor: progress; }
 .photo--loading { aspect-ratio: 3 / 4; }
 
 /* Runder Hinzufügen-Knopf in Daumenreichweite */
@@ -269,9 +272,6 @@ p { margin: 0; }
 .action-bar__count { font-size: 17px; font-weight: 500; font-variant-numeric: tabular-nums; }
 
 /* Details */
-.details { display: grid; grid-template-columns: auto 1fr; gap: 8px 18px; margin: 12px 0 0; }
-.details dt { color: var(--muted); }
-.details dd { margin: 0; white-space: pre-wrap; }
 .detail-actions { display: flex; flex-direction: column; align-items: center; margin-top: 30px; }
 /* Zurück und Bearbeiten in Daumenreichweite: fest über der Tab-Leiste, auf dem Grund mit Haarlinie wie die Aktionsleiste der Formulare */
 .detail-bar { position: fixed; left: 0; right: 0; bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom)); z-index: 4; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px max(16px, calc((100vw - 720px) / 2 + 16px)); background: var(--ground); border-top: 1px solid var(--line); }

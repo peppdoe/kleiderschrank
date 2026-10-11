@@ -4,6 +4,7 @@ import { ChipGroup } from '../components/ChipGroup';
 import { SwatchGroup } from '../components/SwatchGroup';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { FilePicker } from '../components/FilePicker';
+import { Icon } from '../components/Icon';
 import { ItemPhoto } from '../components/ItemPhoto';
 import { NotFound } from '../components/NotFound';
 import { SeasonSymbols } from '../components/SeasonSymbols';
@@ -138,11 +139,17 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
         ) : itemId ? (
           <ItemPhoto itemId={itemId} variant="full" alt="Aktuelles Foto" />
         ) : (
-          <div className="photo photo--empty">{processing ? 'Foto wird verarbeitet …' : 'Noch kein Foto'}</div>
+          // Der gestrichelte Rahmen ist selbst der Knopf: was antippbar aussieht, ist es auch.
+          <FilePicker className="photo photo--empty photo--pick" label="Foto wählen" accept="image/*" onPick={handleFile} disabled={processing}>
+            <Icon name="camera" size={28} />
+            <span>{processing ? 'Foto wird verarbeitet …' : 'Foto aufnehmen oder wählen'}</span>
+          </FilePicker>
         )}
-        <FilePicker className="button" label="Foto wählen" accept="image/*" onPick={handleFile} disabled={processing}>
-          {hasPhoto ? 'Foto ändern' : 'Foto wählen'}
-        </FilePicker>
+        {hasPhoto && (
+          <FilePicker className="button" label="Foto wählen" accept="image/*" onPick={handleFile} disabled={processing}>
+            Foto ändern
+          </FilePicker>
+        )}
       </div>
 
       <label className="field">
