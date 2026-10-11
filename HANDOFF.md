@@ -64,11 +64,11 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 3. Aktueller Stand (11.10.2026, spätabends)
 
-- **Live (= `origin/main`)** ist Commit `94fb746`. Im Browser-Pane geprüft: Die Live-Seite läuft hell und dunkel in Handy-Größe sauber, IndexedDB-Version 20 mit Tabelle `outfitPhotos` (also Dexie v2).
-- **Neu und noch nicht veröffentlicht:** Branch `feature/offene-punkte` mit Rückgängig nach Löschen, Namensfrage beim ersten Start, „Speichern und nächstes Teil fotografieren“, Schrift in rem mit iOS-Textgröße (Dynamic Type), aufgefrischtem `DESIGN.md` und neu erzeugtem `.impeccable/design.json`. **Zum Veröffentlichen** per Fast-Forward nach `main` übernehmen und pushen, aber **nur nach Freigabe** („hochladen“).
+- **`main` = `origin/main` = Live**, inklusive der Runde „offene Punkte“ (am 11.10. spätabends auf Wunsch des Nutzers hochgeladen). Vorher im Browser-Pane geprüft: Die Live-Seite läuft hell und dunkel in Handy-Größe sauber, IndexedDB-Version 20 mit Tabelle `outfitPhotos` (also Dexie v2).
+- **Veröffentlicht aus `feature/offene-punkte`:** Rückgängig nach Löschen, Namensfrage beim ersten Start, „Speichern und nächstes Teil fotografieren“, Schrift in rem mit iOS-Textgröße (Dynamic Type), aufgefrischtem `DESIGN.md` und neu erzeugtem `.impeccable/design.json`.
 - **Qualität:** 258 Tests grün, `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde (CLI und Browser-Overlay auf vier Seiten).
 - **Design-Kritik (Verlauf):** 22 → 26 → 28 → 28 → 26 → **28/40** (Runde 5, 11.10., Bericht in `.impeccable/critique/`). Ohne Sub-Agenten im selben Kontext gelaufen und im Bericht so gekennzeichnet.
-- **Branches:** `main` und `feature/offene-punkte`; der alte `feature/pflegeetikett` ist gelöscht.
+- **Branches:** `main` und der voll gemergte `feature/offene-punkte` (kann gelöscht werden); der alte `feature/pflegeetikett` ist gelöscht. Neue Arbeit auf einem neuen Feature-Branch beginnen.
 - **Datenmodell:** unverändert Dexie **Version 2**, Backup **v1**. Rückgängig braucht keine Schema-Änderung, der Schnappschuss liegt nur im Speicher.
 - **Abnahme auf echtem iPhone:** noch **nicht** erfolgt (Checkliste in [README.md](README.md)). Neu zu prüfen: Textgröße in den iOS-Einstellungen ändern, dann muss die Schrift mitwachsen.
 
@@ -97,7 +97,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 4. Offene Aufgaben (in Reihenfolge)
 
-1. **`feature/offene-punkte` veröffentlichen**, sobald der Nutzer „hochladen“ sagt: `git checkout main && git merge --ff-only feature/offene-punkte && git push`, danach den Deploy-Lauf prüfen.
+1. **Live-Seite nach dem Update einmal ansehen** (installierte App ggf. zweimal starten, der Service Worker liefert die alte Version noch einmal aus).
 2. **Aus Kritik Runde 5 (28/40), zur Auswahl durch den Nutzer:**
    - Keine Suche nach Namen oder Notizen. Bei 100+ Teilen hilft nur der Filter.
    - Die Saison-Reihe auf dem Band ist als Regler nicht selbsterklärend.
