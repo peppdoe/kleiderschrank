@@ -1,6 +1,6 @@
 # Übergabe: Kleiderschrank-App für Lena
 
-Stand: 11.10.2026 (spätabends). **Die App ist bereit zur Übergabe an Lena**: auf dem iPhone des Auftraggebers komplett getestet, Anleitung und Anleitungsbild liegen bereit. Diese Datei richtet sich an einen neuen Chat ohne Vorwissen. Lies zuerst diese Datei, dann [CLAUDE.md](CLAUDE.md) (Befehle, Regeln, Stolperfallen) und vor jeder Änderung an der Oberfläche [DESIGN.md](DESIGN.md).
+Stand: 11.10.2026 (spätabends). **Die App ist bereit zur Übergabe an Lena**: auf dem iPhone des Auftraggebers komplett getestet, zuletzt kam noch die Hell/Dunkel-Auswahl dazu; beide Anleitungsbilder liegen bereit. Diese Datei richtet sich an einen neuen Chat ohne Vorwissen. Lies zuerst diese Datei, dann [CLAUDE.md](CLAUDE.md) (Befehle, Regeln, Stolperfallen) und vor jeder Änderung an der Oberfläche [DESIGN.md](DESIGN.md).
 
 ---
 
@@ -72,15 +72,21 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 3. Aktueller Stand (11.10.2026, spätabends)
 
-- **`main` = `origin/main` = Live.** Alle Deploy-Läufe vom 11.10. waren erfolgreich. Letzte Änderung an der App selbst: oberer Abstand in der installierten App (`259ecff`); danach nur Doku.
+- **`main` = `origin/main` = Live** (`9758300`). Alle Deploy-Läufe vom 11.10. waren erfolgreich. Letzte Änderung an der App: **Hell/Dunkel-Auswahl** in den Einstellungen (siehe unten), davor der obere Abstand in der installierten App (`259ecff`).
 - **Live im Browser-Pane geprüft (nach dem Update):** Der Server liefert das neue Bundle `index-BA4yspRC.js` mit Namensfrage und Rückgängig aus. Erst nach dem **dritten Laden** stellte der Service Worker um, danach erschien „Wie heißt du?“. IndexedDB weiter Version 20 (Dexie v2). Lenas installierte App braucht also ggf. zwei, drei Starts.
-- **Qualität:** 258 Tests grün, zehn volle Durchläufe hintereinander stabil, `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde (CLI und Browser-Overlay auf vier Seiten).
+- **Qualität:** 264 Tests grün (die zehn vollen Durchläufe nach der Testkorrektur waren mit 258 Tests stabil), `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde (CLI und Browser-Overlay auf vier Seiten).
 - **Design-Kritik (Verlauf):** 22 → 26 → 28 → 28 → 26 → **28/40** (Runde 5, 11.10., `.impeccable/critique/2026-10-11T11-54-08Z__src.md`). Ohne Sub-Agenten im selben Kontext gelaufen und im Bericht so gekennzeichnet. Der Befund „Rückgängig-Zeitfenster“ ist danach behoben.
-- **Branches:** nur `main`. `feature/pflegeetikett` und `feature/offene-punkte` sind gemergt und gelöscht. Neue Arbeit auf einem neuen Feature-Branch beginnen.
+- **Branches:** nur `main`. Alle Feature-Branches des 11.10. sind gemergt und gelöscht. Neue Arbeit auf einem neuen Feature-Branch beginnen.
 - **Datenmodell:** unverändert Dexie **Version 2**, Backup **v1**.
-- **Gerätetest durch den Auftraggeber (iPhone 14 Pro, iOS 27): bestanden.** Mit der Demo-Sicherung (`scripts/demo-backup.mjs`) und der Testliste aus dem Chat hat alles funktioniert: Saison-Wechsel, Filter, Teil ansehen/bearbeiten, Löschen + Rückgängig, „Speichern und nächstes Teil“, Look anlegen, Tragebild, Textgröße, Dunkelmodus, Offline, Backup nach iCloud Drive und zurück. Gefunden und behoben wurde dabei nur die angeschnittene Begrüßung (siehe Abschnitt 6).
+- **Gerätetest durch den Auftraggeber (iPhone 14 Pro, iOS 27): bestanden.** Mit der Demo-Sicherung (`scripts/demo-backup.mjs`) und der Testliste aus dem Chat hat alles funktioniert: Saison-Wechsel, Filter, Teil ansehen/bearbeiten, Löschen + Rückgängig, „Speichern und nächstes Teil“, Look anlegen, Tragebild, Textgröße, Dunkelmodus, Offline, Backup nach iCloud Drive und zurück. Gefunden und behoben wurde dabei nur die angeschnittene Begrüßung (siehe Abschnitt 6). **Die Hell/Dunkel-Auswahl kam erst danach** und ist auf dem iPhone noch nicht geprüft.
 - **Auf Lenas eigenem iPhone:** noch nicht. Sie startet dort mit leerem Schrank; die Testdaten liegen nur auf dem Gerät des Auftraggebers.
-- **Lenas Anleitung** in der [README.md](README.md) („Für Lena“) ist aktuell: erst installieren, Teilen ggf. unter •••, Namensfrage, Rückgängig, mehrere Teile hintereinander, Textgröße, erstes Backup nach 10 Teilen.
+- **Lenas Anleitung** in der [README.md](README.md) („Für Lena“) ist aktuell: erst installieren, Teilen ggf. unter •••, Namensfrage, Rückgängig, mehrere Teile hintereinander, Hell/Dunkel, Textgröße, erstes Backup nach 10 Teilen. Die beiden Bilder in `docs/uebergabe/` erwähnen Hell/Dunkel nicht (bewusst knapp gehalten).
+
+### Zuletzt dazugekommen: Hell/Dunkel (Wunsch des Nutzers vor der Übergabe)
+
+- Einstellungen → **„Darstellung“**: Automatisch · Hell · Dunkel (Anhänger), Hinweis „Automatisch folgt deinem iPhone.“ Voreinstellung Automatisch.
+- Gespeichert im `localStorage` (`kleiderschrank-theme`), nicht im Backup. Gesetzt als `data-theme` am Root; das Inline-Skript in `index.html` setzt es vor dem ersten Bild, `lib/theme.ts` danach inkl. Statusleistenfarbe. „Automatisch“ zieht bei Systemwechsel und beim Zurückkehren in die App nach.
+- Im Browser geprüft: Wahl gegen das System (hell/dunkel) und nach Neuladen. Nicht prüfbar im Pane: Live-Wechsel des Systems (Emulation feuert kein `change`).
 
 ### Was in der Runde „offene Punkte“ dazukam
 
@@ -108,16 +114,17 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 4. Offene Aufgaben (in Reihenfolge)
 
-1. **Übergabe an Lena** (macht der Auftraggeber): die beiden Bilder in `docs/uebergabe/` (Installation, „So funktioniert’s“) und den Link `https://peppdoe.github.io/kleiderschrank/` per WhatsApp schicken. Danach erst weiterbauen, mit ihren echten Rückmeldungen.
-2. **Aus Kritik Runde 5 (28/40), noch offen, zur Auswahl durch den Nutzer:**
+1. **Hell/Dunkel kurz auf dem iPhone prüfen** (Auftraggeber): Einstellungen → Darstellung → „Dunkel“, App schließen und neu öffnen (bleibt dunkel). Dann „Automatisch“, im Kontrollzentrum den Dunkelmodus umschalten, zurück in die App (zieht mit).
+2. **Übergabe an Lena** (macht der Auftraggeber): die beiden Bilder in `docs/uebergabe/` (Installation, „So funktioniert’s“) und den Link `https://peppdoe.github.io/kleiderschrank/` per WhatsApp schicken. Danach erst weiterbauen, mit ihren echten Rückmeldungen.
+3. **Aus Kritik Runde 5 (28/40), noch offen, zur Auswahl durch den Nutzer:**
    - Keine Suche nach Namen oder Notizen. Bei 100+ Teilen hilft nur der Filter.
    - Die Saison-Reihe auf dem Band ist als Regler nicht selbsterklärend.
    - Hilfe gibt es nur als Einzeiler (Installation, Backup).
    - Unter „Heute“ wird der Name des angeschnittenen zweiten Looks mitten im Wort abgeschnitten (P3).
-3. **Falls Probleme auf Lenas iPhone auftauchen**, zuerst die Checkliste in `README.md` durchgehen. Besonders: Hochformat- und HEIC-Fotos (Drehung), Kamera, Offline-Start, Backup nach iCloud Drive und zurück (inkl. Tragebild), Namensfrage, Saison-Regler, Tragebild als Spiegel-Selfie, **iOS-Textgröße**, **Rückgängig**, **mehrere Teile hintereinander**.
-4. **Nach Lenas Test klären:** „Heute“ nach Anlass/Vibe (Uni, Abends, Cozy …)? Fehlende Kategorien/Farben (Jeans, Blazer, Schmuck; Denim, Creme, Oliv, Bordeaux)? „Heute getragen“ / „Lange nicht getragen“? Eigene Saison für Looks? Jeweils Datenmodell-Änderung, deshalb erst mit ihren echten Wörtern. Die App ist ein Geschenk.
-5. Nach Lenas Rückmeldungen: Probleme beheben, `CLAUDE.md` und `DESIGN.md` nachziehen.
-6. **Zurückgestellt (Nutzer: „passt so erstmal“):** Hinweis in den Einstellungen, dass alte Backups in der Dateien-App gelöscht werden können.
+4. **Falls Probleme auf Lenas iPhone auftauchen**, zuerst die Checkliste in `README.md` durchgehen. Besonders: Hochformat- und HEIC-Fotos (Drehung), Kamera, Offline-Start, Backup nach iCloud Drive und zurück (inkl. Tragebild), Namensfrage, Saison-Regler, Tragebild als Spiegel-Selfie, **iOS-Textgröße**, **Rückgängig**, **mehrere Teile hintereinander**, **Hell/Dunkel**.
+5. **Nach Lenas Test klären:** „Heute“ nach Anlass/Vibe (Uni, Abends, Cozy …)? Fehlende Kategorien/Farben (Jeans, Blazer, Schmuck; Denim, Creme, Oliv, Bordeaux)? „Heute getragen“ / „Lange nicht getragen“? Eigene Saison für Looks? Jeweils Datenmodell-Änderung, deshalb erst mit ihren echten Wörtern. Die App ist ein Geschenk.
+6. Nach Lenas Rückmeldungen: Probleme beheben, `CLAUDE.md` und `DESIGN.md` nachziehen.
+7. **Zurückgestellt (Nutzer: „passt so erstmal“):** Hinweis in den Einstellungen, dass alte Backups in der Dateien-App gelöscht werden können.
 
 **Arbeitsweise, die sich bewährt hat:** Feature-Branch → TDD (erst fehlschlagender Test) → Sichtprüfung im Browser-Pane (375×812, hell und dunkel) → `impeccable detect` → DESIGN.md/CLAUDE.md nachziehen → Commit. Größere Features über Brainstorming → Spec → Plan → Umsetzung. **Mergen und Pushen nach `main` nur nach ausdrücklicher Freigabe** („hochladen“).
 
