@@ -331,7 +331,7 @@ The `garment-*` colors are data, not interface: each names a clothing color Lena
 
 ## Layout
 
-Single column, max 720px centered, 16px side padding, top padding respecting the safe area plus 12px (plus 32px in the installed app, where iOS 26 fades content under the status bar). Sections are separated by 22px above a section head and 10px below; settings sections use a 1px top hairline with 20px/24px padding. Spacing steps observed: 4, 8, 12, 16, 22px, with 6px and 14px as in-component gaps.
+Single column, max 720px centered, 16px side padding, top padding respecting the safe area plus 12px (plus 32px in the installed app, where iOS (observed on iOS 27) fades content under the status bar). Sections are separated by 22px above a section head and 10px below; settings sections use a 1px top hairline with 20px/24px padding. Spacing steps observed: 4, 8, 12, 16, 22px, with 6px and 14px as in-component gaps.
 
 The wardrobe grid is 3 columns at 8px gap (also for the pieces on the outfit detail); outfit previews are collages (see Outfit Look). "Heute" scrolls sideways with scroll-snap and 148px-high looks, bleeding to the screen edge. The tab bar is fixed at 62px plus the bottom safe area and centers its content to 720px on wide screens; the add button tracks the content column's right edge. Forms hide the tab bar and end in a sticky action bar on the ground color. Bottom sheets rise to 86dvh max.
 
