@@ -35,7 +35,7 @@ src/db/        schema.ts (Dexie v2: items/photos/outfits/meta/outfitPhotos), ite
 src/lib/       constants (Kategorien/Farben/Saisons), filters, backup, backupReminder, image,
                errors, storage, files, route (Hash-Routing), id, describe, useObjectUrl,
                greeting (Begrüßung + Saison nach Monat), today (Looks zur Saison, stitchSeason)
-src/components/  ChipGroup, FilterBar, FilterSheet, FilterTags, ItemGrid, ItemPhoto, FilePicker,
+src/components/  NameAsk (Namensfrage beim ersten Start), ChipGroup, FilterBar, FilterSheet, FilterTags, ItemGrid, ItemPhoto, FilePicker,
                TabBar, NotFound, OutfitPreview, InstallNotice, ErrorBoundary, LabelBand,
                SeasonSymbols, ImportSheet, OutfitSeasons, OutfitLook, OutfitPhotoPicker, SwatchGroup,
                DetailBar, Toast, Sheet, ConfirmSheet, Icon (eigene SVG-Symbole, keine Emojis)
@@ -56,8 +56,11 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter (Saison = Heute-Regler), Fot
 - Keine Karten um Fotos/Outfits, keine Pillen-Chips, keine Emojis als Symbole (eigene SVGs in `components/Icon.tsx`), keine Kicker-/Eyebrow-Zeile über Überschriften.
 - **Daumenreichweite:** In Formularen keine Tab-Leiste; eine feste Leiste ganz unten trägt Abbrechen/Zurück links und die Hauptaktion rechts, oben steht nur der Titel. Detailseiten (Teil, Look) haben `DetailBar` über der Tab-Leiste: ‹ Zurück links, Bearbeiten rechts; Löschen bleibt am Inhaltsende.
 - **Farben** wählt man als Farbfelder mit sichtbarem Namen (`SwatchGroup`), nicht als Anhänger. Das Filterblatt zeigt nur Kategorien/Farben, die es unter den übrigen Teilen gibt, mit Anzahl (`facetCounts`).
-- **Toasts** nur über `setNotice` in `App.tsx` (eine dauerhaft eingehängte Ansage-Region für VoiceOver, `components/Toast.tsx`); Bildschirme bekommen dafür einen Callback (`onNotice`).
-- **Erster Start:** leerer Schrank zeigt „Noch ganz viel Platz hier.“ mit „Erstes Teil fotografieren“; ohne Teile weder Plus-Knopf noch Saison-Wahl. Looks-Tab ohne Teile führt zum ersten Foto.
+- **Toasts** nur über `notify(text, action?)` in `App.tsx` (eine dauerhaft eingehängte Ansage-Region für VoiceOver, `components/Toast.tsx`); Bildschirme bekommen dafür einen Callback (`onNotice`). Mit Aktion bleibt der Toast 6 s statt 3,5 s.
+- **Rückgängig statt Nachfrage-Kette:** Löschen eines Teils/Looks zeigt „Teil/Look gelöscht“ mit „Rückgängig“. `deleteItem`/`deleteOutfit` geben einen Schnappschuss zurück, `restoreItem`/`restoreOutfit` spielen ihn in einer Transaktion zurück (Foto, Liebling, Platz in den Looks; inzwischen geänderte Looks behalten ihre Änderungen).
+- **Schriftgrößen nur in rem** (Basis 17 px). Auf iPhone/iPad folgt die Wurzel der iOS-Textgröße (`font: -apple-system-body`, nur mit `-webkit-touch-callout`), feste Reihen (Tabs, Pflegesymbol-Namen, Farbnamen, Bandtitel) sind mit `min(rem, px)` gedeckelt, Eingabefelder nie unter 16 px (`max(1rem, 16px)`), sonst zoomt iOS.
+- **Erster Start:** leerer Schrank zeigt „Noch ganz viel Platz hier.“ mit „Erstes Teil fotografieren“, darunter einmal „Wie heißt du?“ (`NameAsk`, verschwindet mit gesetztem Namen); ohne Teile weder Plus-Knopf noch Saison-Wahl. Looks-Tab ohne Teile führt zum ersten Foto.
+- **Mehrere Teile hintereinander:** Im Formular für ein neues Teil erscheint, sobald gespeichert werden kann, „Speichern und nächstes Teil fotografieren“ (selbst ein `FilePicker`). `onCreated(item, nextFile)` → `App.tsx` setzt das neue Foto und erhöht `draftCount` (Schlüssel des Formulars), damit es frisch beginnt.
 - **Saison-Reihe = „Heute“-Regler:** Die aktuelle Saison ist beim Öffnen vorausgewählt (`App.tsx`), steuert „Heute“, Spruch und Fadenfarbe – **versteckt im Schrank aber nichts**: passende Teile stehen oben, die übrigen unter „Für andere Saisons“. Einfachauswahl über `chooseSeason`. Das Filter-Panel im Schrank hat bewusst keine Saison-Gruppe und setzt die Saison nie zurück. Teile ohne Saison gelten als ganzjährig (`lib/filters.ts`).
 - Rückfragen laufen über Bodenblätter (`components/Sheet.tsx`, `ConfirmSheet.tsx`), nie über `window.confirm`. Abbrechen mit ungespeicherten Änderungen fragt nach („Änderungen verwerfen?“).
 - Neues Teil passt nicht zu Kategorie-/Farb-/Lieblingsfilter → diese Filter werden gelöst (die Saison bleibt), das Teil markiert und „Teil gespeichert“ angezeigt. Nach dem Speichern eines Looks: Etikett wird eingenäht, „Look gespeichert“.
@@ -105,7 +108,5 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter (Saison = Heute-Regler), Fot
 
 Die vollständige, geordnete Liste steht in `HANDOFF.md` (Abschnitt 4). Kurz:
 
-- Live-Seite einmal im Browser-Pane prüfen (Datenbank Version 2 / IndexedDB-Version 20).
 - Abnahme auf Lenas echtem iPhone: Checkliste in `README.md`, besonders Hochformat-/HEIC-Fotos, Tragebild als Spiegel-Selfie und Backup über iCloud Drive.
-- Aus der Kritik offen: Schrift wächst nicht mit der iOS-Textgröße (px), kein Rückgängig nach Löschen, Name wird beim ersten Start nicht abgefragt.
-- `.impeccable/design.json` ist älter als `DESIGN.md` (`/impeccable document`).
+- Aus der Kritik Runde 5 (28/40): Rückgängig-Toast hat ein festes Zeitfenster von 6 s, keine Suche nach Namen/Notizen, Hilfe nur als Einzeiler.

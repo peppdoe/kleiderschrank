@@ -1,6 +1,6 @@
 # Übergabe: Kleiderschrank-App für Lena
 
-Stand: 11.10.2026 (abends). Diese Datei richtet sich an einen neuen Chat ohne Vorwissen. Lies zuerst diese Datei, dann [CLAUDE.md](CLAUDE.md) (Befehle, Regeln, Stolperfallen) und vor jeder Änderung an der Oberfläche [DESIGN.md](DESIGN.md).
+Stand: 11.10.2026 (spätabends, nach der Runde „offene Punkte“). Diese Datei richtet sich an einen neuen Chat ohne Vorwissen. Lies zuerst diese Datei, dann [CLAUDE.md](CLAUDE.md) (Befehle, Regeln, Stolperfallen) und vor jeder Änderung an der Oberfläche [DESIGN.md](DESIGN.md).
 
 ---
 
@@ -62,14 +62,24 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ---
 
-## 3. Aktueller Stand (11.10.2026, abends)
+## 3. Aktueller Stand (11.10.2026, spätabends)
 
-- **`main` = `origin/main` = Live** (Commit `1650d75`). Alles ist gemergt, gepusht und deployt (Deploy-Lauf vom 11.10., erfolgreich). Im ausgelieferten Bundle der Live-Seite sind die neuen Texte per `curl` bestätigt. Die Live-Seite selbst im Browser-Pane zu öffnen wurde beim letzten Mal abgelehnt; beim nächsten Mal dort einmal ansehen. Bereits installierte Apps holen sich das Update beim nächsten Start (im Browser ggf. zweimal laden, der Service Worker liefert die alte Version noch einmal aus).
-- **Branches:** nur `main` und der alte, voll gemergte `feature/pflegeetikett` (kann gelöscht werden). Neue Arbeit auf einem neuen Feature-Branch beginnen.
-- **Qualität:** 247 Tests grün, `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde.
-- **Design-Kritik (Verlauf):** 22 → 26 → 28 → 28 → **26/40** (Runde 4, 11.10., Bericht `.impeccable/critique/2026-10-11T02-38-09Z__src.md`). Alle Befunde aus Runde 4 sind danach umgesetzt, aber **noch nicht neu bewertet**. Die 26 lag teils an strengeren Maßstäben, teils an Ungereimtheiten, die inzwischen behoben sind.
-- **Datenmodell heute:** Dexie **Version 2** (`items`, `photos`, `outfits`, `meta`, neu `outfitPhotos`). Teile haben optional `favorite` und `name` (beide ohne Index). Backup bleibt **v1** mit optionalem Schlüssel `outfitPhotos`.
-- **Abnahme auf echtem iPhone:** noch **nicht** erfolgt (Checkliste in [README.md](README.md)).
+- **Live (= `origin/main`)** ist Commit `94fb746`. Im Browser-Pane geprüft: Die Live-Seite läuft hell und dunkel in Handy-Größe sauber, IndexedDB-Version 20 mit Tabelle `outfitPhotos` (also Dexie v2).
+- **Neu und noch nicht veröffentlicht:** Branch `feature/offene-punkte` mit Rückgängig nach Löschen, Namensfrage beim ersten Start, „Speichern und nächstes Teil fotografieren“, Schrift in rem mit iOS-Textgröße (Dynamic Type), aufgefrischtem `DESIGN.md` und neu erzeugtem `.impeccable/design.json`. **Zum Veröffentlichen** per Fast-Forward nach `main` übernehmen und pushen, aber **nur nach Freigabe** („hochladen“).
+- **Qualität:** 255 Tests grün, `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde (CLI und Browser-Overlay auf vier Seiten).
+- **Design-Kritik (Verlauf):** 22 → 26 → 28 → 28 → 26 → **28/40** (Runde 5, 11.10., Bericht in `.impeccable/critique/`). Ohne Sub-Agenten im selben Kontext gelaufen und im Bericht so gekennzeichnet.
+- **Branches:** `main` und `feature/offene-punkte`; der alte `feature/pflegeetikett` ist gelöscht.
+- **Datenmodell:** unverändert Dexie **Version 2**, Backup **v1**. Rückgängig braucht keine Schema-Änderung, der Schnappschuss liegt nur im Speicher.
+- **Abnahme auf echtem iPhone:** noch **nicht** erfolgt (Checkliste in [README.md](README.md)). Neu zu prüfen: Textgröße in den iOS-Einstellungen ändern, dann muss die Schrift mitwachsen.
+
+### Was in der Runde „offene Punkte“ dazukam
+
+1. **Rückgängig nach Löschen:** Teil oder Look löschen → Toast „Teil gelöscht“ / „Look gelöscht“ mit „Rückgängig“ (6 s). Zurück kommen Foto, Liebling und der Platz in den Looks bzw. das Tragebild.
+2. **Namensfrage beim ersten Start:** Der leere Schrank fragt einmal „Wie heißt du?“, das Band grüßt danach sofort mit Namen.
+3. **Speichern und nächstes Teil fotografieren:** Das Formular für ein neues Teil speichert und öffnet direkt ein frisches Formular mit dem nächsten Foto.
+4. **Dynamic Type:** Alle Schriftgrößen in rem. Auf dem iPhone folgt die Grundgröße der iOS-Textgröße, feste Reihen sind gedeckelt. Getestet bis 28 px (erste Bedienungshilfen-Stufe) ohne seitlichen Überlauf.
+5. **Toast-Lage:** Der Toast schwebt über dem Plus-Knopf und über der Formularleiste.
+6. **Doku:** `DESIGN.md` aufgefrischt (rem-Stufen, neue Regel „The Growing Text Rule“, Toast mit Aktion, Namensfrage), `.impeccable/design.json` per Skript neu erzeugt.
 
 ### Was am 11.10. dazukam (Überblick)
 
@@ -87,17 +97,15 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 4. Offene Aufgaben (in Reihenfolge)
 
-1. **Live-Seite einmal im Browser ansehen** (Handy-Größe, hell/dunkel) und prüfen, dass die Datenbank dort auf Version 2 läuft (`indexedDB.open('kleiderschrank')` → Version 20, Tabelle `outfitPhotos`).
-2. **Optional: neue Kritik** (`/impeccable critique`), um die Wirkung der Runde-4-Korrekturen zu messen (zuletzt 26/40).
-3. **Noch offen aus der Kritik (bewusst nicht angefasst):**
-   - Schrift wächst nicht mit der iOS-Textgröße (alles in px; Umstellung auf rem / Dynamic Type wäre ein größerer Umbau).
-   - Kein Rückgängig nach dem Löschen eines Teils (Idee: Toast „Teil gelöscht – Rückgängig“).
-   - Der Name wird beim ersten Start nicht abgefragt (steht nur in den Einstellungen).
-   - Kein „Speichern und nächstes Teil“ für mehrere Teile hintereinander.
-   - `.impeccable/design.json` ist älter als `DESIGN.md`; bei Gelegenheit `/impeccable document` laufen lassen.
-4. **Abnahme auf Lenas iPhone** mit der Checkliste in `README.md`. Besonders: Hochformat- und HEIC-Fotos (Drehung), Kamera, Offline-Start, Backup nach iCloud Drive und zurück (inkl. Tragebild), Begrüßung mit Namen, Saison-Regler, Tragebild als Spiegel-Selfie.
-5. **Nach Lenas Test klären:** „Heute“ nach Anlass/Vibe (Uni, Abends, Cozy …)? Fehlende Kategorien/Farben (Jeans, Blazer, Schmuck; Denim, Creme, Oliv, Bordeaux)? „Heute getragen“ / „Lange nicht getragen“? Eigene Saison für Looks? Jeweils Datenmodell-Änderung, deshalb erst mit ihren echten Wörtern. Die App ist ein Geschenk.
-6. Nach der Abnahme: Probleme beheben, `CLAUDE.md` und `DESIGN.md` nachziehen.
+1. **`feature/offene-punkte` veröffentlichen**, sobald der Nutzer „hochladen“ sagt: `git checkout main && git merge --ff-only feature/offene-punkte && git push`, danach den Deploy-Lauf prüfen.
+2. **Aus Kritik Runde 5 (28/40), zur Auswahl durch den Nutzer:**
+   - Der Rückgängig-Toast verschwindet nach 6 s, auch wenn er gerade den Fokus hat (VoiceOver). Idee: Zeit anhalten, solange der Knopf fokussiert ist.
+   - Keine Suche nach Namen oder Notizen. Bei 100+ Teilen hilft nur der Filter.
+   - Die Saison-Reihe auf dem Band ist als Regler nicht selbsterklärend.
+   - Hilfe gibt es nur als Einzeiler (Installation, Backup).
+3. **Abnahme auf Lenas iPhone** mit der Checkliste in `README.md`. Besonders: Hochformat- und HEIC-Fotos (Drehung), Kamera, Offline-Start, Backup nach iCloud Drive und zurück (inkl. Tragebild), Namensfrage, Saison-Regler, Tragebild als Spiegel-Selfie, **iOS-Textgröße**, **Rückgängig**, **mehrere Teile hintereinander**.
+4. **Nach Lenas Test klären:** „Heute“ nach Anlass/Vibe (Uni, Abends, Cozy …)? Fehlende Kategorien/Farben (Jeans, Blazer, Schmuck; Denim, Creme, Oliv, Bordeaux)? „Heute getragen“ / „Lange nicht getragen“? Eigene Saison für Looks? Jeweils Datenmodell-Änderung, deshalb erst mit ihren echten Wörtern. Die App ist ein Geschenk.
+5. Nach der Abnahme: Probleme beheben, `CLAUDE.md` und `DESIGN.md` nachziehen.
 
 **Arbeitsweise, die sich bewährt hat:** Feature-Branch → TDD (erst fehlschlagender Test) → Sichtprüfung im Browser-Pane (375×812, hell und dunkel) → `impeccable detect` → DESIGN.md/CLAUDE.md nachziehen → Commit. Größere Features über Brainstorming → Spec → Plan → Umsetzung. **Mergen und Pushen nach `main` nur nach ausdrücklicher Freigabe** („hochladen“).
 
@@ -113,7 +121,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 | `PRODUCT.md` | Nutzerin, Zweck, Prinzipien (Impeccable-Produktbeschreibung) |
 | `DESIGN.md` + `.impeccable/design.json` | Gestaltungssystem „Pflegeetikett“: Farben hell/dunkel, Schriftgrößen, Radien, Komponenten, benannte Regeln |
 | `.impeccable/surfaces/src.md` | Gestaltungsauftrag (Direction Contract), auf den gebauten Stand synchronisiert |
-| `.impeccable/critique/` | Kritik-Berichte (22, 26, 28, 28, 26 von 40; neuester `2026-10-11T02-38-09Z__src.md`) |
+| `.impeccable/critique/` | Kritik-Berichte (22, 26, 28, 28, 26, 28 von 40) |
 | `.impeccable/mocks/decision/` | Skizzen der Entscheidungsrunde (`model-pick.html` = gewählte Richtung) |
 | `README.md` | Anleitung für Lena + Abnahme-Checkliste fürs iPhone |
 | `docs/superpowers/specs/2026-10-10-kleiderschrank-app-design.md` | Ursprüngliche Spec |
@@ -156,4 +164,4 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 - **Alter Service Worker auf `localhost:4173`** (Preview) kann eine uralte Version ausliefern. Dann im Pane `navigator.serviceWorker.getRegistrations()` abmelden, `caches` leeren und neu laden. Der Preview-Port hat eine eigene, leere Datenbank – gut, um den ersten Start zu prüfen.
 - **Demo-Daten** liegen in der IndexedDB von `localhost:5173` (12 Teile, 3 Looks, ein Look mit Demo-Tragebild). Frische Demo-Daten erzeugt `node scripts/capture-review.mjs <ordner>` in einem eigenen Edge-Profil.
 - **Fest positionierte Leisten:** Detail-Leiste (über der Tab-Leiste) und Formular-Leiste (ganz unten) sind `position: fixed`; `.app` bzw. `.app--form` reservieren unten Platz. Neue Elemente am Seitenende darauf prüfen.
-- **Toasts:** nie direkt rendern, sondern über `setNotice` in `App.tsx` (eine Ansage-Region für VoiceOver). Bildschirme bekommen dafür einen Callback (z. B. `onNotice` im Look-Detail). Die Einstellungen haben ihre eigene Statuszeile.
+- **Toasts:** nie direkt rendern, sondern über `notify` in `App.tsx` (eine Ansage-Region für VoiceOver). Bildschirme bekommen dafür einen Callback (z. B. `onNotice` im Look-Detail). Die Einstellungen haben ihre eigene Statuszeile.

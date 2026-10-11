@@ -44,10 +44,14 @@ Jeder Push auf `main` wird automatisch getestet und auf GitHub Pages veröffentl
 
 - [ ] Link in Safari öffnen, zum Home-Bildschirm hinzufügen, App startet im Vollbild.
 - [ ] Erster Start: „Noch ganz viel Platz hier.“ → „Erstes Teil fotografieren“ öffnet Kamera bzw. Fotomediathek.
+- [ ] Erster Start: „Wie heißt du?“ ausfüllen → „Merken“ → das Band grüßt sofort mit Namen, die Frage verschwindet; die Tastatur zoomt dabei nicht in die Seite.
 - [ ] „+“ → „Foto aufnehmen“: Kamera öffnet sich, Teil lässt sich speichern.
 - [ ] „+“ → „Fotomediathek“: Foto auswählen und speichern; Hochformat- und HEIC-Fotos stehen richtig herum.
 - [ ] Nach dem Foto ist die Kategorie ohne Scrollen sichtbar; Abbrechen/Speichern sitzen unten in Daumenreichweite.
 - [ ] Name für ein Teil vergeben → erscheint auf dem Etikett.
+- [ ] Mehrere Teile hintereinander: „Speichern und nächstes Teil fotografieren“ öffnet die Kamera, das neue Formular beginnt leer und oben.
+- [ ] Teil löschen → „Rückgängig“ im Toast → Teil ist samt Foto, Herz und Looks wieder da; dasselbe für einen Look.
+- [ ] Einstellungen → Anzeige & Helligkeit → Textgröße größer stellen: die App-Schrift wächst mit, nichts läuft seitlich aus dem Bild (auch mit „Größerer Text“ unter Bedienungshilfen).
 - [ ] Filter nach Kategorie, Farbe und „Lieblinge“ funktionieren; das Filterblatt zeigt nur vorhandene Werte mit Anzahl.
 - [ ] Saison auf dem Band wechseln: „Heute“ zeigt die passenden Looks, der Schrank versteckt nichts (Rest unter „Für andere Saisons“).
 - [ ] Look erstellen, umbenennen, löschen; Foto von dir im Look hinzufügen (Spiegel-Selfie: Kopf bleibt in der Vorschau), ändern und entfernen.
