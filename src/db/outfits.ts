@@ -1,7 +1,11 @@
 import { newId } from '../lib/id';
-import { db, type Outfit } from './schema';
+import type { PhotoBlobs } from './items';
+import { db, type Outfit, type OutfitPhoto } from './schema';
 
 export class OutfitValidationError extends Error {}
+
+/** Foto setzen, entfernen (null) oder unverändert lassen (undefined). */
+export type PhotoChange = PhotoBlobs | null | undefined;
 
 async function normalize(name: string, itemIds: string[]): Promise<{ name: string; itemIds: string[] }> {
   const trimmed = name.trim();
@@ -13,27 +17,58 @@ async function normalize(name: string, itemIds: string[]): Promise<{ name: strin
   return { name: trimmed, itemIds: ids };
 }
 
-export async function createOutfit(name: string, itemIds: string[]): Promise<string> {
+async function applyPhoto(outfitId: string, photo: PhotoChange): Promise<void> {
+  if (photo === null) await db.outfitPhotos.delete(outfitId);
+  else if (photo) await db.outfitPhotos.put({ outfitId, full: photo.full, thumb: photo.thumb });
+}
+
+export async function createOutfit(name: string, itemIds: string[], photo?: PhotoBlobs): Promise<string> {
   const id = newId();
-  await db.transaction('rw', db.items, db.outfits, async () => {
+  await db.transaction('rw', db.items, db.outfits, db.outfitPhotos, async () => {
     const data = await normalize(name, itemIds);
     const now = new Date().toISOString();
     await db.outfits.add({ id, ...data, createdAt: now, updatedAt: now });
+    await applyPhoto(id, photo);
   });
   return id;
 }
 
-export async function updateOutfit(id: string, name: string, itemIds: string[]): Promise<void> {
-  await db.transaction('rw', db.items, db.outfits, async () => {
+export async function updateOutfit(id: string, name: string, itemIds: string[], photo?: PhotoChange): Promise<void> {
+  await db.transaction('rw', db.items, db.outfits, db.outfitPhotos, async () => {
     const existing = await db.outfits.get(id);
     if (!existing) throw new Error(`Outfit nicht gefunden: ${id}`);
     const data = await normalize(name, itemIds);
     await db.outfits.put({ ...existing, ...data, updatedAt: new Date().toISOString() });
+    await applyPhoto(id, photo);
   });
 }
 
+async function changePhoto(outfitId: string, photo: PhotoBlobs | null): Promise<void> {
+  await db.transaction('rw', db.outfits, db.outfitPhotos, async () => {
+    const existing = await db.outfits.get(outfitId);
+    if (!existing) throw new Error(`Outfit nicht gefunden: ${outfitId}`);
+    await applyPhoto(outfitId, photo);
+    await db.outfits.put({ ...existing, updatedAt: new Date().toISOString() });
+  });
+}
+
+export function setOutfitPhoto(outfitId: string, photo: PhotoBlobs): Promise<void> {
+  return changePhoto(outfitId, photo);
+}
+
+export function removeOutfitPhoto(outfitId: string): Promise<void> {
+  return changePhoto(outfitId, null);
+}
+
+export function getOutfitPhoto(outfitId: string): Promise<OutfitPhoto | undefined> {
+  return db.outfitPhotos.get(outfitId);
+}
+
 export async function deleteOutfit(id: string): Promise<void> {
-  await db.outfits.delete(id);
+  await db.transaction('rw', db.outfits, db.outfitPhotos, async () => {
+    await db.outfits.delete(id);
+    await db.outfitPhotos.delete(id);
+  });
 }
 
 export function getOutfit(id: string): Promise<Outfit | undefined> {

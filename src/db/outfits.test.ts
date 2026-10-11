@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { seedItem } from '../test/factories';
+import { fakePhoto, seedItem } from '../test/factories';
 import { deleteItem } from './items';
 import {
   OutfitValidationError, countOutfits, createOutfit, deleteOutfit, getOutfit,
-  listOutfits, listOutfitsWithItem, updateOutfit,
+  getOutfitPhoto, listOutfits, listOutfitsWithItem, removeOutfitPhoto, setOutfitPhoto, updateOutfit,
 } from './outfits';
 
 afterEach(() => vi.useRealTimers());
@@ -84,5 +84,71 @@ describe('queries', () => {
     const id = await createOutfit('Einzeln', [a]);
     await deleteItem(a);
     expect(await getOutfit(id)).toMatchObject({ name: 'Einzeln', itemIds: [] });
+  });
+});
+
+describe('outfit photos', () => {
+  it('creates an outfit together with its photo', async () => {
+    const a = await seedItem();
+    const id = await createOutfit('Spiegel', [a], fakePhoto('look'));
+    expect(await (await getOutfitPhoto(id))!.full.text()).toBe('look-full');
+    expect(await (await getOutfitPhoto(id))!.thumb.text()).toBe('look-thumb');
+  });
+
+  it('stores no photo when none is given', async () => {
+    const a = await seedItem();
+    const id = await createOutfit('Ohne', [a]);
+    expect(await getOutfitPhoto(id)).toBeUndefined();
+  });
+
+  it('does not store a photo when the outfit is invalid', async () => {
+    await expect(createOutfit(' ', ['missing'], fakePhoto())).rejects.toThrow(OutfitValidationError);
+    const { db } = await import('./schema');
+    expect(await db.outfitPhotos.count()).toBe(0);
+  });
+
+  it('keeps, replaces or removes the photo on update', async () => {
+    const a = await seedItem();
+    const id = await createOutfit('Look', [a], fakePhoto('one'));
+    await updateOutfit(id, 'Umbenannt', [a]);
+    expect(await (await getOutfitPhoto(id))!.full.text()).toBe('one-full');
+    await updateOutfit(id, 'Umbenannt', [a], fakePhoto('two'));
+    expect(await (await getOutfitPhoto(id))!.full.text()).toBe('two-full');
+    await updateOutfit(id, 'Umbenannt', [a], null);
+    expect(await getOutfitPhoto(id)).toBeUndefined();
+  });
+
+  it('sets and removes a photo directly and touches updatedAt', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-01-01T00:00:00.000Z'));
+    const a = await seedItem();
+    const id = await createOutfit('Look', [a]);
+    vi.setSystemTime(new Date('2026-01-02T00:00:00.000Z'));
+    await setOutfitPhoto(id, fakePhoto('neu'));
+    expect(await (await getOutfitPhoto(id))!.full.text()).toBe('neu-full');
+    expect((await getOutfit(id))!.updatedAt).toBe('2026-01-02T00:00:00.000Z');
+    vi.setSystemTime(new Date('2026-01-03T00:00:00.000Z'));
+    await removeOutfitPhoto(id);
+    expect(await getOutfitPhoto(id)).toBeUndefined();
+    expect((await getOutfit(id))!.updatedAt).toBe('2026-01-03T00:00:00.000Z');
+  });
+
+  it('refuses a photo for an unknown outfit', async () => {
+    await expect(setOutfitPhoto('missing', fakePhoto())).rejects.toThrow('Outfit nicht gefunden');
+  });
+
+  it('deletes the photo together with the outfit', async () => {
+    const a = await seedItem();
+    const id = await createOutfit('Weg', [a], fakePhoto());
+    await deleteOutfit(id);
+    expect(await getOutfitPhoto(id)).toBeUndefined();
+  });
+
+  it('keeps the photo when all pieces of the outfit are deleted', async () => {
+    const a = await seedItem();
+    const id = await createOutfit('Nur noch Foto', [a], fakePhoto('bleibt'));
+    await deleteItem(a);
+    expect((await getOutfit(id))!.itemIds).toEqual([]);
+    expect(await (await getOutfitPhoto(id))!.full.text()).toBe('bleibt-full');
   });
 });
