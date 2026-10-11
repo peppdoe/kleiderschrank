@@ -92,7 +92,7 @@ describe('Teil erfassen', () => {
 
     await user.click(screen.getByRole('button', { name: 'Abbrechen' }));
     await user.click(within(await screen.findByRole('dialog', { name: 'Änderungen verwerfen?' })).getByRole('button', { name: 'Verwerfen' }));
-    expect(await screen.findByText(/Noch keine Teile/)).toBeInTheDocument();
+    expect(await screen.findByText(/Noch leer hier/)).toBeInTheDocument();
     expect(await db.items.count()).toBe(0);
   });
 

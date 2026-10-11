@@ -5,15 +5,14 @@ export function InstallNotice({ onDismiss, detailed = false }: { onDismiss?: () 
   if (detailed) {
     return (
       <p className="notice" role="note">
-        Installiere die App über Safari → Teilen → „Zum Home-Bildschirm“, damit deine Daten dauerhaft bleiben. Daten aus
-        Safari werden nicht übernommen – wenn du hier schon Teile erfasst hast: Backup erstellen und in der installierten
-        App einspielen.
+        Leg die App über Teilen → „Zum Home-Bildschirm“ ab, dann bleibt dein Schrank sicher gespeichert. Teile aus Safari
+        ziehen nicht automatisch mit um: vorher ein Backup erstellen und es in der App einspielen.
       </p>
     );
   }
   return (
     <div className="notice-line" role="note">
-      <p>Über Teilen → „Zum Home-Bildschirm“ installieren – Daten aus Safari werden nicht übernommen.</p>
+      <p>Leg die App auf den Home-Bildschirm. Was du in Safari anlegst, zieht nicht mit.</p>
       {onDismiss && (
         <button type="button" className="icon-button" aria-label="Hinweis ausblenden" onClick={onDismiss}>
           <Icon name="close" size={20} />

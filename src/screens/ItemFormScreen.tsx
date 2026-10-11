@@ -142,18 +142,18 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
       </div>
 
       <h2 className="section-title">
-        Kategorie <span className="required">Pflicht</span>
+        Kategorie <span className="required">wähl eine</span>
       </h2>
       <ChipGroup label="Kategorie" options={CATEGORIES} selected={category ? [category] : []} onToggle={setCategory} />
       <h2 className="section-title">Farbe</h2>
       <ChipGroup label="Farbe" options={COLORS} selected={colors} onToggle={(id) => setColors(toggleValue(colors, id))} />
       <h2 className="section-title">Saison</h2>
       <SeasonSymbols label="Saison" selected={seasons} onToggle={(id) => setSeasons(toggleValue(seasons, id))} />
-      {seasons.length === 0 && <p className="field-hint">Ohne Saison gilt das Teil als ganzjährig.</p>}
+      {seasons.length === 0 && <p className="field-hint">Ohne Saison passt das Teil das ganze Jahr.</p>}
 
       <label className="field">
         <span className="section-title">Notiz</span>
-        <textarea rows={3} value={note} onChange={(e) => setNote(e.target.value)} placeholder="z. B. von Oma, nur kalt waschen" />
+        <textarea rows={3} value={note} onChange={(e) => setNote(e.target.value)} placeholder="z. B. Vintage-Fund, nur kalt waschen" />
       </label>
 
       {error && <p className="error" role="alert">{error}</p>}

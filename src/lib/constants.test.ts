@@ -4,16 +4,16 @@ import { CATEGORIES, COLORS, SEASONS, isCategoryId, isColorId, isSeasonId, label
 describe('constants', () => {
   it('has the agreed options in order', () => {
     expect(CATEGORIES.map((c) => c.label)).toEqual([
-      'Oberteil', 'Hose', 'Rock', 'Kleid', 'Jacke/Mantel', 'Schuhe', 'Tasche', 'Accessoire', 'Sonstiges',
+      'Oberteil', 'Hose', 'Rock', 'Kleid', 'Jacke & Mantel', 'Schuhe', 'Tasche', 'Accessoire', 'Sonstiges',
     ]);
     expect(COLORS.map((c) => c.label)).toEqual([
-      'Schwarz', 'Weiß', 'Grau', 'Beige', 'Braun', 'Rot', 'Rosa', 'Orange', 'Gelb', 'Grün', 'Blau', 'Lila', 'Bunt/Muster', 'Metallic',
+      'Schwarz', 'Weiß', 'Grau', 'Beige', 'Braun', 'Rot', 'Rosa', 'Orange', 'Gelb', 'Grün', 'Blau', 'Lila', 'Gemustert', 'Metallic',
     ]);
     expect(SEASONS.map((s) => s.label)).toEqual(['Frühling', 'Sommer', 'Herbst', 'Winter']);
   });
 
   it('looks up labels and falls back to the id', () => {
-    expect(labelOf(CATEGORIES, 'jacket')).toBe('Jacke/Mantel');
+    expect(labelOf(CATEGORIES, 'jacket')).toBe('Jacke & Mantel');
     expect(labelOf(COLORS, 'unknown')).toBe('unknown');
   });
 

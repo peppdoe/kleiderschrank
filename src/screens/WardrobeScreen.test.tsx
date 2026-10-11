@@ -14,7 +14,7 @@ afterEach(() => vi.useRealTimers());
 describe('Schrank', () => {
   it('shows a friendly empty state', async () => {
     render(<App />);
-    expect(await screen.findByText('Noch keine Teile – tippe auf +, um dein erstes Teil zu erfassen.')).toBeInTheDocument();
+    expect(await screen.findByText('Noch leer hier. Tipp auf + und fotografier dein erstes Teil.')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Schrank/ })).toHaveAttribute('aria-current', 'page');
   });
 
@@ -77,7 +77,7 @@ describe('Schrank', () => {
     const seasons = await screen.findByRole('group', { name: 'Saison wählen' });
     const autumn = within(seasons).getByRole('button', { name: 'Herbst (aktuelle Saison)' });
     expect(autumn).toHaveAttribute('aria-pressed', 'true');
-    expect(await screen.findByRole('button', { name: 'Jacke/Mantel' })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: 'Jacke & Mantel' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Oberteil, Blau' })).not.toBeInTheDocument();
     expect(screen.getByText('1 von 3 Teilen')).toBeInTheDocument();
     expect(screen.getByText('· Herbst')).toBeInTheDocument();
@@ -90,7 +90,7 @@ describe('Schrank', () => {
     expect(within(today).getByRole('button', { name: /Strandtag/ })).toBeInTheDocument();
 
     await user.click(within(seasons).getByRole('button', { name: 'Sommer' }));
-    expect(screen.getByRole('button', { name: 'Jacke/Mantel' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Jacke & Mantel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
   });
 

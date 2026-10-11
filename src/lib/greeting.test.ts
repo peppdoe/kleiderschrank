@@ -61,4 +61,9 @@ describe('greeting lines', () => {
     const all = Object.values(GREETING_LINES).flat();
     expect(all.some((line) => /Lederjacke|Sommerkleid/.test(line))).toBe(false);
   });
+
+  it('talk like a friend, not like a shop or a parent', () => {
+    const all = Object.values(GREETING_LINES).flat();
+    expect(all.filter((line) => /Was darf es|nicht vergessen|eingepackt|bereit?/.test(line))).toEqual([]);
+  });
 });

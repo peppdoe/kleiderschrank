@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Eine einzige Person: Lena. Sie nutzt die App auf ihrem iPhone als Home-Bildschirm-App (PWA), meist **morgens vor dem Kleiderschrank**, um schnell zu entscheiden, was sie heute anzieht. Bedienung meist mit einer Hand, mit wenig Zeit und Geduld.
+Eine einzige Person: Lena, eine **20-jährige Frau**, der ihre Kleidung wichtig ist. Die App ist ein Geschenk für sie. Sie nutzt die App auf ihrem iPhone als Home-Bildschirm-App (PWA), meist **morgens vor dem Kleiderschrank**, um schnell zu entscheiden, was sie heute anzieht. Bedienung meist mit einer Hand, mit wenig Zeit und Geduld.
 
 ## Product Purpose
 
@@ -37,7 +37,8 @@ Ein persönlicher, privater Kleiderschrank für genau eine Person. Kein Konto, k
 ## Brand Commitments
 
 - Der App-Name „Kleiderschrank“ und das Kleiderbügel-Symbol bestehen bereits.
-- Ton: warm, persönlich, Deutsch in Alltagssprache, du-Form.
+- Ton: warm, persönlich, Deutsch in Alltagssprache, du-Form. Klingt wie eine Freundin mit Gespür für Mode, nicht wie eine Verkäuferin, ein Amt oder die Eltern (keine Erinnerungen an Schal oder Sonnenbrille). Leichter Mode-Wortschatz wie „cozy“, „Vibe“, „Look“ ist willkommen, ohne Jugendsprache zu übertreiben.
+- Gefühl: jung, persönlich, etwas verspielt, aber nicht kitschig. Die Etikett-Welt bleibt, wirkt aber weicher als Herren-Workwear.
 
 ## Evidence on Hand
 

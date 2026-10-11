@@ -17,7 +17,7 @@ describe('Installationshinweis', () => {
   it('warns in Safari that data is not carried over to the home-screen app', async () => {
     vi.mocked(isStandalone).mockReturnValue(false);
     render(<App />);
-    expect(await screen.findByRole('note')).toHaveTextContent('Daten aus Safari werden nicht übernommen');
+    expect(await screen.findByRole('note')).toHaveTextContent('Was du in Safari anlegst, zieht nicht mit.');
   });
 
   it('can be hidden for good', async () => {
@@ -28,14 +28,14 @@ describe('Installationshinweis', () => {
     expect(screen.queryByRole('note')).not.toBeInTheDocument();
     unmount();
     render(<App />);
-    await screen.findByText(/Noch keine Teile/);
+    await screen.findByText(/Noch leer hier/);
     expect(screen.queryByRole('note')).not.toBeInTheDocument();
   });
 
   it('is hidden in the installed app', async () => {
     vi.mocked(isStandalone).mockReturnValue(true);
     render(<App />);
-    await screen.findByText(/Noch keine Teile/);
+    await screen.findByText(/Noch leer hier/);
     expect(screen.queryByRole('note')).not.toBeInTheDocument();
   });
 });

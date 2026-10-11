@@ -20,7 +20,7 @@ export function OutfitsScreen() {
 
       {outfits.length === 0 ? (
         <div className="empty">
-          <p>Noch keine Outfits. Stell dein erstes aus deinen Teilen zusammen.</p>
+          <p>Noch keine Outfits. Kombinier deine Lieblingsteile zu deinem ersten Look.</p>
           <button type="button" className="button" onClick={() => navigate('/outfit/new')}>
             Neues Outfit
           </button>

@@ -117,7 +117,7 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
 
       {items.length === 0 ? (
         <div className="empty">
-          <p>Noch keine Teile – tippe auf +, um dein erstes Teil zu erfassen.</p>
+          <p>Noch leer hier. Tipp auf + und fotografier dein erstes Teil.</p>
         </div>
       ) : (
         <>

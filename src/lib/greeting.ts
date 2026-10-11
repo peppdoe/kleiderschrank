@@ -2,19 +2,20 @@ import type { SeasonId } from './constants';
 
 // Höchstens 30 Zeichen: der Spruch muss auf eine Zeile des Namensbands passen.
 export const GREETING_LINES: Record<'general' | SeasonId, readonly string[]> = {
+  // Ton: wie eine Freundin, nicht wie Verkäuferin oder Eltern. Nie ein bestimmtes Teil nennen.
   general: [
-    'Was darf es heute sein?',
-    'Worauf hast du heute Lust?',
+    'Welcher Vibe heute?',
+    'Heute eher cozy oder clean?',
     'Lieblingsteil oder was Neues?',
-    'Dein Schrank wartet schon.',
-    'Tag für dein Lieblingsteil?',
-    'Zeit für ein neues Outfit?',
     'Schlicht oder mutig heute?',
+    'Gestern mutig, heute basic?',
+    'Dein Schrank, deine Regeln.',
+    'Heute ganz du.',
   ],
-  spring: ['Zeit für leichte Jacken?', 'Farbe darf wieder raus.', 'Übergangsjacke oder ohne?'],
-  summer: ['Sonnenbrille nicht vergessen.', 'Leicht und luftig heute?', 'Heute darf es luftig sein.'],
-  autumn: ['Zeit für Lagen und Strick?', 'Zeit für Jacke und Schal?', 'Gemütlich oder schick?'],
-  winter: ['Schal und Mütze bereit?', 'Warm eingepackt heute?', 'Zeit für den dicken Pulli?'],
+  spring: ['Farbe darf wieder raus.', 'Leichte Lagen, gute Laune.', 'Frühlingsgefühle im Schrank?'],
+  summer: ['Heute darf es luftig sein.', 'Leicht, hell, fertig.', 'Welcher Sommer-Look heute?'],
+  autumn: ['Layering-Saison ist eröffnet.', 'Cozy oder chic heute?', 'Herbstfarben stehen dir.'],
+  winter: ['Cozy ist heute Programm.', 'Warm, aber mit Stil.', 'Welcher Winter-Look heute?'],
 };
 
 export function seasonOf(date: Date): SeasonId {

@@ -3,7 +3,7 @@ export const CATEGORIES = [
   { id: 'pants', label: 'Hose' },
   { id: 'skirt', label: 'Rock' },
   { id: 'dress', label: 'Kleid' },
-  { id: 'jacket', label: 'Jacke/Mantel' },
+  { id: 'jacket', label: 'Jacke & Mantel' },
   { id: 'shoes', label: 'Schuhe' },
   { id: 'bag', label: 'Tasche' },
   { id: 'accessory', label: 'Accessoire' },
@@ -23,7 +23,7 @@ export const COLORS = [
   { id: 'green', label: 'Grün', swatch: '#3a9d4f' },
   { id: 'blue', label: 'Blau', swatch: '#2f6fdb' },
   { id: 'purple', label: 'Lila', swatch: '#8a4fc9' },
-  { id: 'pattern', label: 'Bunt/Muster', swatch: 'conic-gradient(#e0262f, #f5d327, #3a9d4f, #2f6fdb, #8a4fc9, #e0262f)' },
+  { id: 'pattern', label: 'Gemustert', swatch: 'conic-gradient(#e0262f, #f5d327, #3a9d4f, #2f6fdb, #8a4fc9, #e0262f)' },
   { id: 'metallic', label: 'Metallic', swatch: 'linear-gradient(135deg, #d9d9d9, #8c8c8c, #f2f2f2)' },
 ] as const;
 

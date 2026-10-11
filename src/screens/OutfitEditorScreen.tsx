@@ -90,11 +90,11 @@ export function OutfitEditorScreen({ outfitId }: { outfitId?: string }) {
         <OutfitSeasons itemIds={selected} items={items} />
         <label className="field">
           <span className="section-title">Name des Outfits</span>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="z. B. Büro-Look" autoFocus />
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="z. B. Uni-Look, Date Night" autoFocus />
         </label>
         {error && <p className="error" role="alert">{error}</p>}
         <div className="action-bar">
-          {!name.trim() && <p className="action-bar__hint">Gib dem Outfit noch einen Namen.</p>}
+          {!name.trim() && <p className="action-bar__hint">Noch ein Name, dann ist der Look gespeichert.</p>}
           <button type="button" className="button button--primary" disabled={!canSave} onClick={save}>
             {saving ? 'Speichert …' : 'Speichern'}
           </button>

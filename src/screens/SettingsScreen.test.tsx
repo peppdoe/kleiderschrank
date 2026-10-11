@@ -54,7 +54,7 @@ describe('Einstellungen', () => {
     );
     expect(await screen.findByRole('status')).toHaveTextContent('Backup gesichert.');
     expect(await getMeta(META_LAST_BACKUP)).toBeDefined();
-    expect(await screen.findByText(/^Letztes Backup: /)).toBeInTheDocument();
+    expect(await screen.findByText(/^Zuletzt gesichert: heute$/)).toBeInTheDocument();
   });
 
   it('opens the share sheet only once on a double tap', async () => {

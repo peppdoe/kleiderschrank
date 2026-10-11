@@ -8,7 +8,7 @@ import { countItems } from '../db/items';
 import { META_LAST_BACKUP, META_PERSIST, META_USER_NAME, getMeta, setMeta } from '../db/meta';
 import { countOutfits } from '../db/outfits';
 import { backupFileName, exportBackup, importBackup, parseBackup, type ParsedBackup } from '../lib/backup';
-import { plural } from '../lib/describe';
+import { plural, sinceBackup } from '../lib/describe';
 import { greetingFor } from '../lib/greeting';
 import { userMessage } from '../lib/errors';
 import { readFileText, shareOrDownload } from '../lib/files';
@@ -83,7 +83,7 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
       }
       await setMeta(META_LAST_BACKUP, new Date().toISOString());
       setPrepared(null);
-      setMessage({ kind: 'ok', text: result === 'shared' ? 'Backup gesichert.' : 'Backup heruntergeladen.' });
+      setMessage({ kind: 'ok', text: result === 'shared' ? 'Backup gesichert. Dein Schrank ist sicher.' : 'Backup heruntergeladen.' });
     } catch (e) {
       setMessage({ kind: 'error', text: userMessage(e) });
     } finally {
@@ -132,7 +132,7 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
       </header>
 
       <div className="section">
-        <h2 className="section-title">Persönlich</h2>
+        <h2 className="section-title">Du</h2>
         <label className="field field--inline">
           <span>
             Dein Name
@@ -161,7 +161,7 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
         <h2 className="section-title">Backup</h2>
         <p>
           {lastBackup
-            ? `Letztes Backup: ${new Date(lastBackup).toLocaleDateString('de-DE')}`
+            ? `Zuletzt gesichert: ${sinceBackup(lastBackup)}`
             : lastBackup === null ? 'Noch kein Backup' : ''}
         </p>
         {prepared ? (
@@ -183,7 +183,7 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
       </div>
 
       <div className="section">
-        <h2 className="section-title">Speicher</h2>
+        <h2 className="section-title">Auf diesem iPhone</h2>
         {itemCount !== undefined && outfitCount !== undefined && (
           <p>
             {`${plural(itemCount, 'Teil', 'Teile')} · ${plural(outfitCount, 'Outfit', 'Outfits')}`}
@@ -193,7 +193,7 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
         {!standalone && <InstallNotice detailed />}
         {standalone && persist === 'false' && (
           <p className="notice">
-            Das iPhone hat dauerhaften Speicher nicht zugesagt. Mach deshalb besonders regelmäßig ein Backup.
+            Dein iPhone darf hier im Zweifel aufräumen. Sichere deinen Schrank deshalb lieber etwas öfter.
           </p>
         )}
       </div>
