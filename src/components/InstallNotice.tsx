@@ -6,7 +6,7 @@ export function InstallNotice({ onDismiss, detailed = false }: { onDismiss?: () 
     return (
       <p className="notice" role="note">
         Leg die App über Teilen → „Zum Home-Bildschirm“ ab, dann bleibt dein Schrank sicher gespeichert. Teile aus Safari
-        ziehen nicht automatisch mit um: vorher ein Backup erstellen und es in der App einspielen.
+        ziehen nicht automatisch mit um: vorher ein Backup erstellen und es in der App zurückholen.
       </p>
     );
   }

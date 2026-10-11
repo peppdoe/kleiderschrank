@@ -109,6 +109,8 @@ await scheme('light');
 await size(1280, 800, false);
 await go('/'); await shot('desktop.png');
 
+// Browser.close beendet auch die Kindprozesse; edge.kill allein lässt Edge-Prozesse zurück.
+await send("Browser.close").catch(() => undefined);
 ws.close();
 edge.kill();
 process.exit(0);

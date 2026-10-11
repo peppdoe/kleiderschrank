@@ -8,7 +8,6 @@ interface ItemGridProps {
   items: Item[];
   onItemClick: (item: Item) => void;
   selectedIds?: readonly string[];
-  size?: 'normal' | 'large';
   /** Gerade gespeichertes Teil: kurz markieren und in den Blick holen. */
   highlightId?: string | null;
 }
@@ -20,7 +19,7 @@ export function tileLabel(item: Item): string {
   return item.favorite ? `${label}, Lieblingsteil` : label;
 }
 
-export function ItemGrid({ items, onItemClick, selectedIds, size = 'normal', highlightId }: ItemGridProps) {
+export function ItemGrid({ items, onItemClick, selectedIds, highlightId }: ItemGridProps) {
   const highlightRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export function ItemGrid({ items, onItemClick, selectedIds, size = 'normal', hig
   }, [highlightId]);
 
   return (
-    <ul className={size === 'large' ? 'item-grid item-grid--large' : 'item-grid'}>
+    <ul className="item-grid">
       {items.map((item) => {
         const selected = selectedIds?.includes(item.id) ?? false;
         const isNew = item.id === highlightId;

@@ -151,3 +151,19 @@ describe('Lieblinge', () => {
     expect(screen.getByRole('button', { name: /Kleid, Rot/ })).toBeInTheDocument();
   });
 });
+
+describe('Lieblinge leer', () => {
+  it('explains how to get favorites and switches only that filter off', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-10T07:40:00'));
+    await seedItem({ category: 'pants', colors: ['black'], seasons: ['autumn'] });
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole('button', { name: 'Lieblinge' }));
+    expect(screen.getByText(/Noch keine Lieblinge/)).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Lieblinge aus' }));
+    expect(screen.getByRole('button', { name: 'Hose, Schwarz' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Herbst (aktuelle Saison)' })).toHaveAttribute('aria-pressed', 'true');
+    vi.useRealTimers();
+  });
+});

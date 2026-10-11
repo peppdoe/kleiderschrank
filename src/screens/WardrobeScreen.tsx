@@ -123,12 +123,21 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
         <>
           <FilterTags value={filter} onChange={onFilterChange} resultCount={visible.length} excludeSeasons />
           {visible.length === 0 ? (
-            <div className="empty">
-              <p>Keine Teile passen zu diesen Filtern.</p>
-              <button type="button" className="button" onClick={() => onFilterChange(EMPTY_FILTER)}>
-                Alle Teile anzeigen
-              </button>
-            </div>
+            filter.favorites && !items.some((item) => item.favorite) ? (
+              <div className="empty">
+                <p>Noch keine Lieblinge. Tipp bei einem Teil aufs Herz.</p>
+                <button type="button" className="button" onClick={() => onFilterChange({ ...filter, favorites: false })}>
+                  Lieblinge aus
+                </button>
+              </div>
+            ) : (
+              <div className="empty">
+                <p>Keine Teile passen zu diesen Filtern.</p>
+                <button type="button" className="button" onClick={() => onFilterChange(EMPTY_FILTER)}>
+                  Alle Teile anzeigen
+                </button>
+              </div>
+            )
           ) : (
             <ItemGrid items={visible} highlightId={highlightId} onItemClick={(item) => navigate(`/item/${item.id}`)} />
           )}

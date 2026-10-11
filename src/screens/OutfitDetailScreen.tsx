@@ -4,6 +4,7 @@ import { ConfirmSheet } from '../components/ConfirmSheet';
 import { Icon } from '../components/Icon';
 import { ItemGrid } from '../components/ItemGrid';
 import { NotFound } from '../components/NotFound';
+import { OutfitPreview } from '../components/OutfitPreview';
 import { OutfitSeasons } from '../components/OutfitSeasons';
 import { getItemsByIds } from '../db/items';
 import { deleteOutfit, getOutfit } from '../db/outfits';
@@ -38,7 +39,8 @@ export function OutfitDetailScreen({ outfitId, justSaved = false }: { outfitId: 
           Outfits
         </a>
       </header>
-      {/* Das eingenähte Etikett des Outfits: Name, Anzahl, wann es unter „Heute“ erscheint */}
+      {items.length > 0 && <OutfitPreview itemIds={items.map((item) => item.id)} />}
+      {/* Das eingenähte Etikett des Outfits, an die Unterkante des Looks genäht: Name, Anzahl, wann es unter „Heute“ erscheint */}
       <div className={`care-label care-label--outfit${justSaved ? ' care-label--new' : ''}`}>
         <h1 className="care-label__title">{outfit.name}</h1>
         <p className="care-label__kind">{plural(items.length, 'Teil', 'Teile')}</p>
@@ -47,7 +49,10 @@ export function OutfitDetailScreen({ outfitId, justSaved = false }: { outfitId: 
       {items.length === 0 ? (
         <p className="muted">Keine Teile mehr – alle Teile dieses Outfits wurden gelöscht.</p>
       ) : (
-        <ItemGrid items={items} size="large" onItemClick={(item) => navigate(`/item/${item.id}`)} />
+        <>
+          <h2 className="section-title">Teile</h2>
+          <ItemGrid items={items} onItemClick={(item) => navigate(`/item/${item.id}`)} />
+        </>
       )}
       {error && <p className="error" role="alert">{error}</p>}
       <div className="detail-actions">

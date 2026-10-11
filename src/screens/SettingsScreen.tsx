@@ -172,8 +172,8 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
         ) : (
           <button type="button" className="button button--primary" disabled={busy} onClick={prepare}>Backup erstellen</button>
         )}
-        <FilePicker className="text-button text-button--center" label="Backup einspielen" accept="application/json,.json" onPick={chooseImportFile} disabled={busy}>
-          Backup einspielen
+        <FilePicker className="text-button text-button--center" label="Backup zurückholen" accept="application/json,.json" onPick={chooseImportFile} disabled={busy}>
+          Backup zurückholen
         </FilePicker>
         {message && (
           <p className={message.kind === 'ok' ? 'success' : 'error'} role={message.kind === 'ok' ? 'status' : 'alert'}>

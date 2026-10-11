@@ -320,7 +320,7 @@ The `garment-*` colors are data, not interface: each names a clothing color Lena
 
 Single column, max 720px centered, 16px side padding, top padding respecting the safe area plus 12px. Sections are separated by 22px above a section head and 10px below; settings sections use a 1px top hairline with 20px/24px padding. Spacing steps observed: 4, 8, 12, 16, 22px, with 6px and 14px as in-component gaps.
 
-The wardrobe grid is 3 columns at 8px gap (2 columns at 10px for the large variant); outfit previews are collages (see Outfit Look). "Heute" scrolls sideways with scroll-snap and 148px square looks, bleeding to the screen edge. The tab bar is fixed at 62px plus the bottom safe area and centers its content to 720px on wide screens; the add button tracks the content column's right edge. Forms hide the tab bar and end in a sticky action bar on the ground color. Bottom sheets rise to 86dvh max.
+The wardrobe grid is 3 columns at 8px gap (also for the pieces on the outfit detail); outfit previews are collages (see Outfit Look). "Heute" scrolls sideways with scroll-snap and 168px-high looks, bleeding to the screen edge. The tab bar is fixed at 62px plus the bottom safe area and centers its content to 720px on wide screens; the add button tracks the content column's right edge. Forms hide the tab bar and end in a sticky action bar on the ground color. Bottom sheets rise to 86dvh max.
 
 **Section meta pattern.** A section head pairs the sentence-case title with a 15px muted, tabular meta on the same baseline, left-aligned beside the title. In the wardrobe it reads "N von M Teilen · Saison" when filters narrow the list and "M Teile · Saison" when they don't; the season clause joins with a middle dot. "Heute" uses a plain sentence ("2 Outfits passen zum Herbst"), Outfits a count ("3 gespeichert").
 
@@ -361,7 +361,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - The piece's own sewn-in label under its photo: the band's woven navy and inset stitch, 4px corners, 18px/20px/20px padding, 10px gaps, flat (no lift).
 - **Favorite:** a 44px heart button top right on the piece's label (`aria-label="Lieblingsteil"`, `aria-pressed`); outline in band ink at rest, filled in the seasonal thread when on, with a 420ms pop from `scale(0.6)` (none under reduced motion). The title keeps 40px clear on the right.
 - **Just saved (outfit):** after saving a look its label's stitch draws in left to right with the stitch-in curve (900ms, 120ms delay), paired with the toast "Look gespeichert"; none under reduced motion.
-- **Outfit:** the same label opens the outfit detail, between the back link and the photo grid (4px above, 18px below): name at Label Title, the piece count as the 15px kind line, then the Outfit Seasons Line in band ink at 0.9 opacity with 22px pictograms.
+- **Outfit:** the same label is sewn onto the lower edge of the outfit's look (see Outfit Look): name at Label Title, the piece count as the 15px kind line, then the Outfit Seasons Line in band ink at 0.9 opacity with 22px pictograms.
 - Name at Label Title; category below at 15px, 0.8 opacity, pulled up 6px; a color line with 16px garment swatches ringed in `band-stitch` (the stitch itself is seasonal thread); seasons as 22px care pictograms with 15px names, wrapping at 14px gaps; the note at 15px, 0.9 opacity, preserving line breaks.
 
 ### Season Row ("Heute" control)
@@ -409,7 +409,8 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 
 ### Outfit Look (collage)
 - An outfit is shown as one look, not a row of boxes: 1 piece fills the frame; 2 sit side by side; 3 or more become a hero piece (2/3 width, full height) with two stacked pieces beside it, the last turning into a kraft-soft "+N" cell when more remain. 3px gaps, 4px outer corners, chip fill behind.
-- Ratio by context (`--look-ratio`): square 148px looks in "Heute"; 3:4 in the outfit list (two columns, 22px/10px gaps) and on the naming step of the editor (62% width, max 260px).
+- The look's ratio follows the piece count so every cell stays 3:4 and sleeves and shoulders stay visible: 1 piece 3:4, 2 pieces 3:2, 3+ pieces 9:8. In "Heute" looks share a fixed 168px height and take their width from the ratio (no dead gap); in the outfit list they fill the column (two columns, 22px/10px gaps, top-aligned); on the editor's naming step 62% width, max 260px.
+- **Outfit detail:** the look opens the page full width under the back link, the outfit's care label is sewn onto its lower edge (14px overlap, 8px in from each side), then the pieces as a 3-column grid under the sentence-case title "Teile".
 
 ### Outfit Name Label (outfit list)
 - Each outfit's name is sewn onto the lower edge of its look (overlapping it by 14px, 8px in from the left) as a small woven label: band navy, band-ink 15px/500 text, 6px/12px/7px padding, 4px corners, a 1.5px dashed seasonal-thread stitch inset 4px, sized to its text, hyphenated in German when long. Flat. The whole card stays one button, named by the label and described by the seasons line.

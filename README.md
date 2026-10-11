@@ -15,7 +15,7 @@ Deine Daten liegen nur auf deinem iPhone. Mach regelmäßig ein Backup (die App 
 1. **Einstellungen** → **Backup erstellen** → **Backup sichern**.
 2. Wähle **„In Dateien sichern“** → **iCloud Drive** → **Sichern**.
 
-Wiederherstellen (z. B. auf einem neuen iPhone): App installieren → **Einstellungen** → **Backup einspielen** → Datei aus iCloud Drive wählen.
+Wiederherstellen (z. B. auf einem neuen iPhone): App installieren → **Einstellungen** → **Backup zurückholen** → Datei aus iCloud Drive wählen.
 
 ## Entwicklung
 
@@ -40,4 +40,4 @@ Jeder Push auf `main` wird automatisch getestet und auf GitHub Pages veröffentl
 - [ ] Filter nach Kategorie, Farbe, Saison funktionieren.
 - [ ] Outfit erstellen, umbenennen, löschen.
 - [ ] Flugmodus an → App vom Home-Bildschirm starten → alles sichtbar.
-- [ ] Backup sichern in iCloud Drive; ein Teil löschen; Backup einspielen → Teil ist wieder da.
+- [ ] Backup sichern in iCloud Drive; ein Teil löschen; Backup zurückholen → Teil ist wieder da.

@@ -93,12 +93,12 @@ describe('Einstellungen', () => {
     render(<App />);
     await user.click(await screen.findByRole('button', { name: 'Backup erstellen' }));
     await screen.findByRole('button', { name: 'Backup sichern' });
-    await user.upload(screen.getByLabelText('Backup einspielen'), new File([json], 'backup.json', { type: 'application/json' }));
-    await user.click(within(await screen.findByRole('dialog', { name: 'Backup einspielen?' })).getByRole('button', { name: 'Ersetzen' }));
-    await waitFor(() => expect(screen.getByLabelText('Backup einspielen')).toBeDisabled());
+    await user.upload(screen.getByLabelText('Backup zurückholen'), new File([json], 'backup.json', { type: 'application/json' }));
+    await user.click(within(await screen.findByRole('dialog', { name: 'Backup zurückholen?' })).getByRole('button', { name: 'Ersetzen' }));
+    await waitFor(() => expect(screen.getByLabelText('Backup zurückholen')).toBeDisabled());
     finish(new Blob(['thumb'], { type: 'image/jpeg' }));
     expect(await screen.findByRole('status')).toHaveTextContent('Backup eingespielt');
-    expect(screen.getByLabelText('Backup einspielen')).toBeEnabled();
+    expect(screen.getByLabelText('Backup zurückholen')).toBeEnabled();
     expect(screen.queryByRole('button', { name: 'Backup sichern' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Backup erstellen' })).toBeInTheDocument();
   });
@@ -121,10 +121,10 @@ describe('Einstellungen', () => {
     const user = userEvent.setup();
     render(<App />);
     await user.upload(
-      await screen.findByLabelText('Backup einspielen'),
+      await screen.findByLabelText('Backup zurückholen'),
       new File([json], 'kleiderschrank-backup-2026-10-03.json', { type: 'application/json' }),
     );
-    const sheet = await screen.findByRole('dialog', { name: 'Backup einspielen?' });
+    const sheet = await screen.findByRole('dialog', { name: 'Backup zurückholen?' });
     expect(sheet).toHaveTextContent('Backup vom 03.10.2026: 1 Teil, 0 Outfits');
     expect(sheet).toHaveTextContent('Dein aktueller Stand: 2 Teile, 0 Outfits');
     await user.click(within(sheet).getByRole('button', { name: 'Ersetzen' }));
@@ -138,7 +138,7 @@ describe('Einstellungen', () => {
     const user = userEvent.setup();
     render(<App />);
     await user.upload(
-      await screen.findByLabelText('Backup einspielen'),
+      await screen.findByLabelText('Backup zurückholen'),
       new File(['kein backup'], 'notiz.json', { type: 'application/json' }),
     );
     expect(await screen.findByRole('alert')).toHaveTextContent('Das ist keine gültige Kleiderschrank-Sicherung.');
@@ -153,10 +153,10 @@ describe('Einstellungen', () => {
     const user = userEvent.setup();
     render(<App />);
     await user.upload(
-      await screen.findByLabelText('Backup einspielen'),
+      await screen.findByLabelText('Backup zurückholen'),
       new File([json], 'backup.json', { type: 'application/json' }),
     );
-    await user.click(within(await screen.findByRole('dialog', { name: 'Backup einspielen?' })).getByRole('button', { name: 'Abbrechen' }));
+    await user.click(within(await screen.findByRole('dialog', { name: 'Backup zurückholen?' })).getByRole('button', { name: 'Abbrechen' }));
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(await db.items.count()).toBe(2);
   });

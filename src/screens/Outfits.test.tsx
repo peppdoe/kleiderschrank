@@ -92,6 +92,8 @@ describe('Outfits', () => {
     const id = await createOutfit('Winterlook', [coat]);
     open(`/outfit/${id}`);
     expect(await screen.findByText('Erscheint im Winter')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Teile' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Jacke & Mantel/ })).toBeInTheDocument();
   });
 
   it('updates the seasons live while picking pieces', async () => {

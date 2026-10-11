@@ -20,7 +20,7 @@ export function ImportSheet({ backup, currentItems, currentOutfits, onConfirm, o
     : '';
 
   return (
-    <Sheet title="Backup einspielen?" onClose={onCancel}>
+    <Sheet title="Backup zurückholen?" onClose={onCancel}>
       <dl className="compare">
         <div>
           <dt>Backup{date && ` vom ${date}`}:</dt>{' '}
