@@ -21,7 +21,7 @@ export function SeasonSymbols({ label, selected, onToggle, current }: SeasonSymb
           <button
             key={season.id}
             type="button"
-            className={`care-symbol${on ? ' care-symbol--on' : ''}${isCurrent ? ' care-symbol--current' : ''}`}
+            className={`care-symbol care-symbol--${season.id}${on ? ' care-symbol--on' : ''}${isCurrent ? ' care-symbol--current' : ''}`}
             aria-pressed={on}
             aria-label={isCurrent ? `${season.label} (aktuelle Saison)` : season.label}
             onClick={() => onToggle(season.id)}

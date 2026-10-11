@@ -26,6 +26,12 @@ export default function App() {
     requestPersistence().catch(() => undefined);
   }, []);
 
+  // Die Fadenfarbe der Nähte folgt der gewählten Saison (ohne Wahl: der aktuellen).
+  const threadSeason = wardrobeFilter.seasons.length === 1 ? wardrobeFilter.seasons[0] : seasonOf(new Date());
+  useEffect(() => {
+    document.documentElement.dataset.season = threadSeason;
+  }, [threadSeason]);
+
   // Das Originalfoto (oft 5–15 MB) nur so lange halten, wie das Formular offen ist.
   useEffect(() => {
     if (route.name !== 'itemNew') setDraftPhoto(null);

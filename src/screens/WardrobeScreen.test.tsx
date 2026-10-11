@@ -77,6 +77,7 @@ describe('Schrank', () => {
     const seasons = await screen.findByRole('group', { name: 'Saison wählen' });
     const autumn = within(seasons).getByRole('button', { name: 'Herbst (aktuelle Saison)' });
     expect(autumn).toHaveAttribute('aria-pressed', 'true');
+    expect(document.documentElement.dataset.season).toBe('autumn');
     expect(await screen.findByRole('button', { name: 'Jacke & Mantel' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Oberteil, Blau' })).not.toBeInTheDocument();
     expect(screen.getByText('1 von 3 Teilen')).toBeInTheDocument();
@@ -85,6 +86,8 @@ describe('Schrank', () => {
     await user.click(within(seasons).getByRole('button', { name: 'Sommer' }));
     expect(within(seasons).getByRole('button', { name: 'Sommer' })).toHaveAttribute('aria-pressed', 'true');
     expect(autumn).toHaveAttribute('aria-pressed', 'false');
+    // Die Fadenfarbe folgt der gewählten Saison.
+    expect(document.documentElement.dataset.season).toBe('summer');
     expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
     const today = screen.getByRole('region', { name: 'Für den Sommer' });
     expect(within(today).getByRole('button', { name: /Strandtag/ })).toBeInTheDocument();
