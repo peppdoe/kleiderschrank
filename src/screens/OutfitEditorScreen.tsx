@@ -121,7 +121,6 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
     return (
       <section className="screen-content form">
         <header className="form-header">
-          <button type="button" className="text-button" onClick={() => setStep('pick')}>Zurück</button>
           <h1 className="form-header__title">{outfitId ? 'Look bearbeiten' : 'Neuer Look'}</h1>
         </header>
         {photoUrl ? (
@@ -157,9 +156,14 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
           ) : (
             !name.trim() && <p className="action-bar__hint">Noch ein Name, dann ist der Look gespeichert.</p>
           )}
-          <button type="button" className="button button--primary" disabled={!canSave} onClick={save}>
-            {saving ? 'Speichert …' : 'Speichern'}
-          </button>
+          <div className="action-bar__row">
+            <button type="button" className="text-button" onClick={() => setStep('pick')}>
+              Zurück
+            </button>
+            <button type="button" className="button button--primary" disabled={!canSave} onClick={save}>
+              {saving ? 'Speichert …' : 'Speichern'}
+            </button>
+          </div>
         </div>
         {discardSheet}
       </section>
@@ -170,9 +174,6 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
   return (
     <section className="screen-content form">
       <header className="form-header">
-        <button type="button" className="text-button" onClick={cancel}>
-          Abbrechen
-        </button>
         <h1 className="form-header__title">{outfitId ? 'Look bearbeiten' : 'Neuer Look'}</h1>
       </header>
       {items.length === 0 ? (
@@ -207,11 +208,18 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
           />
         </>
       )}
-      <div className="action-bar action-bar--split">
-        <p className="action-bar__count">{selected.length} ausgewählt</p>
-        <button type="button" className="button button--primary" disabled={selected.length === 0} onClick={() => setStep('name')}>
-          Weiter
-        </button>
+      <div className="action-bar">
+        <p className="action-bar__hint">
+          {selected.length === 0 ? 'Tipp die Teile an, die zusammengehören.' : `${selected.length} ausgewählt`}
+        </p>
+        <div className="action-bar__row">
+          <button type="button" className="text-button" onClick={cancel}>
+            Abbrechen
+          </button>
+          <button type="button" className="button button--primary" disabled={selected.length === 0} onClick={() => setStep('name')}>
+            Weiter
+          </button>
+        </div>
       </div>
       {discardSheet}
     </section>

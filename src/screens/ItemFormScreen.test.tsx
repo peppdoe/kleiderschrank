@@ -142,3 +142,14 @@ describe('Reihenfolge im Formular', () => {
     expect(name.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });
+
+describe('Formular mit einer Hand', () => {
+  it('puts cancel and save together into the bottom bar', async () => {
+    window.location.hash = '#/item/new';
+    render(<App />);
+    const cancel = await screen.findByRole('button', { name: 'Abbrechen' });
+    const bar = cancel.closest('.action-bar');
+    expect(bar).not.toBeNull();
+    expect(bar).toContainElement(screen.getByRole('button', { name: 'Speichern' }));
+  });
+});

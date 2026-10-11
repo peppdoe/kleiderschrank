@@ -84,7 +84,8 @@ p { margin: 0; }
 
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .app { min-height: 100dvh; padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 96px); }
-.app--form { padding-bottom: 0; }
+/* Formulare: Platz für die feste Aktionsleiste unten */
+.app--form { padding-bottom: calc(env(safe-area-inset-bottom) + 132px); }
 .screen-content { padding: calc(env(safe-area-inset-top) + 12px) 16px 24px; max-width: 720px; margin: 0 auto; }
 .muted { color: var(--muted); }
 .error { color: var(--thread); }
@@ -139,6 +140,8 @@ p { margin: 0; }
 /* Ruhige Hinweise */
 .notice-line { display: flex; align-items: center; gap: 4px; margin-top: 14px; padding: 0 0 0 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); font-size: 15px; color: var(--muted); }
 .notice-line p { flex: 1; }
+/* Steht der Hinweis nahe am runden Plus-Knopf, bleibt rechts Platz, damit dessen Kreis das Schließen-X nie verdeckt */
+.notice-line:has(~ .fab) { margin-right: 76px; }
 .quiet-link { display: block; min-height: 44px; padding: 0; margin-top: 4px; background: none; border: none; color: var(--muted); font-size: 15px; text-align: left; text-decoration: underline; text-decoration-style: dashed; text-underline-offset: 4px; cursor: pointer; }
 .icon-button { flex: none; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: none; border: none; border-radius: 50%; color: var(--muted); cursor: pointer; }
 
@@ -270,11 +273,12 @@ p { margin: 0; }
 .field input, .field textarea { padding: 12px 14px; border-radius: var(--radius); border: 1px solid var(--line-strong); background: var(--surface); font-size: 17px; }
 .field input::placeholder, .field textarea::placeholder { color: var(--muted); }
 .field--inline > span { font-size: 15px; color: var(--muted); }
-.action-bar { position: sticky; bottom: 0; z-index: 4; margin: 28px -16px 0; padding: 12px 16px calc(env(safe-area-inset-bottom) + 12px); background: var(--ground); border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
-.action-bar__hint { text-align: center; font-size: 15px; color: var(--muted); }
-.action-bar--split { flex-direction: row; align-items: center; justify-content: space-between; }
-.action-bar--split .button--primary { width: auto; min-width: 140px; }
-.action-bar__count { font-size: 17px; font-weight: 500; font-variant-numeric: tabular-nums; }
+/* Aktionsleiste der Formulare: fest am unteren Rand (schwebt nie mitten im Bild), Abbrechen/Zurück links, Hauptaktion rechts */
+.action-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 4; padding: 10px max(16px, calc((100vw - 720px) / 2 + 16px)) calc(env(safe-area-inset-bottom) + 12px); background: var(--ground); border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
+.action-bar__hint { text-align: center; font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.action-bar__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.action-bar__row .text-button { margin-left: -8px; }
+.action-bar__row .button--primary { width: auto; min-width: 160px; }
 
 /* Details */
 .detail-actions { display: flex; flex-direction: column; align-items: center; margin-top: 30px; }

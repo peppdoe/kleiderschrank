@@ -455,6 +455,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - Fixed bottom bar on surface with a 1px top hairline, three equal text tabs: 24px pictogram over a 12px caps label (0.08em).
 - **Rest:** muted. **Active:** thread red, label at 600 with a 1.5px dashed underline in currentColor (the stitch).
 - Hidden on form screens.
+- **Form action bar:** forms hide the tab bar and end in a bar **fixed** to the bottom edge (never floating mid-screen on short content): an optional muted hint line centered on top ("Wähle zuerst ein Foto.", "Tipp die Teile an, die zusammengehören.", "2 ausgewählt"), then a row with "Abbrechen" / "Zurück" as a text button on the left and the primary action (min 160px) on the right. Form headers carry only the centered title. Same thumb logic as the detail bar.
 - **Detail bar (piece and look detail):** fixed directly above the tab bar on the ground color with a 1px top hairline, 8px/16px padding: "‹ Schrank" or "‹ Looks" as a text button on the left, "Bearbeiten" as a secondary button (min 140px) on the right. There is no back link at the top: the installed iPhone app has no swipe-back and the top left is out of thumb reach, so photos start at the top. "Löschen" stays at the end of the content, never in the thumb zone. Toasts rise above the bar.
 - **Pieces under a collage:** on a look without a wear photo the pieces follow as a 72px-wide strip (sideways, bleeding to the edge) instead of a second full grid; under a wear photo they keep the 3-column grid.
 

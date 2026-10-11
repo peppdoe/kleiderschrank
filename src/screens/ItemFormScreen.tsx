@@ -127,9 +127,6 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
   return (
     <section className="screen-content form">
       <header className="form-header">
-        <button type="button" className="text-button" onClick={cancel}>
-          Abbrechen
-        </button>
         <h1 className="form-header__title">{itemId ? 'Teil bearbeiten' : 'Neues Teil'}</h1>
       </header>
 
@@ -174,11 +171,17 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
 
       {error && <p className="error" role="alert">{error}</p>}
 
+      {/* Abbrechen und Speichern unten in Daumenreichweite, wie Zurück und Bearbeiten auf den Detailseiten */}
       <div className="action-bar">
         {hint && <p className="action-bar__hint">{hint}</p>}
-        <button type="button" className="button button--primary" disabled={!canSave} onClick={save}>
-          {saving ? 'Speichert …' : 'Speichern'}
-        </button>
+        <div className="action-bar__row">
+          <button type="button" className="text-button" onClick={cancel}>
+            Abbrechen
+          </button>
+          <button type="button" className="button button--primary" disabled={!canSave} onClick={save}>
+            {saving ? 'Speichert …' : 'Speichern'}
+          </button>
+        </div>
       </div>
 
       {confirmDiscard && (

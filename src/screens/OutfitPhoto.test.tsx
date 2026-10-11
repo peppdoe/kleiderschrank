@@ -265,3 +265,23 @@ describe('Look-Detail mit einer Hand', () => {
     expect(container.querySelector('.item-grid--strip')).toBeNull();
   });
 });
+
+describe('Look-Editor mit einer Hand', () => {
+  it('keeps cancel/next and back/save in the bottom bar on both steps', async () => {
+    await seedItem({ category: 'top' });
+    const user = userEvent.setup();
+    open('/outfit/new');
+    const cancel = await screen.findByRole('button', { name: 'Abbrechen' });
+    expect(cancel.closest('.action-bar')).toContainElement(screen.getByRole('button', { name: 'Weiter' }));
+    await user.click(screen.getByRole('button', { name: 'Oberteil' }));
+    await user.click(screen.getByRole('button', { name: 'Weiter' }));
+    const back = screen.getByRole('button', { name: 'Zurück' });
+    expect(back.closest('.action-bar')).toContainElement(screen.getByRole('button', { name: 'Speichern' }));
+  });
+
+  it('tells Lena what to do on the pick step', async () => {
+    await seedItem({ category: 'top' });
+    open('/outfit/new');
+    expect(await screen.findByText('Tipp die Teile an, die zusammengehören.')).toBeInTheDocument();
+  });
+});

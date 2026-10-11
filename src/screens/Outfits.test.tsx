@@ -169,7 +169,7 @@ describe('Outfits', () => {
     await user.click(within(sheet).getByRole('button', { name: '1 Teil zeigen' }));
     expect(screen.getByRole('button', { name: 'Oberteil, Blau abwählen' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Oberteil, Blau abwählen' }));
-    expect(screen.getByText('0 ausgewählt')).toBeInTheDocument();
+    expect(screen.getByText('Tipp die Teile an, die zusammengehören.')).toBeInTheDocument();
   });
 
   it('hides the tab bar while an outfit is being put together', async () => {
