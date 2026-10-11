@@ -332,6 +332,9 @@ p { margin: 0; }
 .care-label .outfit-seasons__marks svg { width: 22px; height: 22px; }
 .form > .outfit-seasons { margin: 0 0 14px; }
 .form > .outfit-preview { width: min(62%, 260px); }
+.form > .look-photo--draft { width: min(62%, 260px); max-height: 40vh; }
+.form > .look-photo--draft + .outfit-seasons { margin-top: 10px; }
+.form .look-picker { margin-top: 0; }
 .form > .outfit-preview + .outfit-seasons { margin-top: 10px; }
 
 /* Auswahl im Outfit-Editor bleibt sichtbar */

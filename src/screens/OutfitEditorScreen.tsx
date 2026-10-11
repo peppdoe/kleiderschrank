@@ -1,18 +1,22 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useRef, useState } from 'react';
 import { ConfirmSheet } from '../components/ConfirmSheet';
+import { FilePicker } from '../components/FilePicker';
 import { FilterTags } from '../components/FilterTags';
 import { Icon } from '../components/Icon';
 import { ItemGrid, tileLabel } from '../components/ItemGrid';
 import { ItemPhoto } from '../components/ItemPhoto';
 import { NotFound } from '../components/NotFound';
+import { OutfitPhotoPicker } from '../components/OutfitPhotoPicker';
 import { OutfitPreview } from '../components/OutfitPreview';
 import { OutfitSeasons } from '../components/OutfitSeasons';
-import { listItems } from '../db/items';
-import { createOutfit, getOutfit, updateOutfit } from '../db/outfits';
+import { listItems, type PhotoBlobs } from '../db/items';
+import { createOutfit, getOutfit, getOutfitPhoto, updateOutfit, type PhotoChange } from '../db/outfits';
 import { userMessage } from '../lib/errors';
 import { EMPTY_FILTER, applyFilter, toggleValue, type FilterState } from '../lib/filters';
+import { processPhoto } from '../lib/image';
 import { navigate } from '../lib/route';
+import { useObjectUrl } from '../lib/useObjectUrl';
 
 const sameSet = (a: readonly string[], b: readonly string[]) => a.length === b.length && a.every((x) => b.includes(x));
 
@@ -28,6 +32,14 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
   const [saving, setSaving] = useState(false);
   const [confirmDiscard, setConfirmDiscard] = useState(false);
   const savingRef = useRef(false);
+  const existingPhoto = useLiveQuery(async () => (outfitId ? (await getOutfitPhoto(outfitId)) ?? null : null), [outfitId]);
+  // Neu gewähltes Foto (Entwurf) und ob das gespeicherte Foto entfernt werden soll; wirksam erst beim Speichern.
+  const [photo, setPhoto] = useState<PhotoBlobs | null>(null);
+  const [photoRemoved, setPhotoRemoved] = useState(false);
+  const [processingPhoto, setProcessingPhoto] = useState(false);
+  const [photoError, setPhotoError] = useState<string | null>(null);
+  const shownPhoto = photo?.full ?? (photoRemoved ? undefined : existingPhoto?.full);
+  const photoUrl = useObjectUrl(shownPhoto);
 
   useEffect(() => {
     if (existing && !loaded) {
@@ -37,12 +49,16 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
     }
   }, [existing, loaded]);
 
-  if (items === undefined || (outfitId && existing === undefined)) return null;
+  if (items === undefined || existingPhoto === undefined || (outfitId && existing === undefined)) return null;
   if (outfitId && existing === null) return <NotFound text="Dieses Outfit gibt es nicht mehr." backTo="/outfits" />;
 
   const cancelTarget = outfitId ? `/outfit/${outfitId}` : '/outfits';
-  const canSave = name.trim().length > 0 && selected.length > 0 && !saving;
-  const dirty = !sameSet(selected, existing?.itemIds ?? []) || name.trim() !== (existing?.name ?? '');
+  const canSave = name.trim().length > 0 && selected.length > 0 && !saving && !processingPhoto;
+  const dirty =
+    !sameSet(selected, existing?.itemIds ?? []) ||
+    name.trim() !== (existing?.name ?? '') ||
+    photo !== null ||
+    photoRemoved;
   const cancel = () => (dirty ? setConfirmDiscard(true) : navigate(cancelTarget, { replace: true }));
   const discardSheet = confirmDiscard && (
     <ConfirmSheet
@@ -59,6 +75,26 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
     .map((id) => items.find((item) => item.id === id))
     .filter((item): item is NonNullable<typeof item> => item !== undefined);
 
+  async function pickPhoto(file: File) {
+    setPhotoError(null);
+    setProcessingPhoto(true);
+    try {
+      setPhoto(await processPhoto(file, { anchor: 'top' }));
+      setPhotoRemoved(false);
+    } catch (e) {
+      setPhotoError(userMessage(e));
+    } finally {
+      setProcessingPhoto(false);
+    }
+  }
+
+  function dropPhoto() {
+    setPhoto(null);
+    setPhotoRemoved(Boolean(existingPhoto));
+  }
+
+  const photoChange: PhotoChange = photo ?? (photoRemoved ? null : undefined);
+
   async function save() {
     if (!canSave || savingRef.current) return;
     savingRef.current = true;
@@ -66,11 +102,11 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
     setError(null);
     try {
       if (outfitId) {
-        await updateOutfit(outfitId, name, selected);
+        await updateOutfit(outfitId, name, selected, photoChange);
         onSaved?.(outfitId);
         navigate(`/outfit/${outfitId}`, { replace: true });
       } else {
-        const id = await createOutfit(name, selected);
+        const id = await createOutfit(name, selected, photo ?? undefined);
         onSaved?.(id);
         navigate(`/outfit/${id}`, { replace: true });
       }
@@ -88,15 +124,39 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
           <button type="button" className="text-button" onClick={() => setStep('pick')}>Zurück</button>
           <h1 className="form-header__title">{outfitId ? 'Outfit bearbeiten' : 'Neues Outfit'}</h1>
         </header>
-        <OutfitPreview itemIds={selected} />
+        {photoUrl ? (
+          <img className="photo photo--full look-photo look-photo--draft" src={photoUrl} alt="Vorschau: du im Look" />
+        ) : (
+          <OutfitPreview itemIds={selected} />
+        )}
         <OutfitSeasons itemIds={selected} items={items} />
         <label className="field">
           <span className="section-title">Name des Outfits</span>
           <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="z. B. Uni-Look, Date Night" autoFocus />
         </label>
+        <div className="field">
+          <span className="section-title">
+            Foto von dir im Look <span className="section-meta">optional</span>
+          </span>
+          {shownPhoto ? (
+            <div className="look-photo__actions">
+              <FilePicker className="quiet-link" label="Foto von dir im Look ändern" accept="image/*" onPick={(file) => void pickPhoto(file)} disabled={processingPhoto}>
+                {processingPhoto ? 'Foto wird vorbereitet …' : 'Ändern'}
+              </FilePicker>
+              <button type="button" className="quiet-link" onClick={dropPhoto}>Entfernen</button>
+            </div>
+          ) : (
+            <OutfitPhotoPicker label="Foto von dir im Look" text="Zeig, wie du den Look trägst" busy={processingPhoto} onPick={(file) => void pickPhoto(file)} />
+          )}
+          {photoError && <p className="error" role="alert">{photoError}</p>}
+        </div>
         {error && <p className="error" role="alert">{error}</p>}
         <div className="action-bar">
-          {!name.trim() && <p className="action-bar__hint">Noch ein Name, dann ist der Look gespeichert.</p>}
+          {processingPhoto ? (
+            <p className="action-bar__hint">Foto wird vorbereitet …</p>
+          ) : (
+            !name.trim() && <p className="action-bar__hint">Noch ein Name, dann ist der Look gespeichert.</p>
+          )}
           <button type="button" className="button button--primary" disabled={!canSave} onClick={save}>
             {saving ? 'Speichert …' : 'Speichern'}
           </button>

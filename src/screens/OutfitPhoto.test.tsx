@@ -119,3 +119,79 @@ describe('Outfit-Detail mit Tragebild', () => {
     expect(await screen.findByLabelText('Zeig, wie du den Look trägst')).toBeInTheDocument();
   });
 });
+
+describe('Editor: Foto von dir im Look', () => {
+  async function toNameStep(user: ReturnType<typeof userEvent.setup>) {
+    await user.click(await screen.findByRole('button', { name: 'Oberteil' }));
+    await user.click(screen.getByRole('button', { name: 'Weiter' }));
+  }
+
+  it('saves a new outfit together with its photo', async () => {
+    await seedItem({ category: 'top' });
+    const user = userEvent.setup();
+    open('/outfit/new');
+    await toNameStep(user);
+    await user.upload(screen.getByLabelText('Foto von dir im Look'), selfie());
+    expect(await screen.findByRole('img', { name: 'Vorschau: du im Look' })).toBeInTheDocument();
+    await user.type(screen.getByLabelText('Name des Outfits'), 'Spiegel-Look');
+    await user.click(screen.getByRole('button', { name: 'Speichern' }));
+    const heading = await screen.findByRole('heading', { name: 'Spiegel-Look' });
+    expect(heading).toBeInTheDocument();
+    expect(await screen.findByRole('img', { name: 'Du im Look „Spiegel-Look“' })).toBeInTheDocument();
+  });
+
+  it('keeps the existing photo when only renaming', async () => {
+    const a = await seedItem({ category: 'top' });
+    const id = await createOutfit('Alt', [a], fakePhoto('bleibt'));
+    const user = userEvent.setup();
+    open(`/outfit/${id}/edit`);
+    await user.click(await screen.findByRole('button', { name: 'Weiter' }));
+    expect(await screen.findByRole('img', { name: 'Vorschau: du im Look' })).toBeInTheDocument();
+    const name = screen.getByLabelText('Name des Outfits');
+    await user.clear(name);
+    await user.type(name, 'Neu');
+    await user.click(screen.getByRole('button', { name: 'Speichern' }));
+    await screen.findByRole('heading', { name: 'Neu' });
+    expect(await (await getOutfitPhoto(id))!.full.text()).toBe('bleibt-full');
+  });
+
+  it('removes the photo only when saving', async () => {
+    const a = await seedItem({ category: 'top' });
+    const id = await createOutfit('Look', [a], fakePhoto('weg'));
+    const user = userEvent.setup();
+    open(`/outfit/${id}/edit`);
+    await user.click(await screen.findByRole('button', { name: 'Weiter' }));
+    await user.click(await screen.findByRole('button', { name: 'Entfernen' }));
+    expect(await getOutfitPhoto(id)).toBeDefined();
+    expect(screen.getByLabelText('Foto von dir im Look')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Speichern' }));
+    await screen.findByRole('heading', { name: 'Look' });
+    expect(await getOutfitPhoto(id)).toBeUndefined();
+  });
+
+  it('asks before discarding a chosen photo', async () => {
+    const a = await seedItem({ category: 'top' });
+    const id = await createOutfit('Look', [a]);
+    const user = userEvent.setup();
+    open(`/outfit/${id}/edit`);
+    await user.click(await screen.findByRole('button', { name: 'Weiter' }));
+    await user.upload(screen.getByLabelText('Foto von dir im Look'), selfie());
+    await screen.findByRole('img', { name: 'Vorschau: du im Look' });
+    await user.click(screen.getByRole('button', { name: 'Zurück' }));
+    await user.click(screen.getByRole('button', { name: 'Abbrechen' }));
+    expect(await screen.findByRole('dialog', { name: 'Änderungen verwerfen?' })).toBeInTheDocument();
+  });
+
+  it('keeps name and selection when the photo cannot be read', async () => {
+    vi.mocked(processPhoto).mockRejectedValueOnce(new PhotoError('kaputt'));
+    await seedItem({ category: 'top' });
+    const user = userEvent.setup();
+    open('/outfit/new');
+    await toNameStep(user);
+    await user.type(screen.getByLabelText('Name des Outfits'), 'Trotzdem');
+    await user.upload(screen.getByLabelText('Foto von dir im Look'), selfie());
+    expect(await screen.findByRole('alert')).toHaveTextContent('Dieses Foto konnte nicht geladen werden');
+    expect(screen.getByLabelText('Name des Outfits')).toHaveValue('Trotzdem');
+    expect(screen.getByRole('button', { name: 'Speichern' })).toBeEnabled();
+  });
+});
