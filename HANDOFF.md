@@ -66,7 +66,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 - **Live (= `origin/main`)** ist Commit `94fb746`. Im Browser-Pane geprüft: Die Live-Seite läuft hell und dunkel in Handy-Größe sauber, IndexedDB-Version 20 mit Tabelle `outfitPhotos` (also Dexie v2).
 - **Neu und noch nicht veröffentlicht:** Branch `feature/offene-punkte` mit Rückgängig nach Löschen, Namensfrage beim ersten Start, „Speichern und nächstes Teil fotografieren“, Schrift in rem mit iOS-Textgröße (Dynamic Type), aufgefrischtem `DESIGN.md` und neu erzeugtem `.impeccable/design.json`. **Zum Veröffentlichen** per Fast-Forward nach `main` übernehmen und pushen, aber **nur nach Freigabe** („hochladen“).
-- **Qualität:** 255 Tests grün, `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde (CLI und Browser-Overlay auf vier Seiten).
+- **Qualität:** 258 Tests grün, `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde (CLI und Browser-Overlay auf vier Seiten).
 - **Design-Kritik (Verlauf):** 22 → 26 → 28 → 28 → 26 → **28/40** (Runde 5, 11.10., Bericht in `.impeccable/critique/`). Ohne Sub-Agenten im selben Kontext gelaufen und im Bericht so gekennzeichnet.
 - **Branches:** `main` und `feature/offene-punkte`; der alte `feature/pflegeetikett` ist gelöscht.
 - **Datenmodell:** unverändert Dexie **Version 2**, Backup **v1**. Rückgängig braucht keine Schema-Änderung, der Schnappschuss liegt nur im Speicher.
@@ -74,7 +74,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ### Was in der Runde „offene Punkte“ dazukam
 
-1. **Rückgängig nach Löschen:** Teil oder Look löschen → Toast „Teil gelöscht“ / „Look gelöscht“ mit „Rückgängig“ (6 s). Zurück kommen Foto, Liebling und der Platz in den Looks bzw. das Tragebild.
+1. **Rückgängig nach Löschen:** Teil oder Look löschen → Toast „Teil gelöscht“ / „Look gelöscht“ mit „Rückgängig“ (6 s; die Zeit ruht, solange der Knopf Fokus oder einen Finger/Zeiger hat – Befund aus Kritik Runde 5, auf Wunsch des Nutzers umgesetzt). Zurück kommen Foto, Liebling und der Platz in den Looks bzw. das Tragebild.
 2. **Namensfrage beim ersten Start:** Der leere Schrank fragt einmal „Wie heißt du?“, das Band grüßt danach sofort mit Namen.
 3. **Speichern und nächstes Teil fotografieren:** Das Formular für ein neues Teil speichert und öffnet direkt ein frisches Formular mit dem nächsten Foto.
 4. **Dynamic Type:** Alle Schriftgrößen in rem. Auf dem iPhone folgt die Grundgröße der iOS-Textgröße, feste Reihen sind gedeckelt. Getestet bis 28 px (erste Bedienungshilfen-Stufe) ohne seitlichen Überlauf.
@@ -99,7 +99,6 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 1. **`feature/offene-punkte` veröffentlichen**, sobald der Nutzer „hochladen“ sagt: `git checkout main && git merge --ff-only feature/offene-punkte && git push`, danach den Deploy-Lauf prüfen.
 2. **Aus Kritik Runde 5 (28/40), zur Auswahl durch den Nutzer:**
-   - Der Rückgängig-Toast verschwindet nach 6 s, auch wenn er gerade den Fokus hat (VoiceOver). Idee: Zeit anhalten, solange der Knopf fokussiert ist.
    - Keine Suche nach Namen oder Notizen. Bei 100+ Teilen hilft nur der Filter.
    - Die Saison-Reihe auf dem Band ist als Regler nicht selbsterklärend.
    - Hilfe gibt es nur als Einzeiler (Installation, Backup).

@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactElement } from 'react';
 import { TabBar } from './components/TabBar';
-import { Toast, type Notice } from './components/Toast';
+import { Toast, useNoticeTimer, type Notice } from './components/Toast';
 import type { Item } from './db/schema';
 import { EMPTY_FILTER, matchesFilter, type FilterState } from './lib/filters';
 import { seasonOf } from './lib/greeting';
@@ -15,8 +15,6 @@ import { SettingsScreen } from './screens/SettingsScreen';
 import { WardrobeScreen } from './screens/WardrobeScreen';
 
 const SAVED_NOTICE_MS = 3500;
-// Mit „Rückgängig“ bleibt die Meldung länger stehen, damit man den Knopf noch erwischt.
-const UNDO_NOTICE_MS = 6000;
 
 export default function App() {
   const route = useRoute();
@@ -28,7 +26,13 @@ export default function App() {
   const [savedItemId, setSavedItemId] = useState<string | null>(null);
   const [savedOutfitId, setSavedOutfitId] = useState<string | null>(null);
   const [notice, setNotice] = useState<Notice | null>(null);
-  const notify = (text: string, action?: Notice['action']) => setNotice({ text, action });
+  // Fokus oder Finger auf „Rückgängig“ halten die Meldung fest (VoiceOver braucht Zeit).
+  const [noticeHeld, setNoticeHeld] = useState(false);
+  const notify = (text: string, action?: Notice['action']) => {
+    // Eine neue Meldung ersetzt den alten Knopf; dessen Blur kommt beim Aushängen nicht immer an.
+    setNoticeHeld(false);
+    setNotice({ text, action });
+  };
 
   useEffect(() => {
     requestPersistence().catch(() => undefined);
@@ -51,11 +55,7 @@ export default function App() {
     return () => clearTimeout(timer);
   }, [savedItemId]);
 
-  useEffect(() => {
-    if (!notice) return undefined;
-    const timer = setTimeout(() => setNotice(null), notice.action ? UNDO_NOTICE_MS : SAVED_NOTICE_MS);
-    return () => clearTimeout(timer);
-  }, [notice]);
+  useNoticeTimer(notice, noticeHeld, () => setNotice(null));
 
   useEffect(() => {
     if (!savedOutfitId) return undefined;
@@ -134,7 +134,7 @@ export default function App() {
     <div className={inForm ? 'app app--form' : 'app'}>
       {screen}
       {/* Die Einstellungen haben ihre eigene Statuszeile; überall sonst bleibt der Ansagebereich eingehängt. */}
-      {route.name !== 'settings' && route.name !== 'settingsBackup' && <Toast notice={notice} />}
+      {route.name !== 'settings' && route.name !== 'settingsBackup' && <Toast notice={notice} onHold={setNoticeHeld} />}
       {!inForm && <TabBar active={tabOf(route)} />}
     </div>
   );

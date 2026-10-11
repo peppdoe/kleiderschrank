@@ -56,7 +56,7 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter (Saison = Heute-Regler), Fot
 - Keine Karten um Fotos/Outfits, keine Pillen-Chips, keine Emojis als Symbole (eigene SVGs in `components/Icon.tsx`), keine Kicker-/Eyebrow-Zeile über Überschriften.
 - **Daumenreichweite:** In Formularen keine Tab-Leiste; eine feste Leiste ganz unten trägt Abbrechen/Zurück links und die Hauptaktion rechts, oben steht nur der Titel. Detailseiten (Teil, Look) haben `DetailBar` über der Tab-Leiste: ‹ Zurück links, Bearbeiten rechts; Löschen bleibt am Inhaltsende.
 - **Farben** wählt man als Farbfelder mit sichtbarem Namen (`SwatchGroup`), nicht als Anhänger. Das Filterblatt zeigt nur Kategorien/Farben, die es unter den übrigen Teilen gibt, mit Anzahl (`facetCounts`).
-- **Toasts** nur über `notify(text, action?)` in `App.tsx` (eine dauerhaft eingehängte Ansage-Region für VoiceOver, `components/Toast.tsx`); Bildschirme bekommen dafür einen Callback (`onNotice`). Mit Aktion bleibt der Toast 6 s statt 3,5 s.
+- **Toasts** nur über `notify(text, action?)` in `App.tsx` (eine dauerhaft eingehängte Ansage-Region für VoiceOver, `components/Toast.tsx`); Bildschirme bekommen dafür einen Callback (`onNotice`). Mit Aktion bleibt der Toast 6 s statt 3,5 s; solange der Knopf Fokus oder einen Zeiger hat, läuft keine Zeit (`useNoticeTimer`, `onHold`).
 - **Rückgängig statt Nachfrage-Kette:** Löschen eines Teils/Looks zeigt „Teil/Look gelöscht“ mit „Rückgängig“. `deleteItem`/`deleteOutfit` geben einen Schnappschuss zurück, `restoreItem`/`restoreOutfit` spielen ihn in einer Transaktion zurück (Foto, Liebling, Platz in den Looks; inzwischen geänderte Looks behalten ihre Änderungen).
 - **Schriftgrößen nur in rem** (Basis 17 px). Auf iPhone/iPad folgt die Wurzel der iOS-Textgröße (`font: -apple-system-body`, nur mit `-webkit-touch-callout`), feste Reihen (Tabs, Pflegesymbol-Namen, Farbnamen, Bandtitel) sind mit `min(rem, px)` gedeckelt, Eingabefelder nie unter 16 px (`max(1rem, 16px)`), sonst zoomt iOS.
 - **Erster Start:** leerer Schrank zeigt „Noch ganz viel Platz hier.“ mit „Erstes Teil fotografieren“, darunter einmal „Wie heißt du?“ (`NameAsk`, verschwindet mit gesetztem Namen); ohne Teile weder Plus-Knopf noch Saison-Wahl. Looks-Tab ohne Teile führt zum ersten Foto.
@@ -109,4 +109,4 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter (Saison = Heute-Regler), Fot
 Die vollständige, geordnete Liste steht in `HANDOFF.md` (Abschnitt 4). Kurz:
 
 - Abnahme auf Lenas echtem iPhone: Checkliste in `README.md`, besonders Hochformat-/HEIC-Fotos, Tragebild als Spiegel-Selfie und Backup über iCloud Drive.
-- Aus der Kritik Runde 5 (28/40): Rückgängig-Toast hat ein festes Zeitfenster von 6 s, keine Suche nach Namen/Notizen, Hilfe nur als Einzeiler.
+- Aus der Kritik Runde 5 (28/40): keine Suche nach Namen/Notizen, Saison-Reihe als Regler nicht selbsterklärend, Hilfe nur als Einzeiler.
