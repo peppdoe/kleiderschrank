@@ -15,7 +15,17 @@ function open(path: string) {
 }
 
 describe('Outfits', () => {
+  it('leads from an empty Looks tab to the first piece when the wardrobe is empty', async () => {
+    const user = userEvent.setup();
+    open('/outfits');
+    expect(await screen.findByText(/Für Looks brauchst du erst ein paar Teile/)).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Neuer Look' })).not.toBeInTheDocument();
+    await user.upload(screen.getByLabelText('Erstes Teil fotografieren'), new File(['x'], 'a.jpg', { type: 'image/jpeg' }));
+    expect(await screen.findByRole('heading', { name: 'Neues Teil' })).toBeInTheDocument();
+  });
+
   it('shows an empty state with a way to start', async () => {
+    await seedItem();
     open('/outfits');
     expect(await screen.findByText(/Noch keine Looks/)).toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: 'Neuer Look' }).length).toBeGreaterThan(0);

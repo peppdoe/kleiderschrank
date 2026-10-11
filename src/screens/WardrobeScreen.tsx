@@ -67,7 +67,10 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
     <section className="screen-content">
       {/* Wie auf einem echten Pflegeetikett stehen die Saisons auf dem Band selbst: Gruß und Heute-Regler sind eins. */}
       <LabelBand title={greeting.title} line={greeting.line}>
-        <SeasonSymbols label="Saison wählen" selected={filter.seasons} current={current} onToggle={chooseSeason} />
+        {/* Ohne Teile gibt es nichts zu filtern: die Saison-Wahl kommt mit dem ersten Teil. */}
+        {items.length > 0 && (
+          <SeasonSymbols label="Saison wählen" selected={filter.seasons} current={current} onToggle={chooseSeason} />
+        )}
       </LabelBand>
 
       {today.length > 0 && (
@@ -99,6 +102,7 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
           Zeit für ein Backup – jetzt sichern
         </button>
       )}
+      {items.length > 0 && (
       <div className="section-head section-head--start">
         <h2 className="section-title">Schrank</h2>
         <span className="section-meta">
@@ -110,10 +114,16 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
           {filter.seasons.length > 0 && <span> · {filter.seasons.map((id) => labelOf(SEASONS, id)).join(', ')}</span>}
         </span>
       </div>
+      )}
 
       {items.length === 0 ? (
-        <div className="empty">
-          <p>Noch leer hier. Tipp auf + und fotografier dein erstes Teil.</p>
+        <div className="empty empty--first">
+          <p className="empty__title">Noch ganz viel Platz hier.</p>
+          <p>Fang mit deinem Lieblingsteil an.</p>
+          <FilePicker className="button button--primary" label="Erstes Teil fotografieren" accept="image/*" onPick={onPickPhoto}>
+            <Icon name="camera" size={22} />
+            Erstes Teil fotografieren
+          </FilePicker>
         </div>
       ) : (
         <>
@@ -156,9 +166,12 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
         />
       )}
 
-      <FilePicker className="fab" label="Teil hinzufügen" accept="image/*" onPick={onPickPhoto}>
-        <Icon name="plus" size={28} />
-      </FilePicker>
+      {/* Im leeren Schrank ist der große Knopf die eine Hauptaktion; der runde Plus-Knopf kommt mit dem ersten Teil. */}
+      {items.length > 0 && (
+        <FilePicker className="fab" label="Teil hinzufügen" accept="image/*" onPick={onPickPhoto}>
+          <Icon name="plus" size={28} />
+        </FilePicker>
+      )}
     </section>
   );
 }

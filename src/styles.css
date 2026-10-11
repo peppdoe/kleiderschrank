@@ -91,6 +91,10 @@ p { margin: 0; }
 .success { color: var(--success); }
 .notice { font-size: 15px; color: var(--muted); }
 .empty { text-align: center; color: var(--muted); padding: 40px 16px; display: flex; flex-direction: column; gap: 16px; align-items: center; }
+/* Erster Start: eine Einladung statt einer grauen Zeile; der große Knopf ist die eine Hauptaktion */
+.empty--first { gap: 10px; padding: 48px 16px 32px; }
+.empty__title { font-size: 22px; font-weight: 500; color: var(--ink); }
+.empty--first .button--primary { width: auto; margin-top: 14px; padding-inline: 24px; }
 
 /* Das gewebte Namensband */
 .label-band {

@@ -1,4 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
+import { FilePicker } from '../components/FilePicker';
 import { Icon } from '../components/Icon';
 import { OutfitLook } from '../components/OutfitLook';
 import { OutfitSeasons } from '../components/OutfitSeasons';
@@ -6,7 +7,7 @@ import { listItems } from '../db/items';
 import { listOutfits } from '../db/outfits';
 import { navigate } from '../lib/route';
 
-export function OutfitsScreen() {
+export function OutfitsScreen({ onPickPhoto }: { onPickPhoto: (file: File) => void }) {
   const outfits = useLiveQuery(listOutfits, []);
   const items = useLiveQuery(listItems, []);
   if (!outfits || !items) return null;
@@ -18,7 +19,16 @@ export function OutfitsScreen() {
         <span className="section-meta">{outfits.length > 0 ? `${outfits.length} gespeichert` : ''}</span>
       </header>
 
-      {outfits.length === 0 ? (
+      {outfits.length === 0 && items.length === 0 ? (
+        // Ohne Teile führt „Neuer Look“ ins Leere: erst das erste Teil.
+        <div className="empty empty--first">
+          <p>Für Looks brauchst du erst ein paar Teile. Fang mit deinem ersten an.</p>
+          <FilePicker className="button button--primary" label="Erstes Teil fotografieren" accept="image/*" onPick={onPickPhoto}>
+            <Icon name="camera" size={22} />
+            Erstes Teil fotografieren
+          </FilePicker>
+        </div>
+      ) : outfits.length === 0 ? (
         <div className="empty">
           <p>Noch keine Looks. Kombinier deine Lieblingsteile zu deinem ersten.</p>
           <button type="button" className="button" onClick={() => navigate('/outfit/new')}>

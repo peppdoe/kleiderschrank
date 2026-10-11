@@ -467,6 +467,10 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 ### Toast
 - An ink capsule (22px corners) with ground-colored 15px/500 text, 10px/18px padding, centered and fixed 22px above the tab bar, button lift, `role="status"`. Used for "Teil gespeichert" together with the kraft-ringed new tile; one short past-tense line, no actions.
 
+### First Run
+- **Empty wardrobe:** an invitation, not a grey line: "Noch ganz viel Platz hier." (22px, ink, 500), "Fang mit deinem Lieblingsteil an." (muted), then one primary button "Erstes Teil fotografieren" with the camera pictogram (auto width). The round add button and the season symbols on the band appear only with the first piece, so the screen has exactly one red action and nothing to filter.
+- **Empty Looks tab without pieces:** "Für Looks brauchst du erst ein paar Teile. Fang mit deinem ersten an." with the same primary button, which opens the new-piece form. With pieces but no looks it offers "Neuer Look" as before.
+
 ### Notice Line and Quiet Link
 - Notice: surface, 1px line border, 12px corners, muted text, 44px close icon button.
 - On the wardrobe at most one hint shows. The backup reminder (a quiet link) stays between "Heute" and the wardrobe because it protects Lena's data; the install hint sits after the grid, since it only matters until the app is installed and the clothes come first.

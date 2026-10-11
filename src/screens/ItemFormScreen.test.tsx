@@ -17,7 +17,7 @@ const photoFile = () => new File(['x'], 'shirt.jpg', { type: 'image/jpeg' });
 
 async function startNewItem(user: ReturnType<typeof userEvent.setup>) {
   render(<App />);
-  await user.upload(await screen.findByLabelText('Teil hinzufügen'), photoFile());
+  await user.upload(await screen.findByLabelText('Erstes Teil fotografieren'), photoFile());
   await screen.findByRole('heading', { name: 'Neues Teil' });
 }
 
@@ -92,7 +92,7 @@ describe('Teil erfassen', () => {
 
     await user.click(screen.getByRole('button', { name: 'Abbrechen' }));
     await user.click(within(await screen.findByRole('dialog', { name: 'Änderungen verwerfen?' })).getByRole('button', { name: 'Verwerfen' }));
-    expect(await screen.findByText(/Noch leer hier/)).toBeInTheDocument();
+    expect(await screen.findByText(/Noch ganz viel Platz hier/)).toBeInTheDocument();
     expect(await db.items.count()).toBe(0);
   });
 

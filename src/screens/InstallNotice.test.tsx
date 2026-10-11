@@ -28,14 +28,14 @@ describe('Installationshinweis', () => {
     expect(screen.queryByRole('note')).not.toBeInTheDocument();
     unmount();
     render(<App />);
-    await screen.findByText(/Noch leer hier/);
+    await screen.findByText(/Noch ganz viel Platz hier/);
     expect(screen.queryByRole('note')).not.toBeInTheDocument();
   });
 
   it('is hidden in the installed app', async () => {
     vi.mocked(isStandalone).mockReturnValue(true);
     render(<App />);
-    await screen.findByText(/Noch leer hier/);
+    await screen.findByText(/Noch ganz viel Platz hier/);
     expect(screen.queryByRole('note')).not.toBeInTheDocument();
   });
 });

@@ -87,7 +87,7 @@ export default function App() {
       screen = <ItemFormScreen key={`edit-${route.id}`} itemId={route.id} />;
       break;
     case 'outfits':
-      screen = <OutfitsScreen />;
+      screen = <OutfitsScreen onPickPhoto={startNewItem} />;
       break;
     case 'outfitNew':
       screen = <OutfitEditorScreen key="new" onSaved={outfitSaved} />;

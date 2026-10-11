@@ -12,10 +12,21 @@ beforeEach(() => {
 afterEach(() => vi.useRealTimers());
 
 describe('Schrank', () => {
-  it('shows a friendly empty state', async () => {
+  it('welcomes an empty wardrobe with one clear first step', async () => {
     render(<App />);
-    expect(await screen.findByText('Noch leer hier. Tipp auf + und fotografier dein erstes Teil.')).toBeInTheDocument();
+    expect(await screen.findByText('Noch ganz viel Platz hier.')).toBeInTheDocument();
+    expect(screen.getByLabelText('Erstes Teil fotografieren')).toBeInTheDocument();
+    // Nur eine Hauptaktion: kein runder Plus-Knopf, keine Saison-Wahl ohne Teile.
+    expect(screen.queryByLabelText('Teil hinzufügen')).not.toBeInTheDocument();
+    expect(screen.queryByRole('group', { name: 'Saison wählen' })).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Schrank/ })).toHaveAttribute('aria-current', 'page');
+  });
+
+  it('starts the first piece from the empty wardrobe', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.upload(await screen.findByLabelText('Erstes Teil fotografieren'), new File(['x'], 'a.jpg', { type: 'image/jpeg' }));
+    expect(await screen.findByRole('heading', { name: 'Neues Teil' })).toBeInTheDocument();
   });
 
   it('greets Lena by her chosen name', async () => {
@@ -158,6 +169,7 @@ describe('Schrank', () => {
   it('marks the current season by name, not only as "Jetzt"', async () => {
     vi.useFakeTimers({ toFake: ['Date'] });
     vi.setSystemTime(new Date('2026-10-10T07:40:00'));
+    await seedItem();
     render(<App />);
     const seasons = await screen.findByRole('group', { name: 'Saison wählen' });
     expect(within(seasons).getByText('Herbst')).toBeInTheDocument();
