@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactElement } from 'react';
 import { TabBar } from './components/TabBar';
+import { Toast } from './components/Toast';
 import type { Item } from './db/schema';
 import { EMPTY_FILTER, matchesFilter, type FilterState } from './lib/filters';
 import { seasonOf } from './lib/greeting';
@@ -22,6 +23,7 @@ export default function App() {
   const [wardrobeFilter, setWardrobeFilter] = useState<FilterState>(() => ({ ...EMPTY_FILTER, seasons: [seasonOf(new Date())] }));
   const [savedItemId, setSavedItemId] = useState<string | null>(null);
   const [savedOutfitId, setSavedOutfitId] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   useEffect(() => {
     requestPersistence().catch(() => undefined);
@@ -45,6 +47,12 @@ export default function App() {
   }, [savedItemId]);
 
   useEffect(() => {
+    if (!notice) return undefined;
+    const timer = setTimeout(() => setNotice(null), SAVED_NOTICE_MS);
+    return () => clearTimeout(timer);
+  }, [notice]);
+
+  useEffect(() => {
     if (!savedOutfitId) return undefined;
     const timer = setTimeout(() => setSavedOutfitId(null), SAVED_NOTICE_MS);
     return () => clearTimeout(timer);
@@ -54,6 +62,12 @@ export default function App() {
   function itemCreated(item: Item) {
     if (!matchesFilter(item, wardrobeFilter)) setWardrobeFilter(EMPTY_FILTER);
     setSavedItemId(item.id);
+    setNotice('Teil gespeichert');
+  }
+
+  function outfitSaved(id: string) {
+    setSavedOutfitId(id);
+    setNotice('Look gespeichert');
   }
 
   function startNewItem(file: File) {
@@ -76,13 +90,13 @@ export default function App() {
       screen = <OutfitsScreen />;
       break;
     case 'outfitNew':
-      screen = <OutfitEditorScreen key="new" onSaved={setSavedOutfitId} />;
+      screen = <OutfitEditorScreen key="new" onSaved={outfitSaved} />;
       break;
     case 'outfit':
-      screen = <OutfitDetailScreen key={route.id} outfitId={route.id} justSaved={savedOutfitId === route.id} />;
+      screen = <OutfitDetailScreen key={route.id} outfitId={route.id} justSaved={savedOutfitId === route.id} onNotice={setNotice} />;
       break;
     case 'outfitEdit':
-      screen = <OutfitEditorScreen key={`edit-${route.id}`} outfitId={route.id} onSaved={setSavedOutfitId} />;
+      screen = <OutfitEditorScreen key={`edit-${route.id}`} outfitId={route.id} onSaved={outfitSaved} />;
       break;
     case 'settings':
       screen = <SettingsScreen key="settings" />;
@@ -107,16 +121,8 @@ export default function App() {
   return (
     <div className={inForm ? 'app app--form' : 'app'}>
       {screen}
-      {savedItemId && route.name === 'wardrobe' && (
-        <p className="toast" role="status">
-          Teil gespeichert
-        </p>
-      )}
-      {savedOutfitId && route.name === 'outfit' && route.id === savedOutfitId && (
-        <p className="toast" role="status">
-          Look gespeichert
-        </p>
-      )}
+      {/* Die Einstellungen haben ihre eigene Statuszeile; überall sonst bleibt der Ansagebereich eingehängt. */}
+      {route.name !== 'settings' && route.name !== 'settingsBackup' && <Toast message={notice} />}
       {!inForm && <TabBar active={tabOf(route)} />}
     </div>
   );

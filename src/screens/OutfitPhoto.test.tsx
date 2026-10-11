@@ -76,7 +76,7 @@ describe('Outfit-Detail mit Tragebild', () => {
     const user = userEvent.setup();
     open(`/outfit/${id}`);
     await user.upload(await screen.findByLabelText('Zeig, wie du den Look trägst'), selfie());
-    expect(await screen.findByRole('status')).toHaveTextContent('Foto gespeichert');
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Foto gespeichert'));
     expect(processPhoto).toHaveBeenCalledWith(expect.any(File), { anchor: 'top' });
     expect(await (await getOutfitPhoto(id))!.full.text()).toBe('look-full');
     expect(await screen.findByRole('img', { name: 'Du im Look „Uni“' })).toBeInTheDocument();
@@ -216,5 +216,24 @@ describe('Foto entfernen während ein neues vorbereitet wird', () => {
     await user.click(await screen.findByRole('button', { name: 'Weiter' }));
     await user.upload(await screen.findByLabelText('Foto von dir im Look ändern'), selfie());
     expect(screen.getByRole('button', { name: 'Entfernen' })).toBeDisabled();
+  });
+});
+
+describe('Ansage für VoiceOver', () => {
+  it('keeps one status region in place before the message arrives', async () => {
+    const a = await seedItem();
+    const id = await createOutfit('Uni', [a]);
+    const user = userEvent.setup();
+    open(`/outfit/${id}`);
+    const region = await screen.findByRole('status');
+    expect(region).toBeEmptyDOMElement();
+    await user.upload(await screen.findByLabelText('Zeig, wie du den Look trägst'), selfie());
+    await waitFor(() => expect(region).toHaveTextContent('Foto gespeichert'));
+    expect(screen.getAllByRole('status')).toHaveLength(1);
+  });
+
+  it('has the region ready on the wardrobe too', async () => {
+    open('/');
+    expect(await screen.findByRole('status')).toBeEmptyDOMElement();
   });
 });

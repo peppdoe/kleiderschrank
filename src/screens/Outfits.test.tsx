@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import App from '../App';
@@ -45,7 +45,7 @@ describe('Outfits', () => {
     await user.click(save);
 
     expect(await screen.findByRole('heading', { name: 'Büro-Look' })).toBeInTheDocument();
-    expect(await screen.findByRole('status')).toHaveTextContent('Look gespeichert');
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Look gespeichert'));
     const outfits = await db.outfits.toArray();
     expect(outfits).toHaveLength(1);
     expect(outfits[0]).toMatchObject({ name: 'Büro-Look', itemIds: [top, pants] });

@@ -1,5 +1,5 @@
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { FilePicker } from '../components/FilePicker';
 import { Icon } from '../components/Icon';
@@ -16,9 +16,14 @@ import { processPhoto } from '../lib/image';
 import { navigate } from '../lib/route';
 import { useObjectUrl } from '../lib/useObjectUrl';
 
-const SAVED_NOTICE_MS = 3500;
+interface OutfitDetailScreenProps {
+  outfitId: string;
+  justSaved?: boolean;
+  /** Kurze Bestätigung über den gemeinsamen Ansagebereich der App. */
+  onNotice?: (message: string) => void;
+}
 
-export function OutfitDetailScreen({ outfitId, justSaved = false }: { outfitId: string; justSaved?: boolean }) {
+export function OutfitDetailScreen({ outfitId, justSaved = false, onNotice }: OutfitDetailScreenProps) {
   const outfit = useLiveQuery(async () => (await getOutfit(outfitId)) ?? null, [outfitId]);
   const items = useLiveQuery(async () => (outfit ? getItemsByIds(outfit.itemIds) : []), [outfit]);
   const photo = useLiveQuery(async () => (await getOutfitPhoto(outfitId)) ?? null, [outfitId]);
@@ -26,15 +31,8 @@ export function OutfitDetailScreen({ outfitId, justSaved = false }: { outfitId: 
   const [error, setError] = useState<string | null>(null);
   const [photoError, setPhotoError] = useState<string | null>(null);
   const [photoBusy, setPhotoBusy] = useState(false);
-  const [photoSaved, setPhotoSaved] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [confirmingPhoto, setConfirmingPhoto] = useState(false);
-
-  useEffect(() => {
-    if (!photoSaved) return undefined;
-    const timer = setTimeout(() => setPhotoSaved(false), SAVED_NOTICE_MS);
-    return () => clearTimeout(timer);
-  }, [photoSaved]);
 
   if (outfit === undefined || items === undefined || photo === undefined) return null;
   if (outfit === null) return <NotFound text="Dieses Outfit gibt es nicht mehr." backTo="/outfits" />;
@@ -54,7 +52,7 @@ export function OutfitDetailScreen({ outfitId, justSaved = false }: { outfitId: 
     setPhotoBusy(true);
     try {
       await setOutfitPhoto(outfitId, await processPhoto(file, { anchor: 'top' }));
-      setPhotoSaved(true);
+      onNotice?.('Foto gespeichert');
     } catch (e) {
       setPhotoError(userMessage(e));
     } finally {
@@ -124,8 +122,6 @@ export function OutfitDetailScreen({ outfitId, justSaved = false }: { outfitId: 
           Löschen
         </button>
       </div>
-
-      {photoSaved && <p className="toast" role="status">Foto gespeichert</p>}
 
       {confirming && (
         <ConfirmSheet

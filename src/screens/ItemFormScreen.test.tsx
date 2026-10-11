@@ -40,7 +40,7 @@ describe('Teil erfassen', () => {
     await user.click(save);
 
     expect(await screen.findByRole('button', { name: 'Oberteil, Blau – Von Oma' })).toBeInTheDocument();
-    expect(await screen.findByRole('status')).toHaveTextContent('Teil gespeichert');
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Teil gespeichert'));
     const items = await db.items.toArray();
     expect(items).toHaveLength(1);
     expect(items[0]).toMatchObject({ category: 'top', colors: ['blue'], seasons: ['winter'], note: 'Von Oma' });
