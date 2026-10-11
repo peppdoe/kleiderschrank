@@ -37,7 +37,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 ### Gestaltung
 | Entscheidung | Begründung |
 |---|---|
-| **Gestaltungswelt „Pflegeetikett“**: flaches navyblaues Namensband mit gestrichelter Naht, Karton-Anhänger (Kraftpapier) mit Lochung für Filter und Auswahl, Saisons als Pflegesymbole, Porzellan-Grund `#f5f6f8` | Vom Nutzer auf der Impeccable-Entscheidungsseite gewählt (gegen den ausgelosten „Abholschein“). Wunsch: „warm & persönlich“ statt neutralem iOS-Look. |
+| **Gestaltungswelt „Pflegeetikett“**: flaches Namensband mit gestrichelter Naht (zuerst navyblau, am 11.10. auf Wunsch des Nutzers auf die Saisonfarbe umgestellt; Hell/Dunkel bleibt automatisch nach iPhone-Einstellung), Karton-Anhänger (Kraftpapier) mit Lochung für Filter und Auswahl, Saisons als Pflegesymbole, Porzellan-Grund `#f5f6f8` | Vom Nutzer auf der Impeccable-Entscheidungsseite gewählt (gegen den ausgelosten „Abholschein“). Wunsch: „warm & persönlich“ statt neutralem iOS-Look. |
 | **Persönliche Begrüßung** („Guten Morgen, Lena“ + wechselnder Spruch zu Kleidung und Saison), **Name in den Einstellungen wählbar** | Ausdrücklicher Wunsch des Nutzers, „wie bei Claude im Hauptfenster“. Die Sprüche sind höchstens 30 Zeichen lang (eine Zeile) und nennen nie konkrete Kleidungsstücke, weil Lena sie vielleicht nicht besitzt. Ein Test erzwingt beides. |
 | **Saison-Reihe = „Heute“-Regler**: Die aktuelle Saison ist beim Öffnen vorausgewählt und filtert Schrank und „Heute“. Einfachauswahl: ein zweiter Tipp zeigt alles. | Nutzerwahl in der zweiten Kritik („Heute-Regler“). Passt zum Morgen-Moment. |
 | **Teile ohne Saison gelten als ganzjährig** | Sonst würden Taschen, Accessoires usw. beim voreingestellten Saisonfilter verschwinden. |

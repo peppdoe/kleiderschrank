@@ -42,7 +42,7 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
 
 ## Gestaltung (vor UI-Änderungen `DESIGN.md` lesen)
 
-- Welt „Pflegeetikett“: flaches navyblaues Namensband mit gestrichelter Naht (Begrüßung mit Namen + wechselnder Spruch), Saisons als Pflegesymbole, Auswahl und Filter als Karton-Anhänger mit Lochung, Porzellan-Grund `#f5f6f8` (nie Creme).
+- Welt „Pflegeetikett“: flaches Namensband in der Farbe der gewählten Saison (Salbei, Apricot, Ocker, Eisblau; Schrift navy) mit gestrichelter Naht (Begrüßung mit Namen + wechselnder Spruch), Saisons als Pflegesymbole, Auswahl und Filter als Karton-Anhänger mit Lochung, Porzellan-Grund `#f5f6f8` (nie Creme).
 - **Lena ist 20.** Ton wie eine Freundin mit Gespür für Mode (siehe `PRODUCT.md`), nie wie Verkäuferin, Amt oder Eltern. Ein Test in `lib/greeting.test.ts` sperrt typische Eltern-/Verkäufer-Floskeln.
 - **Fadenrot nur für:** die eine Hauptaktion (Hinzufügen, Speichern, Backup erstellen), den aktiven Tab, zerstörerische Aktionen, Fehler und Fokus. Nichts anderes wird rot.
 - **Saisonfaden:** Nähte (Namensband, Etiketten), Herz und gewählte Saison tragen die Farbe der gewählten Saison (`--accent`, gesetzt als `data-season` am Root in `App.tsx`). Nie für Aktionen oder Text.

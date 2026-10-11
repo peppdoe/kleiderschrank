@@ -8,9 +8,10 @@
   --line: #d8dce5;
   --line-strong: #9aa3b5;
   --chip: #e8ebf1;
-  --band: #1f2a44;
-  --band-ink: #f5f6f8;
-  --band-stitch: rgba(245, 246, 248, 0.5);
+  --band: #f6e3c8;
+  --band-ink: #1f2a44;
+  --band-stitch: rgba(31, 42, 68, 0.3);
+  --stitch: #c98a3e;
   --kraft: #d6ad94;
   --kraft-soft: #f2e4db;
   --kraft-ink: #2e1f19;
@@ -43,9 +44,10 @@
     --line: #2b3652;
     --line-strong: #6b7896;
     --chip: #222c46;
-    --band: #28355a;
-    --band-ink: #f5f6f8;
-    --band-stitch: rgba(245, 246, 248, 0.45);
+    --band: #3a3022;
+    --band-ink: #f5ead9;
+    --band-stitch: rgba(245, 234, 217, 0.4);
+    --stitch: #e2ad6f;
     --kraft: #d6ad94;
     --kraft-soft: #46363a;
     --kraft-ink: #2e1f19;
@@ -57,10 +59,17 @@
   }
   .swing-tag:not(.swing-tag--active), .chip:not(.chip--on) { color: #f2e4db; }
 }
-:root[data-season='spring'] { --accent: var(--spring); }
-:root[data-season='summer'] { --accent: var(--summer); }
-:root[data-season='autumn'] { --accent: var(--autumn); }
-:root[data-season='winter'] { --accent: var(--winter); }
+/* Gewebte Flächen in der Farbe der gewählten Saison: helles Band, kräftigerer Faden */
+:root[data-season='spring'] { --accent: var(--spring); --band: #e4eedb; --stitch: #7fa06c; }
+:root[data-season='summer'] { --accent: var(--summer); --band: #fde3d0; --stitch: #d98a55; }
+:root[data-season='autumn'] { --accent: var(--autumn); --band: #f6e3c8; --stitch: #c98a3e; }
+:root[data-season='winter'] { --accent: var(--winter); --band: #e3e9f9; --stitch: #7b8fc9; }
+@media (prefers-color-scheme: dark) {
+  :root[data-season='spring'] { --band: #2b3627; --stitch: var(--spring); }
+  :root[data-season='summer'] { --band: #3d2c22; --stitch: var(--summer); }
+  :root[data-season='autumn'] { --band: #3a3022; --stitch: var(--autumn); }
+  :root[data-season='winter'] { --band: #262f47; --stitch: var(--winter); }
+}
 
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--ground); color: var(--ink); -webkit-text-size-adjust: 100%; }
@@ -93,7 +102,7 @@ p { margin: 0; }
   text-align: center;
   box-shadow: 0 6px 18px var(--shadow);
 }
-.label-band::before { content: ''; position: absolute; inset: 7px; border: 1.5px dashed var(--accent); border-radius: 2px; pointer-events: none; }
+.label-band::before { content: ''; position: absolute; inset: 7px; border: 1.5px dashed var(--stitch); border-radius: 2px; pointer-events: none; }
 .label-band__title { font-size: 30px; line-height: 1.1; margin: 0 0 4px; letter-spacing: -0.01em; overflow-wrap: anywhere; }
 .label-band__line { font-size: 17px; opacity: 0.92; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; animation: stitch-in 900ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both; }
 .label-band__meta { margin-top: 5px; font-size: 13px; opacity: 0.78; }
@@ -161,7 +170,7 @@ p { margin: 0; }
 .tile { position: relative; display: block; width: 100%; aspect-ratio: 3 / 4; padding: 0; border: none; border-radius: 4px; overflow: hidden; background: var(--chip); cursor: pointer; }
 .tile--selected { outline: 3px solid var(--ink); outline-offset: -3px; }
 .tile__check { position: absolute; top: 6px; right: 6px; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: var(--ground); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; }
-.tile__fav { position: absolute; left: 6px; bottom: 6px; width: 24px; height: 24px; border-radius: 50%; background: var(--band); color: var(--accent); display: flex; align-items: center; justify-content: center; }
+.tile__fav { position: absolute; left: 6px; bottom: 6px; width: 24px; height: 24px; border-radius: 50%; background: var(--band); color: var(--stitch); display: flex; align-items: center; justify-content: center; }
 .photo { display: block; width: 100%; height: 100%; object-fit: cover; background: var(--chip); }
 .photo--full { height: auto; max-height: 62vh; object-fit: contain; border-radius: var(--radius); background: var(--surface); }
 .photo--empty { aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; color: var(--muted); border-radius: var(--radius); border: 1.5px dashed var(--line-strong); background: transparent; }
@@ -259,7 +268,7 @@ p { margin: 0; }
 .outfit-card .outfit-card__name { margin: -22px 0 0 8px; max-width: calc(100% - 16px); padding: 6px 12px 7px; font-size: 15px; overflow-wrap: break-word; hyphens: auto; }
 /* Name des Outfits als kleines gewebtes Etikett, eingenäht wie das Namensband */
 .outfit-card__name { position: relative; align-self: flex-start; max-width: 100%; padding: 7px 16px 8px; background: var(--band); color: var(--band-ink); border-radius: 4px; font-size: 17px; font-weight: 500; overflow-wrap: anywhere; }
-.outfit-card__name::before { content: ''; position: absolute; inset: 4px; border: 1.5px dashed var(--accent); border-radius: 2px; pointer-events: none; }
+.outfit-card__name::before { content: ''; position: absolute; inset: 4px; border: 1.5px dashed var(--stitch); border-radius: 2px; pointer-events: none; }
 /* Jede Zelle bleibt 3:4, damit Ärmel und Schultern sichtbar bleiben: das Verhältnis des Looks folgt der Anzahl */
 .outfit-preview { display: grid; gap: 3px; aspect-ratio: 3 / 4; border-radius: 4px; overflow: hidden; background: var(--chip); }
 .outfit-preview--2 { grid-template-columns: 1fr 1fr; aspect-ratio: 3 / 2; }
@@ -276,12 +285,12 @@ p { margin: 0; }
 
 /* Eingenähtes Etikett in der Detailansicht */
 .care-label { position: relative; margin-top: 18px; padding: 18px 20px 20px; background: var(--band); color: var(--band-ink); border-radius: 4px; display: flex; flex-direction: column; gap: 10px; }
-.care-label::before { content: ''; position: absolute; inset: 7px; border: 1.5px dashed var(--accent); border-radius: 2px; pointer-events: none; }
+.care-label::before { content: ''; position: absolute; inset: 7px; border: 1.5px dashed var(--stitch); border-radius: 2px; pointer-events: none; }
 .care-label__title { font-size: 26px; line-height: 1.15; }
 .care-label > .care-label__fav + .care-label__title { padding-right: 40px; }
 /* Lieblingsteil: Herz im Saisonfaden, oben rechts im Etikett */
 .care-label__fav { position: absolute; top: 10px; right: 10px; z-index: 1; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; border: none; border-radius: 50%; background: none; color: var(--band-ink); cursor: pointer; transition: color 160ms ease-out, transform 160ms ease-out; }
-.care-label__fav--on { color: var(--accent); }
+.care-label__fav--on { color: var(--stitch); }
 .care-label__fav:active { transform: scale(0.9); }
 .care-label__fav--on svg { animation: fav-pop 420ms cubic-bezier(0.16, 1, 0.3, 1); }
 @keyframes fav-pop { from { transform: scale(0.6); } to { transform: scale(1); } }

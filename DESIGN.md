@@ -9,9 +9,16 @@ colors:
   line: "#d8dce5"
   line-strong: "#9aa3b5"
   chip: "#e8ebf1"
-  band: "#1f2a44"
-  band-ink: "#f5f6f8"
-  band-stitch: "rgba(245, 246, 248, 0.5)"
+  band: "#f6e3c8"
+  band-ink: "#1f2a44"
+  band-stitch: "rgba(31, 42, 68, 0.3)"
+  stitch: "#c98a3e"
+  band-spring: "#e4eedb"
+  stitch-spring: "#7fa06c"
+  band-summer: "#fde3d0"
+  stitch-summer: "#d98a55"
+  band-winter: "#e3e9f9"
+  stitch-winter: "#7b8fc9"
   kraft: "#d6ad94"
   kraft-soft: "#f2e4db"
   kraft-ink: "#2e1f19"
@@ -31,8 +38,12 @@ colors:
   line-dark: "#2b3652"
   line-strong-dark: "#6b7896"
   chip-dark: "#222c46"
-  band-dark: "#28355a"
-  band-stitch-dark: "rgba(245, 246, 248, 0.45)"
+  band-dark: "#3a3022"
+  band-ink-dark: "#f5ead9"
+  band-stitch-dark: "rgba(245, 234, 217, 0.4)"
+  band-spring-dark: "#2b3627"
+  band-summer-dark: "#3d2c22"
+  band-winter-dark: "#262f47"
   kraft-soft-dark: "#46363a"
   thread-dark: "#e8706a"
   thread-ink-dark: "#1b0d0b"
@@ -241,7 +252,7 @@ The ground is a cool porcelain, never cream, with white surfaces and hairline na
 The system refuses the iOS-settings grey grid: no pill chips, no emoji tabs, no grey-filled list rows.
 
 **Key Characteristics:**
-- Navy woven fabric with an inset dashed stitch as the only branded surface: the name band on the wardrobe (and its preview in the settings), the care label on a piece or an outfit, the small woven name label of each outfit in the list.
+- Woven fabric in the color of the chosen season (pale sage, apricot, ochre or ice blue; deep tinted versions in dark) with a stronger dashed stitch is the only branded surface: the name band on the wardrobe (and its preview in the settings), the care label on a piece or an outfit, the small woven name label of each outfit. Navy is the ink, no longer the fabric.
 - Kraft swing tags (notched left edge, punched hole) for every filter and selectable choice.
 - A seasonal thread (sage, apricot, ochre, ice blue) sews every stitch and fills the chosen season; it follows the Season Row.
 - Thread red reserved for the one primary action, the active tab, destructive actions, errors and the focus/caret affordance.
@@ -267,8 +278,8 @@ A cool navy-and-porcelain base, warmed by blush kraft and a soft seasonal thread
 - **Kraft Ink** (`kraft-ink`): text on kraft surfaces.
 
 ### Tertiary
-- **Woven Navy** (`band`; dark: `band-dark`): the name band and the care label. In light it equals the ink color, so woven fabric reads as the darkest object on the page; in dark it lifts to a brighter navy so it still separates from the ground.
-- **Band Ink / Band Stitch** (`band-ink`, `band-stitch`): text and the inset dashed stitch on woven surfaces; the stitch color also rings garment swatches sitting on the care label.
+- **Seasonal Weave** (`band`, `band-spring`, `band-summer`, `band-winter`; dark variants): the fabric of the name band, the care labels, the outfit name labels and the favorite disc on tiles. It follows the chosen season through `data-season` on the root (default: ochre, autumn). Light: pale season tints with navy `band-ink`; dark: deep tinted versions with warm `band-ink-dark`. Chosen by the user over navy (too heavy, too heritage) and blush. The light/dark switch stays automatic with the iPhone setting.
+- **Band Ink / Stitch / Band Stitch** (`band-ink`, `stitch`, `band-stitch`): text on woven surfaces; `stitch` is the stronger season color of the inset dashed stitch and the favorite heart (sage #7fa06c, apricot #d98a55, ochre #c98a3e, ice blue #7b8fc9 in light; the pale season colors in dark); `band-stitch` rings garment swatches sitting on the care label.
 
 ### Neutral
 - **Porcelain Ground** (`ground`; dark: `ground-dark`): page background, sticky action bar, theme-color meta, text on ink-filled marks (season, check, badge, toast).
@@ -352,13 +363,13 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 ## Components
 
 ### Name Band (signature)
-- Navy band, 4px corners, 14px/20px/15px padding (slimmer, so the clothes start higher), centered; inset 1.5px dashed stitch in the seasonal thread (`--accent`) 7px from the edge.
+- Seasonal woven band, 4px corners, 14px/20px/15px padding (slimmer, so the clothes start higher), centered; inset 1.5px dashed stitch in `stitch` 7px from the edge.
 - Contents: greeting at Display, one rotating line at 17px (0.92 opacity, single line, ellipsis), date meta at Caption (0.78 opacity).
 - **Motion, the stitch-in:** whenever the greeting line changes it reveals left to right with `clip-path: inset(0 100% 0 0)` to `inset(0 0 0 0)`, 900ms, `cubic-bezier(0.16, 1, 0.3, 1)`, 150ms delay. Disabled under `prefers-reduced-motion`. This is the system's one expressive motion moment.
 - **Preview (settings):** below the name field in "Du" (input first, then result; the caps label never sits directly above the greeting) the band repeats as a live preview of the greeting (title updates while Lena types; fixed first line, no date). Same size as the real band, title at Display, so a long name wraps exactly as it will on the wardrobe; flat (no lift), no stitch-in. A group named "Vorschau der Begrüßung", not a heading.
 
 ### Care Label (item and outfit detail)
-- The piece's own sewn-in label under its photo: the band's woven navy and inset stitch, 4px corners, 18px/20px/20px padding, 10px gaps, flat (no lift).
+- The piece's own sewn-in label under its photo: the band's seasonal weave and inset stitch, 4px corners, 18px/20px/20px padding, 10px gaps, flat (no lift).
 - **Favorite:** a 44px heart button top right on the piece's label (`aria-label="Lieblingsteil"`, `aria-pressed`); outline in band ink at rest, filled in the seasonal thread when on, with a 420ms pop from `scale(0.6)` (none under reduced motion). The title keeps 40px clear on the right.
 - **Just saved (outfit):** after saving a look its label's stitch draws in left to right with the stitch-in curve (900ms, 120ms delay), paired with the toast "Look gespeichert"; none under reduced motion.
 - **Outfit:** the same label is sewn onto the lower edge of the outfit's look (see Outfit Look): name at Label Title, the piece count as the 15px kind line, then the Outfit Seasons Line in band ink at 0.9 opacity with 22px pictograms.
@@ -394,7 +405,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 ### Photo Tiles
 - Frameless 3:4, 4px corners, chip fill while loading.
 - **Selected:** 3px inset ink outline and a 26px ink check circle top right.
-- **Favorite:** a 24px band-navy circle bottom left with a filled 14px heart in the seasonal thread; the tile's accessible name ends in ", Lieblingsteil".
+- **Favorite:** a 24px circle in the seasonal weave bottom left with a filled 14px heart in `stitch`; the tile's accessible name ends in ", Lieblingsteil".
 - **Just saved:** 3px inset kraft outline and a 1.2s settle from `scale(0.94)` on `cubic-bezier(0.16, 1, 0.3, 1)`, paired with the toast; no motion under reduced motion.
 - Empty photo: 4:3 dashed `line-strong` frame, muted centered text.
 
@@ -413,7 +424,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - **Outfit detail:** the look opens the page full width under the back link, the outfit's care label is sewn onto its lower edge (14px overlap, 8px in from each side), then the pieces as a 3-column grid under the sentence-case title "Teile".
 
 ### Outfit Name Label (outfit list)
-- Each outfit's name is sewn onto the lower edge of its look (overlapping it by 14px, 8px in from the left) as a small woven label: band navy, band-ink 15px/500 text, 6px/12px/7px padding, 4px corners, a 1.5px dashed seasonal-thread stitch inset 4px, sized to its text, hyphenated in German when long. Flat. The whole card stays one button, named by the label and described by the seasons line.
+- Each outfit's name is sewn onto the lower edge of its look (overlapping it by 14px, 8px in from the left) as a small woven label: seasonal weave, band-ink 15px/500 text, 6px/12px/7px padding, 4px corners, a 1.5px dashed seasonal-thread stitch inset 4px, sized to its text, hyphenated in German when long. Flat. The whole card stays one button, named by the label and described by the seasons line.
 - The "Heute" strip on the wardrobe keeps plain outfit names on purpose: the name band directly above is the first viewport's only navy surface.
 
 ### Link Rows (outfit references)
