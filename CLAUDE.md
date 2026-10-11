@@ -35,7 +35,8 @@ src/lib/       constants (Kategorien/Farben/Saisons), filters, backup, backupRem
                greeting (Begrüßung + Saison nach Monat), today (Outfits zur Saison)
 src/components/  ChipGroup, FilterBar, FilterSheet, FilterTags, ItemGrid, ItemPhoto, FilePicker,
                TabBar, NotFound, OutfitPreview, InstallNotice, ErrorBoundary, LabelBand,
-               SeasonSymbols, ImportSheet, OutfitSeasons, Icon (eigene SVG-Symbole, keine Emojis)
+               SeasonSymbols, ImportSheet, OutfitSeasons, OutfitLook, OutfitPhotoPicker,
+               Icon (eigene SVG-Symbole, keine Emojis)
 src/screens/   Wardrobe, ItemForm, ItemDetail, Outfits, OutfitEditor, OutfitDetail, Settings
 src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
 ```
@@ -52,7 +53,7 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
 - **Saison-Reihe = „Heute“-Regler:** Die aktuelle Saison ist beim Öffnen vorausgewählt (`App.tsx`) und filtert Schrank und „Heute“; Einfachauswahl über `chooseSeason`. Das Filter-Panel im Schrank hat bewusst keine Saison-Gruppe und setzt die Saison nie zurück. Teile ohne Saison gelten als ganzjährig (`lib/filters.ts`).
 - Rückfragen laufen über Bodenblätter (`components/Sheet.tsx`, `ConfirmSheet.tsx`), nie über `window.confirm`. Abbrechen mit ungespeicherten Änderungen fragt nach („Änderungen verwerfen?“).
 - Neues Teil passt nicht zum aktiven Filter → Filter wird gelöst, das Teil markiert und „Teil gespeichert“ angezeigt. Nach dem Speichern eines Outfits: Etikett wird eingenäht, „Look gespeichert“.
-- Outfits erscheinen als Collage (`OutfitPreview`), die Liste zweispaltig; ihre Saison ergibt sich aus den Teilen (`lib/today.ts`), Outfits haben keine eigene Saison.
+- Outfits erscheinen als Collage (`OutfitPreview`) oder, falls vorhanden, als Tragebild (`OutfitLook`: Foto von Lena im Look, Vorschau oben bündig zugeschnitten; im Detail oben, darunter die Teile), die Liste zweispaltig; ihre Saison ergibt sich aus den Teilen (`lib/today.ts`), Outfits haben keine eigene Saison.
 - **Lieblingsteile:** optionales Feld `favorite` am Teil, ohne Index (daher keine neue Schema-Version). `setFavorite` in `db/items.ts`; das Backup übernimmt es in `parseItem` (Format bleibt v1). Anhänger „Lieblinge“ filtert (`FilterState.favorites`).
 - Name für die Begrüßung: Meta-Schlüssel `userName` (Einstellungen). Grußsprüche nennen nie konkrete Kleidungsstücke (Test erzwingt das).
 - Vorschaubilder sind 3:4 (360×480); ältere quadratische werden per `object-fit: cover` angezeigt.
@@ -63,9 +64,9 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
 - **Bildschirme greifen nie direkt auf `db` zu**, sondern nur über `db/items.ts`, `db/outfits.ts`, `db/meta.ts` und `lib/backup.ts`.
 - Gespeichert werden stabile englische IDs (`top`, `blue`, `winter`). Deutsche Labels kommen aus `lib/constants.ts`. Die Oberfläche ist komplett auf Deutsch.
 - Schreibvorgänge über mehrere Tabellen laufen immer in **einer** Dexie-Transaktion: Teil + Foto anlegen, Teil löschen inkl. Entfernen aus Outfits, Backup-Import.
-- **Backup-Format v1** (nicht ohne Migration ändern): `{ app: "kleiderschrank", version: 1, exportedAt, items, outfits, photos: [{ itemId, full: <base64> }] }`. Der Import prüft alles **vor** dem Ersetzen.
+- **Backup-Format v1** (nicht ohne Migration ändern): `{ app: "kleiderschrank", version: 1, exportedAt, items, outfits, photos: [{ itemId, full: <base64> }], outfitPhotos: [{ outfitId, full: <base64> }] }`. `outfitPhotos` ist optional (ältere Sicherungen haben es nicht, Version bleibt 1). Der Import prüft alles **vor** dem Ersetzen.
 - Fotos: Vollbild-JPEG mit max. 1200 px an der langen Kante, Qualität 0.85. Vorschaubild 300×300, mittig zugeschnitten. EXIF-Drehung über `imageOrientation: 'from-image'`.
-- Schema-Änderungen nur über eine neue `this.version(n)` in `db/schema.ts`. Bestehende Daten auf Lenas iPhone müssen erhalten bleiben.
+- Schema-Änderungen nur über eine neue `this.version(n)` in `db/schema.ts` (aktuell Version 2: Tabelle `outfitPhotos` für Tragebilder). Bestehende Daten auf Lenas iPhone müssen erhalten bleiben.
 - Vite `base` ist `/kleiderschrank/`. Wird das Repo umbenannt, muss auch `base` angepasst werden.
 
 ## Tests

@@ -423,6 +423,14 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - The look's ratio follows the piece count so every cell stays 3:4 and sleeves and shoulders stay visible: 1 piece 3:4, 2 pieces 3:2, 3+ pieces 9:8. In "Heute" looks share a fixed 168px height and take their width from the ratio (no dead gap); in the outfit list they fill the column (two columns, 22px/10px gaps, top-aligned); on the editor's naming step 62% width, max 260px.
 - **Outfit detail:** the look opens the page full width under the back link, the outfit's care label is sewn onto its lower edge (14px overlap, 8px in from each side), then the pieces as a 3-column grid under the sentence-case title "Teile".
 
+### Outfit Look (wear photo)
+- An outfit may carry one photo of Lena wearing it. Where it exists it replaces the collage everywhere: a frameless 3:4 thumbnail (360×480, cropped **top-anchored** so a mirror selfie keeps the head) in "Heute" (168px high) and the outfit list (column width), 4px corners, chip fill while loading.
+- **Outfit detail with photo:** the full photo opens the page, full width and uncropped (contain, at most 70vh); the care label is sewn onto its lower edge exactly as on the collage; below it two quiet links "Foto ändern" · "Foto entfernen" (removing asks in a sheet: "Foto entfernen?", "Entfernen" in thread red, "Behalten" focused); then the pieces once under "Teile". No collage, so nothing appears twice.
+- **Editor naming step:** the chosen or saved photo replaces the collage at its own ratio (max 62% width / 260px, 40vh, no letterbox); a field "Foto von dir im Look" with the muted note "optional" offers the look picker or, with a photo, the quiet links "Ändern" · "Entfernen" (effective only on "Speichern"; a changed photo counts as an unsaved change).
+
+### Look Picker
+- The empty state for the wear photo: a whole-surface tappable frame, 1.5px dashed `line-strong` (thread language), 12px corners, min 88px high, camera pictogram (22px) beside muted 15px text "Zeig, wie du den Look trägst". Focus shows the thread-red ring; while a photo is prepared it reads "Foto wird vorbereitet …" and is disabled. A picked photo saves at once on the detail and confirms with the toast "Foto gespeichert".
+
 ### Outfit Name Label (outfit list)
 - Each outfit's name is sewn onto the lower edge of its look (overlapping it by 14px, 8px in from the left) as a small woven label: seasonal weave, band-ink 15px/500 text, 6px/12px/7px padding, 4px corners, a 1.5px dashed seasonal-thread stitch inset 4px, sized to its text, hyphenated in German when long. Flat. The whole card stays one button, named by the label and described by the seasons line.
 - The "Heute" strip on the wardrobe keeps plain outfit names on purpose: the name band directly above is the first viewport's only navy surface.
