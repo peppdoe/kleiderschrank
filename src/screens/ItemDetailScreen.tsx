@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useState } from 'react';
 import { ConfirmSheet } from '../components/ConfirmSheet';
+import { DetailBar } from '../components/DetailBar';
 import { Icon } from '../components/Icon';
 import { ItemPhoto } from '../components/ItemPhoto';
 import { NotFound } from '../components/NotFound';
@@ -46,12 +47,6 @@ export function ItemDetailScreen({ itemId }: { itemId: string }) {
 
   return (
     <section className="screen-content">
-      <header className="form-header">
-        <a className="text-button text-button--back" href="#/">
-          <Icon name="back" size={20} />
-          Schrank
-        </a>
-      </header>
       <ItemPhoto itemId={itemId} variant="full" alt={describeItem(item)} />
 
       {/* Das eingenähte Etikett: Name, Kategorie, Farben, Pflegesymbole, Notiz */}
@@ -108,10 +103,9 @@ export function ItemDetailScreen({ itemId }: { itemId: string }) {
 
       {error && <p className="error" role="alert">{error}</p>}
 
+      <DetailBar label="Teil" backHref="#/" backLabel="Schrank" onEdit={() => navigate(`/item/${itemId}/edit`)} />
+
       <div className="detail-actions">
-        <button type="button" className="button button--wide" onClick={() => navigate(`/item/${itemId}/edit`)}>
-          Bearbeiten
-        </button>
         <button type="button" className="text-button text-button--danger" onClick={() => setConfirming(true)}>
           Löschen
         </button>

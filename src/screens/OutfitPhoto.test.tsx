@@ -237,3 +237,31 @@ describe('Ansage für VoiceOver', () => {
     expect(await screen.findByRole('status')).toBeEmptyDOMElement();
   });
 });
+
+describe('Look-Detail mit einer Hand', () => {
+  it('puts back and edit into one bar at the bottom of a look', async () => {
+    const a = await seedItem();
+    const id = await createOutfit('Uni', [a]);
+    open(`/outfit/${id}`);
+    const bar = await screen.findByRole('navigation', { name: 'Look' });
+    expect(within(bar).getByRole('link', { name: 'Looks' })).toHaveAttribute('href', '#/outfits');
+    expect(within(bar).getByRole('button', { name: 'Bearbeiten' })).toBeInTheDocument();
+  });
+
+  it('shows the pieces as a small strip under the collage, not a second big grid', async () => {
+    const a = await seedItem();
+    const id = await createOutfit('Uni', [a]);
+    const { container } = open(`/outfit/${id}`);
+    await screen.findByRole('heading', { name: 'Teile' });
+    expect(container.querySelector('.outfit-preview')).not.toBeNull();
+    expect(container.querySelector('.item-grid--strip')).not.toBeNull();
+  });
+
+  it('keeps the big grid under a wear photo', async () => {
+    const a = await seedItem();
+    const id = await createOutfit('Uni', [a], fakePhoto('look'));
+    const { container } = open(`/outfit/${id}`);
+    await screen.findByRole('heading', { name: 'Teile' });
+    expect(container.querySelector('.item-grid--strip')).toBeNull();
+  });
+});

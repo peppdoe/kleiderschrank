@@ -10,6 +10,8 @@ interface ItemGridProps {
   selectedIds?: readonly string[];
   /** Gerade gespeichertes Teil: kurz markieren und in den Blick holen. */
   highlightId?: string | null;
+  /** Kleiner Streifen statt Raster, z. B. unter der Collage eines Looks. */
+  strip?: boolean;
 }
 
 /** Name einer Kachel für Screenreader: Kategorie, Farben und – falls vorhanden – die erste Zeile der Notiz. */
@@ -21,7 +23,7 @@ export function tileLabel(item: Item): string {
   return item.favorite ? `${label}, Lieblingsteil` : label;
 }
 
-export function ItemGrid({ items, onItemClick, selectedIds, highlightId }: ItemGridProps) {
+export function ItemGrid({ items, onItemClick, selectedIds, highlightId, strip = false }: ItemGridProps) {
   const highlightRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -29,7 +31,7 @@ export function ItemGrid({ items, onItemClick, selectedIds, highlightId }: ItemG
   }, [highlightId]);
 
   return (
-    <ul className="item-grid">
+    <ul className={strip ? 'item-grid item-grid--strip' : 'item-grid'}>
       {items.map((item) => {
         const selected = selectedIds?.includes(item.id) ?? false;
         const isNew = item.id === highlightId;

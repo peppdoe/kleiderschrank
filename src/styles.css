@@ -269,7 +269,15 @@ p { margin: 0; }
 .details dt { color: var(--muted); }
 .details dd { margin: 0; white-space: pre-wrap; }
 .detail-actions { display: flex; flex-direction: column; align-items: center; margin-top: 30px; }
-.detail-actions .text-button--danger { margin-top: 28px; }
+/* Zurück und Bearbeiten in Daumenreichweite: fest über der Tab-Leiste, auf dem Grund mit Haarlinie wie die Aktionsleiste der Formulare */
+.detail-bar { position: fixed; left: 0; right: 0; bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom)); z-index: 4; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px max(16px, calc((100vw - 720px) / 2 + 16px)); background: var(--ground); border-top: 1px solid var(--line); }
+.detail-bar .text-button--back { margin-left: -8px; }
+.detail-bar__edit { width: auto; min-width: 140px; }
+.app:has(.detail-bar) .toast { bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 82px); }
+/* Teile unter der Collage eines Looks: kleiner Streifen statt zweites großes Raster */
+.item-grid--strip { display: flex; gap: 8px; overflow-x: auto; margin: 0 -16px; padding: 0 16px 4px; scrollbar-width: none; }
+.item-grid--strip::-webkit-scrollbar { display: none; }
+.item-grid--strip > li { flex: none; width: 72px; }
 .compare { margin: 0; display: flex; flex-direction: column; }
 .compare > div { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
 .compare dt { color: var(--muted); }

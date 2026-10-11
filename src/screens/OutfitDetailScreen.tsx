@@ -1,8 +1,8 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useState } from 'react';
 import { ConfirmSheet } from '../components/ConfirmSheet';
+import { DetailBar } from '../components/DetailBar';
 import { FilePicker } from '../components/FilePicker';
-import { Icon } from '../components/Icon';
 import { ItemGrid } from '../components/ItemGrid';
 import { NotFound } from '../components/NotFound';
 import { OutfitPhotoPicker } from '../components/OutfitPhotoPicker';
@@ -71,12 +71,6 @@ export function OutfitDetailScreen({ outfitId, justSaved = false, onNotice }: Ou
 
   return (
     <section className="screen-content">
-      <header className="form-header">
-        <a className="text-button text-button--back" href="#/outfits">
-          <Icon name="back" size={20} />
-          Looks
-        </a>
-      </header>
       {photo ? (
         photoUrl ? (
           <img className="photo photo--full look-photo" src={photoUrl} alt={`Du im Look „${outfit.name}“`} />
@@ -110,14 +104,14 @@ export function OutfitDetailScreen({ outfitId, justSaved = false, onNotice }: Ou
       ) : (
         <>
           <h2 className="section-title">Teile</h2>
-          <ItemGrid items={items} onItemClick={(item) => navigate(`/item/${item.id}`)} />
+          {/* Unter der Collage reicht ein kleiner Streifen, sonst stünde jedes Teil zweimal groß da. */}
+          <ItemGrid items={items} strip={!photo} onItemClick={(item) => navigate(`/item/${item.id}`)} />
         </>
       )}
       {error && <p className="error" role="alert">{error}</p>}
+      <DetailBar label="Look" backHref="#/outfits" backLabel="Looks" onEdit={() => navigate(`/outfit/${outfitId}/edit`)} />
+
       <div className="detail-actions">
-        <button type="button" className="button button--wide" onClick={() => navigate(`/outfit/${outfitId}/edit`)}>
-          Bearbeiten
-        </button>
         <button type="button" className="text-button text-button--danger" onClick={() => setConfirming(true)}>
           Löschen
         </button>

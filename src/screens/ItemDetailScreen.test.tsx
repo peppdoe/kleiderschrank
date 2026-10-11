@@ -124,3 +124,14 @@ describe('Lieblingsteil', () => {
     await vi.waitFor(async () => expect((await db.items.get(id))!.favorite).toBeFalsy());
   });
 });
+
+describe('Daumenreichweite', () => {
+  it('puts back and edit into one bar at the bottom of a piece', async () => {
+    const id = await seedItem({ category: 'top' });
+    open(`/item/${id}`);
+    const bar = await screen.findByRole('navigation', { name: 'Teil' });
+    expect(within(bar).getByRole('link', { name: 'Schrank' })).toHaveAttribute('href', '#/');
+    expect(within(bar).getByRole('button', { name: 'Bearbeiten' })).toBeInTheDocument();
+    expect(document.querySelectorAll('.text-button--back')).toHaveLength(1);
+  });
+});
