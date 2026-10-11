@@ -86,7 +86,12 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
    - Detailseiten: Zurück + Bearbeiten in einer Leiste unten; Teile unter einer Collage als Streifen.
    - Erster Start: Einladung mit „Erstes Teil fotografieren“, kein Plus-Knopf und keine Saison-Wahl ohne Teile; Looks-Tab ohne Teile führt zum ersten Foto.
    - Saisons als echte Pflegesymbole; Etikett eines Teils in seiner eigenen Saison; Spruch folgt gewählter Saison; Herz-Kontur navy (≥ 3:1); fester Ansagebereich für VoiceOver; „Filter lösen“ behält die Saison.
-4d. **Als Nächstes:** `/impeccable polish` und neue Kritik (Vergleich zu 28/40), dann nach Freigabe mergen und hochladen.
+4d. **Erledigt (11.10.): Polish + Kritik Runde 4** (26/40, Bericht `.impeccable/critique/2026-10-11T02-38-09Z__src.md`) und alle Befunde umgesetzt (gleicher Branch):
+   - **Saison steuert nur noch „Heute“** (Nutzerwahl): der Schrank zeigt immer alle Teile, passende oben, der Rest unter „Für andere Saisons“.
+   - Teil-Formular: Kategorie direkt nach dem (kleineren) Foto, Name/Notiz zuletzt; die Notiz wird nie mehr zum Titel (Titel = Name oder Kategorie).
+   - Formulare mit fester Leiste unten (Abbrechen/Zurück links, Hauptaktion rechts), Editor mit Anleitung „Tipp die Teile an, die zusammengehören.“
+   - Saison-Symbole und Farbfelder immer mit Namen; Rest-Texte („Looks“, Saison-Satz, Backup-Zeile), „Neuer Look“ als Hauptaktion, Heute-Namen mit Auslassung, dunkles Herbst-Band wärmer.
+4e. **Als Nächstes:** nach Freigabe `feature/kritik-runde-3` per Fast-Forward in `main` und hochladen; optional erneute Kritik. Offen aus der Kritik: Schrift wächst nicht mit der iOS-Textgröße (px statt rem), kein Rückgängig nach Löschen, Name wird beim ersten Start nicht abgefragt.
 5. **Nach Lenas Test klären:** Möchte sie „Heute“ nach Anlass/Vibe (Uni, Abends, Cozy …) statt nur nach Saison? Fehlen ihr Kategorien oder Farben (z. B. Jeans, Blazer, Schmuck; Denim, Creme, Oliv, Bordeaux)? Will sie „Heute getragen“ / „Lange nicht getragen“? Braucht jeweils eine Datenmodell-Änderung, deshalb bewusst erst mit ihren echten Wörtern. Die App ist ein Geschenk.
 6. **Abnahme auf Lenas iPhone** mit der Checkliste in `README.md`. Besonders prüfen:
    - Hochformat- und HEIC-Fotos (richtige Drehung)
