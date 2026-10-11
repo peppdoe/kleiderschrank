@@ -23,7 +23,7 @@ export function FilterSheet({ value, onChange, onClose, resultCount, withSeasons
 
   return (
     <Sheet title="Filter" onClose={onClose} className="sheet--filters">
-      <FilterBar value={value} onChange={onChange} wrap withSeasons={withSeasons} counts={facetCounts(items, value)} />
+      <FilterBar value={value} onChange={onChange} wrap withSeasons={withSeasons} counts={facetCounts(items, withSeasons ? value : { ...value, seasons: [] })} />
       <div className="sheet__bar">
         {active && (
           <button type="button" className="text-button" onClick={reset}>

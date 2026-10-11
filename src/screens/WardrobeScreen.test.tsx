@@ -89,10 +89,13 @@ describe('Schrank', () => {
     const autumn = within(seasons).getByRole('button', { name: 'Herbst (aktuelle Saison)' });
     expect(autumn).toHaveAttribute('aria-pressed', 'true');
     expect(document.documentElement.dataset.season).toBe('autumn');
+    // Die Saison steuert nur „Heute“: der Schrank zeigt alles, Passendes zuerst, der Rest darunter.
     expect(await screen.findByRole('button', { name: 'Jacke & Mantel' })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'Oberteil, Blau' })).not.toBeInTheDocument();
-    expect(screen.getByText('1 von 3 Teilen')).toBeInTheDocument();
-    expect(screen.getByText('· Herbst')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
+    expect(screen.getByText('3 Teile')).toBeInTheDocument();
+    const others = screen.getByRole('region', { name: 'Für andere Saisons' });
+    expect(within(others).getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
+    expect(within(others).queryByRole('button', { name: 'Jacke & Mantel' })).not.toBeInTheDocument();
 
     await user.click(within(seasons).getByRole('button', { name: 'Sommer' }));
     expect(within(seasons).getByRole('button', { name: 'Sommer' })).toHaveAttribute('aria-pressed', 'true');
@@ -194,17 +197,23 @@ describe('Schrank', () => {
     expect(within(seasons).getByRole('button', { name: 'Herbst (aktuelle Saison)' })).toHaveAttribute('aria-pressed', 'true');
   });
 
-  it('filters by season with the care symbols and explains an empty result', async () => {
+  it('never hides a piece because of the season, it only moves it down', async () => {
     await seedItem({ category: 'top', colors: ['blue'], seasons: ['summer'] });
     const user = userEvent.setup();
     render(<App />);
     const seasons = await screen.findByRole('group', { name: 'Saison wählen' });
     await user.click(within(seasons).getByRole('button', { name: 'Winter' }));
     expect(within(seasons).getByRole('button', { name: 'Winter' })).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByText('Keine Teile passen zu diesen Filtern.')).toBeInTheDocument();
+    expect(screen.queryByText('Keine Teile passen zu diesen Filtern.')).not.toBeInTheDocument();
+    const others = screen.getByRole('region', { name: 'Für andere Saisons' });
+    expect(within(others).getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
+  });
 
-    await user.click(screen.getByRole('button', { name: 'Alle Teile anzeigen' }));
-    expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
+  it('shows one plain grid when nothing is out of season', async () => {
+    await seedItem({ category: 'top' });
+    render(<App />);
+    await screen.findByRole('button', { name: 'Oberteil' });
+    expect(screen.queryByRole('region', { name: 'Für andere Saisons' })).not.toBeInTheDocument();
   });
 });
 

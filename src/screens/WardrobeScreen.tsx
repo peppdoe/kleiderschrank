@@ -44,13 +44,14 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
 
   const now = new Date();
   const current = seasonOf(now);
-  const visible = applyFilter(items, filter);
-  // Die Saison-Reihe ist der „Heute“-Regler: genau eine Saison gewählt → Heute zeigt deren Outfits.
+  // Die Saison-Reihe ist der „Heute“-Regler: genau eine Saison gewählt → Heute zeigt deren Looks.
   const todaySeason: SeasonId = filter.seasons.length === 1 ? filter.seasons[0] : current;
   const greeting = greetingFor({ name, now, pick, season: todaySeason });
-  // Liegt die leere Auswahl an anderen Filtern, bleibt die Saison (der Heute-Regler) stehen.
-  const withSeasonOnly: FilterState = { ...EMPTY_FILTER, seasons: filter.seasons };
-  const seasonAloneShows = applyFilter(items, withSeasonOnly).length > 0;
+  // Im Schrank versteckt die Saison nie etwas: Passendes steht oben, der Rest unter „Für andere Saisons“.
+  const visible = applyFilter(items, { ...filter, seasons: [] });
+  const seasonFilter: FilterState = { ...EMPTY_FILTER, seasons: filter.seasons };
+  const inSeason = filter.seasons.length > 0 ? applyFilter(visible, seasonFilter) : visible;
+  const otherSeasons = filter.seasons.length > 0 ? visible.filter((item) => !inSeason.includes(item)) : [];
   const todayLabel = labelOf(SEASONS, todaySeason);
   const today = outfits ? outfitsForSeason(outfits, items, todaySeason) : [];
 
@@ -111,7 +112,6 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
               ? `${visible.length} von ${items.length} ${items.length === 1 ? 'Teil' : 'Teilen'}`
               : plural(items.length, 'Teil', 'Teile')}
           </span>
-          {filter.seasons.length > 0 && <span> · {filter.seasons.map((id) => labelOf(SEASONS, id)).join(', ')}</span>}
         </span>
       </div>
       )}
@@ -139,19 +139,24 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
             ) : (
               <div className="empty">
                 <p>Keine Teile passen zu diesen Filtern.</p>
-                {seasonAloneShows ? (
-                  <button type="button" className="button" onClick={() => onFilterChange(withSeasonOnly)}>
-                    Filter lösen
-                  </button>
-                ) : (
-                  <button type="button" className="button" onClick={() => onFilterChange(EMPTY_FILTER)}>
-                    Alle Teile anzeigen
-                  </button>
-                )}
+                {/* Die Saison bleibt stehen: sie ist der Heute-Regler und versteckt im Schrank nichts. */}
+                <button type="button" className="button" onClick={() => onFilterChange(seasonFilter)}>
+                  Filter lösen
+                </button>
               </div>
             )
           ) : (
-            <ItemGrid items={visible} highlightId={highlightId} onItemClick={(item) => navigate(`/item/${item.id}`)} />
+            <>
+              {inSeason.length > 0 && (
+                <ItemGrid items={inSeason} highlightId={highlightId} onItemClick={(item) => navigate(`/item/${item.id}`)} />
+              )}
+              {otherSeasons.length > 0 && (
+                <section className="other-seasons" aria-labelledby="other-seasons-title">
+                  <h3 id="other-seasons-title" className="other-seasons__title">Für andere Saisons</h3>
+                  <ItemGrid items={otherSeasons} highlightId={highlightId} onItemClick={(item) => navigate(`/item/${item.id}`)} />
+                </section>
+              )}
+            </>
           )}
         </>
       )}

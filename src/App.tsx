@@ -60,7 +60,8 @@ export default function App() {
 
   // Ein neues Teil soll sichtbar sein: passt es nicht zum aktuellen Filter, wird der Filter gelöst.
   function itemCreated(item: Item) {
-    if (!matchesFilter(item, wardrobeFilter)) setWardrobeFilter(EMPTY_FILTER);
+    // Die Saison versteckt nichts mehr; nur Kategorie-, Farb- oder Lieblingsfilter könnten das neue Teil verbergen.
+    if (!matchesFilter(item, { ...wardrobeFilter, seasons: [] })) setWardrobeFilter({ ...EMPTY_FILTER, seasons: wardrobeFilter.seasons });
     setSavedItemId(item.id);
     setNotice('Teil gespeichert');
   }

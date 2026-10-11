@@ -381,7 +381,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - **Current season, not chosen:** the ring turns to a 2px dashed stitch so "today" stays findable when Lena picks another season; announced as "(aktuelle Saison)".
 - **On the name band (wardrobe):** the row sits inside the band, 12px under the greeting line, 8px apart: 38px marks stroked in band ink, labels in band ink at 0.8 opacity (chosen: full). Greeting and "Heute" control read as one object: the band takes the chosen season's weave, its symbols say which.
 - **"Heute" line:** for the current season the meta beside "Heute" is the date ("Sonntag, 11. Oktober"); for another season the heading already names it ("Für den Sommer"), so the meta only counts the looks ("2 Looks").
-- On the wardrobe the current season is preselected on launch, and the choice filters both Heute and the wardrobe grid. In the item form the same row is a plain multi-select without a current mark.
+- On the wardrobe the current season is preselected on launch. The choice steers Heute, the greeting line and the thread color, but **never hides a piece**: the wardrobe shows everything, pieces of the chosen season first, the rest below a muted 15px heading "Für andere Saisons" (no heading when nothing is out of season). In the item form the same row is a plain multi-select without a current mark.
 - Transition: background-color and color 160ms ease-out.
 
 ### Buttons

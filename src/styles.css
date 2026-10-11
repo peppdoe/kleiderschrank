@@ -176,6 +176,9 @@ p { margin: 0; }
 
 /* Fotoraster: ohne Rahmen */
 .item-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+/* Teile anderer Saisons: im Schrank nie versteckt, nur nach unten gerückt */
+.other-seasons { margin-top: 24px; }
+.other-seasons__title { margin: 0 0 10px; font-size: 15px; font-weight: 500; color: var(--muted); }
 .tile { position: relative; display: block; width: 100%; aspect-ratio: 3 / 4; padding: 0; border: none; border-radius: 4px; overflow: hidden; background: var(--chip); cursor: pointer; }
 .tile--selected { outline: 3px solid var(--ink); outline-offset: -3px; }
 .tile__check { position: absolute; top: 6px; right: 6px; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: var(--ground); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; }
