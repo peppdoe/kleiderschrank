@@ -38,7 +38,7 @@ export function OutfitsScreen() {
               >
                 <OutfitPreview itemIds={outfit.itemIds} />
                 <span className="outfit-card__name" id={`outfit-name-${outfit.id}`}>{outfit.name}</span>
-                <OutfitSeasons itemIds={outfit.itemIds} items={items} as="span" id={`outfit-seasons-${outfit.id}`} />
+                <OutfitSeasons itemIds={outfit.itemIds} items={items} as="span" id={`outfit-seasons-${outfit.id}`} compact />
               </button>
             </li>
           ))}

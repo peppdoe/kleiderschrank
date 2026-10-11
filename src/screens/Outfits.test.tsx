@@ -73,6 +73,9 @@ describe('Outfits', () => {
     expect(await screen.findByText('Erscheint im Herbst und Winter')).toBeInTheDocument();
     expect(screen.getByText('Erscheint das ganze Jahr')).toBeInTheDocument();
     expect(screen.getByText(/Erscheint nie unter/)).toBeInTheDocument();
+    // Sichtbar steht Text nur in den Sonderfällen, sonst sprechen die Symbole.
+    expect(screen.getByText('Ganzjährig')).toBeVisible();
+    expect(screen.getByText('Keine gemeinsame Saison')).toBeVisible();
   });
 
   it('names each outfit card by its name and describes it by its seasons', async () => {
