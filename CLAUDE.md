@@ -69,6 +69,7 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter (Saison = Heute-Regler), Fot
 - Outfits erscheinen als Collage (`OutfitPreview`) oder, falls vorhanden, als Tragebild (`OutfitLook`: Foto von Lena im Look, Vorschau oben bündig zugeschnitten; im Detail oben, darunter die Teile), die Liste zweispaltig; ihre Saison ergibt sich aus den Teilen (`lib/today.ts`), Outfits haben keine eigene Saison.
 - **Lieblingsteile:** optionales Feld `favorite` am Teil, ohne Index (daher keine neue Schema-Version). `setFavorite` in `db/items.ts`; das Backup übernimmt es in `parseItem` (Format bleibt v1). Anhänger „Lieblinge“ filtert (`FilterState.favorites`).
 - Name für die Begrüßung: Meta-Schlüssel `userName` (Einstellungen). Grußsprüche nennen nie konkrete Kleidungsstücke (Test erzwingt das).
+- **Begrüßung wechselt** je Tageszeit (`SALUTATIONS` in `lib/greeting.ts`, beim Öffnen einmal ausgelost über `titlePick`): morgens Guten Morgen · Morgen · Hey, tagsüber Hallo · Hey · Hi, abends Guten Abend · Hey · Na, nachts (23–5) „Noch wach, Lena?“. „Na“ nur mit Namen; höchstens 12 Zeichen. Die Vorschau in den Einstellungen zeigt immer die klassische (ohne `titlePick`). Tests auf „…, Lena“ deshalb mit `/, Lena??$/`.
 - Vorschaubilder sind 3:4 (360×480); ältere quadratische werden per `object-fit: cover` angezeigt.
 - Design-Prüfungen: `/impeccable critique` bzw. `impeccable detect --json src index.html`; Review-Aufnahmen landen in `.impeccable/review/` (nicht versioniert).
 

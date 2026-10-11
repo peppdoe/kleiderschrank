@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import App from '../App';
 import { META_USER_NAME, setMeta } from '../db/meta';
 import { createOutfit } from '../db/outfits';
+import { SALUTATIONS } from '../lib/greeting';
 import { seedItem } from '../test/factories';
 
 beforeEach(() => {
@@ -34,7 +35,7 @@ describe('Schrank', () => {
     render(<App />);
     await user.type(await screen.findByLabelText('Wie heißt du?'), '  Lena ');
     await user.click(screen.getByRole('button', { name: 'Merken' }));
-    expect(await screen.findByRole('heading', { level: 1, name: /, Lena$/ })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: /, Lena\??$/ })).toBeInTheDocument();
     expect(screen.queryByLabelText('Wie heißt du?')).not.toBeInTheDocument();
   });
 
@@ -45,15 +46,26 @@ describe('Schrank', () => {
     expect(screen.queryByLabelText('Wie heißt du?')).not.toBeInTheDocument();
   });
 
+  it('asks whether Lena is still awake late at night', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-11T23:40:00'));
+    await setMeta(META_USER_NAME, 'Lena');
+    render(<App />);
+    expect(await screen.findByRole('heading', { level: 1, name: 'Noch wach, Lena?' })).toBeInTheDocument();
+  });
+
   it('greets Lena by her chosen name', async () => {
     await setMeta(META_USER_NAME, 'Lena');
     render(<App />);
-    expect(await screen.findByRole('heading', { level: 1, name: /, Lena$/ })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: /, Lena\??$/ })).toBeInTheDocument();
   });
 
   it('greets without a name until one is set', async () => {
     render(<App />);
-    expect(await screen.findByRole('heading', { level: 1, name: /^(Guten Morgen|Hallo|Guten Abend)$/ })).toBeInTheDocument();
+    // Ohne Namen: eine der Begrüßungen der Tageszeit, allein stehend (nie ein nacktes „Na“)
+    const bare = Object.values(SALUTATIONS).flat().filter((s) => s !== 'Na');
+    const heading = await screen.findByRole('heading', { level: 1 });
+    expect(bare).toContain(heading.textContent);
   });
 
   it('shows the outfits that fit the current season under Heute', async () => {

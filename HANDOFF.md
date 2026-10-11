@@ -38,7 +38,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 | Entscheidung | Begründung |
 |---|---|
 | **Gestaltungswelt „Pflegeetikett“**: flaches Namensband mit gestrichelter Naht (zuerst navyblau, am 11.10. auf Wunsch des Nutzers auf die Saisonfarbe umgestellt; Hell/Dunkel folgt dem iPhone, seit 11.10. in den Einstellungen auch fest wählbar), Karton-Anhänger (Kraftpapier) mit Lochung für Filter und Auswahl, Saisons als Pflegesymbole, Porzellan-Grund `#f5f6f8` | Vom Nutzer auf der Impeccable-Entscheidungsseite gewählt (gegen den ausgelosten „Abholschein“). Wunsch: „warm & persönlich“ statt neutralem iOS-Look. |
-| **Persönliche Begrüßung** („Guten Morgen, Lena“ + wechselnder Spruch zu Kleidung und Saison), **Name in den Einstellungen wählbar** | Ausdrücklicher Wunsch des Nutzers, „wie bei Claude im Hauptfenster“. Die Sprüche sind höchstens 30 Zeichen lang (eine Zeile) und nennen nie konkrete Kleidungsstücke, weil Lena sie vielleicht nicht besitzt. Ein Test erzwingt beides. |
+| **Persönliche Begrüßung** („Guten Morgen, Lena“ + wechselnder Spruch zu Kleidung und Saison), **Name in den Einstellungen wählbar**; seit 11.10. wechselt auch die Begrüßung je Tageszeit (Hey, Hi, Na …, nachts „Noch wach, Lena?“) | Ausdrücklicher Wunsch des Nutzers, „wie bei Claude im Hauptfenster“. Die Sprüche sind höchstens 30 Zeichen lang (eine Zeile) und nennen nie konkrete Kleidungsstücke, weil Lena sie vielleicht nicht besitzt. Ein Test erzwingt beides. |
 | **Saison-Reihe = „Heute“-Regler**: Die aktuelle Saison ist beim Öffnen vorausgewählt und steuert „Heute“ (seit Runde 4 nicht mehr den Schrank, siehe unten). Einfachauswahl: ein zweiter Tipp zeigt alles. | Nutzerwahl in der zweiten Kritik („Heute-Regler“). Passt zum Morgen-Moment. |
 | **Teile ohne Saison gelten als ganzjährig** | Sonst würden Taschen, Accessoires usw. beim voreingestellten Saisonfilter verschwinden. |
 | **Rot („Fadenrot“) nur für** Hauptaktion, aktiven Tab, zerstörerische Aktionen, Fehler und Fokus | Ergebnis des Finish-Reviews. Rot soll eine klare Bedeutung haben. |
@@ -82,7 +82,11 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 - **Auf Lenas eigenem iPhone:** noch nicht. Sie startet dort mit leerem Schrank; die Testdaten liegen nur auf dem Gerät des Auftraggebers.
 - **Lenas Anleitung** in der [README.md](README.md) („Für Lena“) ist aktuell: erst installieren, Teilen ggf. unter •••, Namensfrage, Rückgängig, mehrere Teile hintereinander, Hell/Dunkel, Textgröße, erstes Backup nach 10 Teilen. Die beiden Bilder in `docs/uebergabe/` erwähnen Hell/Dunkel nicht (bewusst knapp gehalten).
 
-### Zuletzt dazugekommen: Hell/Dunkel (Wunsch des Nutzers vor der Übergabe)
+### Zuletzt dazugekommen: wechselnde Begrüßung (Wunsch des Nutzers)
+
+- Statt immer derselben Begrüßung je Tageszeit wird beim Öffnen eine ausgelost: morgens Guten Morgen · Morgen · Hey, tagsüber Hallo · Hey · Hi, abends Guten Abend · Hey · Na, nachts „Noch wach, Lena?“ (vorher „Hallo“). Ohne Namen nie ein nacktes „Na“. Tests sperren Länge (≤ 12 Zeichen) und Amts-/Eltern-Ton.
+
+### Hell/Dunkel (Wunsch des Nutzers vor der Übergabe)
 
 - Einstellungen → **„Darstellung“**: Automatisch · Hell · Dunkel (Anhänger), Hinweis „Automatisch folgt deinem iPhone.“ Voreinstellung Automatisch.
 - Gespeichert im `localStorage` (`kleiderschrank-theme`), nicht im Backup. Gesetzt als `data-theme` am Root; das Inline-Skript in `index.html` setzt es vor dem ersten Bild, `lib/theme.ts` danach inkl. Statusleistenfarbe. „Automatisch“ zieht bei Systemwechsel und beim Zurückkehren in die App nach.

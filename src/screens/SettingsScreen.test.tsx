@@ -177,7 +177,7 @@ describe('Einstellungen', () => {
     const preview = await screen.findByRole('group', { name: 'Vorschau der Begrüßung' });
     expect(within(preview).queryByText(/Mia/)).not.toBeInTheDocument();
     await user.type(await screen.findByLabelText('Dein Name'), 'Mia');
-    expect(within(preview).getByText(/, Mia$/)).toBeInTheDocument();
+    expect(within(preview).getByText(/, Mia\??$/)).toBeInTheDocument();
   });
 });
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GREETING_LINES, greetingFor, seasonOf } from './greeting';
+import { GREETING_LINES, SALUTATIONS, greetingFor, seasonOf } from './greeting';
 
 describe('seasonOf', () => {
   it.each([
@@ -23,7 +23,26 @@ describe('greetingFor', () => {
     expect(greetingFor({ name: 'Lena', now: morning, pick: 0 }).title).toBe('Guten Morgen, Lena');
     expect(greetingFor({ name: 'Lena', now: new Date('2026-10-10T14:00:00'), pick: 0 }).title).toBe('Hallo, Lena');
     expect(greetingFor({ name: 'Lena', now: new Date('2026-10-10T19:30:00'), pick: 0 }).title).toBe('Guten Abend, Lena');
-    expect(greetingFor({ name: 'Lena', now: new Date('2026-10-10T23:30:00'), pick: 0 }).title).toBe('Hallo, Lena');
+    expect(greetingFor({ name: 'Lena', now: new Date('2026-10-10T23:30:00'), pick: 0 }).title).toBe('Noch wach, Lena?');
+    expect(greetingFor({ name: 'Lena', now: new Date('2026-10-10T03:00:00'), pick: 0 }).title).toBe('Noch wach, Lena?');
+  });
+
+  it('varies the salutation within the time of day', () => {
+    const at = (time: string, titlePick: number, name = 'Lena') => greetingFor({ name, now: new Date(`2026-10-10T${time}`), pick: 0, titlePick }).title;
+    expect(at('07:40:00', 0)).toBe('Guten Morgen, Lena');
+    expect(at('07:40:00', 0.99)).toBe('Hey, Lena');
+    expect(at('14:00:00', 0.5)).toBe('Hey, Lena');
+    expect(at('14:00:00', 0.99)).toBe('Hi, Lena');
+    expect(at('19:30:00', 0.99)).toBe('Na, Lena');
+    expect(at('19:30:00', 1)).toBe('Na, Lena');
+  });
+
+  it('never says a bare "Na" and asks at night without a name too', () => {
+    const at = (time: string, titlePick: number) => greetingFor({ name: '', now: new Date(`2026-10-10T${time}`), pick: 0, titlePick }).title;
+    expect(at('19:30:00', 0.99)).toBe('Hey');
+    for (let i = 0; i <= 10; i += 1) expect(at('19:30:00', i / 10)).not.toBe('Na');
+    expect(at('23:30:00', 0.5)).toBe('Noch wach?');
+    expect(at('07:40:00', 0.5)).toBe('Morgen');
   });
 
   it('greets without a name when none is set', () => {
@@ -55,6 +74,18 @@ describe('greetingFor', () => {
   it('stays inside the pool for pick values at the edges', () => {
     expect(greetingFor({ name: '', now: morning, pick: 0.999999 }).line).toBeTruthy();
     expect(greetingFor({ name: '', now: morning, pick: 1 }).line).toBeTruthy();
+  });
+});
+
+describe('salutations', () => {
+  it('stay short so "…, Lena" fits the band', () => {
+    const tooLong = Object.values(SALUTATIONS).flat().filter((s) => s.length > 12);
+    expect(tooLong).toEqual([]);
+  });
+
+  it('talk like a friend, not like a shop or a parent', () => {
+    const all = Object.values(SALUTATIONS).flat();
+    expect(all.filter((s) => /Willkommen|Sehr geehrte|Grüß Gott|Schatz|Liebling/.test(s))).toEqual([]);
   });
 });
 

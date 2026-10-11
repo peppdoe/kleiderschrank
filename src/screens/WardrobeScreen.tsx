@@ -39,6 +39,7 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
   const name = useLiveQuery(async () => (await getMeta(META_USER_NAME)) ?? '', []);
   const hintDismissed = useLiveQuery(async () => (await getMeta(META_INSTALL_HINT_DISMISSED)) === 'true', []);
   const [pick] = useState(() => Math.random()); // pro Öffnen ein Spruch, nicht bei jedem Render
+  const [titlePick] = useState(() => Math.random()); // und eine Begrüßung
   const [hintHidden, setHintHidden] = useState(false); // sofort weg, auch bevor die Datenbank antwortet
 
   if (!items || name === undefined) return null;
@@ -47,7 +48,7 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
   const current = seasonOf(now);
   // Die Saison-Reihe ist der „Heute“-Regler: genau eine Saison gewählt → Heute zeigt deren Looks.
   const todaySeason: SeasonId = filter.seasons.length === 1 ? filter.seasons[0] : current;
-  const greeting = greetingFor({ name, now, pick, season: todaySeason });
+  const greeting = greetingFor({ name, now, pick, titlePick, season: todaySeason });
   // Im Schrank versteckt die Saison nie etwas: Passendes steht oben, der Rest unter „Für andere Saisons“.
   const visible = applyFilter(items, { ...filter, seasons: [] });
   const seasonFilter: FilterState = { ...EMPTY_FILTER, seasons: filter.seasons };
