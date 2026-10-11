@@ -1,6 +1,6 @@
 # Übergabe: Kleiderschrank-App für Lena
 
-Stand: 11.10.2026 (spätabends, nach der Runde „offene Punkte“). Diese Datei richtet sich an einen neuen Chat ohne Vorwissen. Lies zuerst diese Datei, dann [CLAUDE.md](CLAUDE.md) (Befehle, Regeln, Stolperfallen) und vor jeder Änderung an der Oberfläche [DESIGN.md](DESIGN.md).
+Stand: 11.10.2026 (spätabends, Runde „offene Punkte“ veröffentlicht und live geprüft). Diese Datei richtet sich an einen neuen Chat ohne Vorwissen. Lies zuerst diese Datei, dann [CLAUDE.md](CLAUDE.md) (Befehle, Regeln, Stolperfallen) und vor jeder Änderung an der Oberfläche [DESIGN.md](DESIGN.md).
 
 ---
 
@@ -39,7 +39,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 |---|---|
 | **Gestaltungswelt „Pflegeetikett“**: flaches Namensband mit gestrichelter Naht (zuerst navyblau, am 11.10. auf Wunsch des Nutzers auf die Saisonfarbe umgestellt; Hell/Dunkel bleibt automatisch nach iPhone-Einstellung), Karton-Anhänger (Kraftpapier) mit Lochung für Filter und Auswahl, Saisons als Pflegesymbole, Porzellan-Grund `#f5f6f8` | Vom Nutzer auf der Impeccable-Entscheidungsseite gewählt (gegen den ausgelosten „Abholschein“). Wunsch: „warm & persönlich“ statt neutralem iOS-Look. |
 | **Persönliche Begrüßung** („Guten Morgen, Lena“ + wechselnder Spruch zu Kleidung und Saison), **Name in den Einstellungen wählbar** | Ausdrücklicher Wunsch des Nutzers, „wie bei Claude im Hauptfenster“. Die Sprüche sind höchstens 30 Zeichen lang (eine Zeile) und nennen nie konkrete Kleidungsstücke, weil Lena sie vielleicht nicht besitzt. Ein Test erzwingt beides. |
-| **Saison-Reihe = „Heute“-Regler**: Die aktuelle Saison ist beim Öffnen vorausgewählt und filtert Schrank und „Heute“. Einfachauswahl: ein zweiter Tipp zeigt alles. | Nutzerwahl in der zweiten Kritik („Heute-Regler“). Passt zum Morgen-Moment. |
+| **Saison-Reihe = „Heute“-Regler**: Die aktuelle Saison ist beim Öffnen vorausgewählt und steuert „Heute“ (seit Runde 4 nicht mehr den Schrank, siehe unten). Einfachauswahl: ein zweiter Tipp zeigt alles. | Nutzerwahl in der zweiten Kritik („Heute-Regler“). Passt zum Morgen-Moment. |
 | **Teile ohne Saison gelten als ganzjährig** | Sonst würden Taschen, Accessoires usw. beim voreingestellten Saisonfilter verschwinden. |
 | **Rot („Fadenrot“) nur für** Hauptaktion, aktiven Tab, zerstörerische Aktionen, Fehler und Fokus | Ergebnis des Finish-Reviews. Rot soll eine klare Bedeutung haben. |
 | **Keine Karten um Fotos/Outfits, keine Pillen-Chips, keine Emojis, keine Kicker-Zeile über Überschriften** | Regeln des Impeccable-Qualitätsbodens und des Gestaltungsauftrags. |
@@ -54,6 +54,10 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 | **Feste Leisten unten** auf Detailseiten und in Formularen; oben nur der Titel | Einhandbedienung; die installierte iPhone-App hat keine Wischgeste zurück. |
 | **Saisons als echte Pflegesymbole**, immer mit Namen; Etikett eines Teils in seiner eigenen Saison | „Etikett-Welt ganz durchziehen“ (Nutzerwahl); ohne Namen liest niemand ein Bügeleisen als Herbst. |
 | **Farben als Farbfelder mit Namen**, Filterblatt nur mit vorhandenen Werten und Anzahl | Keine Anhänger-Wand, kein Filter führt ins Leere, Farbenblinde lesen den Namen. |
+| **Rückgängig im Toast nach Löschen** (zusätzlich zur Rückfrage), 6 s; die Zeit ruht bei Fokus/Finger auf dem Knopf | Kritik: kein Rückgängig. Schnappschuss nur im Speicher, daher keine Schema-Änderung. Das Anhalten wählte der Nutzer aus Kritik Runde 5 (VoiceOver braucht Zeit). |
+| **Namensfrage einmal beim ersten Start** im leeren Schrank, unter der Hauptaktion | Kritik: Name stand nur in den Einstellungen. Leer lassen ist erlaubt; verschwindet mit Namen oder erstem Teil. |
+| **„Speichern und nächstes Teil fotografieren“** als stiller Link über der Formularleiste (nur bei neuen Teilen, nur wenn speicherbar) | Mehrere Teile hintereinander erfassen, ohne den Umweg über den Schrank; ein zweiter roter Knopf hätte die Regel „ein Rot pro Seite“ gebrochen. |
+| **Schrift in rem, Wurzel = iOS-Textgröße** (`-apple-system-body`, nur auf Apple-Touch-Geräten), feste Reihen gedeckelt, Eingaben ≥ 16 px | Kritik: Schrift wuchs nicht mit. Auf dem Mac wäre die Systemgröße 13 px, daher die Einschränkung; unter 16 px zoomt iOS beim Antippen. |
 
 ### Arbeitsweise
 - **TDD:** Erst ein fehlschlagender Test, dann der Code. Vor jedem Commit laufen `npm test` und `npx tsc --noEmit`.
@@ -64,13 +68,13 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 3. Aktueller Stand (11.10.2026, spätabends)
 
-- **`main` = `origin/main` = Live**, inklusive der Runde „offene Punkte“ (am 11.10. spätabends auf Wunsch des Nutzers hochgeladen). Vorher im Browser-Pane geprüft: Die Live-Seite läuft hell und dunkel in Handy-Größe sauber, IndexedDB-Version 20 mit Tabelle `outfitPhotos` (also Dexie v2).
-- **Veröffentlicht aus `feature/offene-punkte`:** Rückgängig nach Löschen, Namensfrage beim ersten Start, „Speichern und nächstes Teil fotografieren“, Schrift in rem mit iOS-Textgröße (Dynamic Type), aufgefrischtem `DESIGN.md` und neu erzeugtem `.impeccable/design.json`.
-- **Qualität:** 258 Tests grün, `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde (CLI und Browser-Overlay auf vier Seiten).
-- **Design-Kritik (Verlauf):** 22 → 26 → 28 → 28 → 26 → **28/40** (Runde 5, 11.10., Bericht in `.impeccable/critique/`). Ohne Sub-Agenten im selben Kontext gelaufen und im Bericht so gekennzeichnet.
-- **Branches:** `main` und der voll gemergte `feature/offene-punkte` (kann gelöscht werden); der alte `feature/pflegeetikett` ist gelöscht. Neue Arbeit auf einem neuen Feature-Branch beginnen.
-- **Datenmodell:** unverändert Dexie **Version 2**, Backup **v1**. Rückgängig braucht keine Schema-Änderung, der Schnappschuss liegt nur im Speicher.
-- **Abnahme auf echtem iPhone:** noch **nicht** erfolgt (Checkliste in [README.md](README.md)). Neu zu prüfen: Textgröße in den iOS-Einstellungen ändern, dann muss die Schrift mitwachsen.
+- **`main` = `origin/main` = Live**, Commit `0cec0c3`. Beide Deploy-Läufe (Funktionen, danach die Testkorrektur) waren erfolgreich.
+- **Live im Browser-Pane geprüft (nach dem Update):** Der Server liefert das neue Bundle `index-BA4yspRC.js` mit Namensfrage und Rückgängig aus. Erst nach dem **dritten Laden** stellte der Service Worker um, danach erschien „Wie heißt du?“. IndexedDB weiter Version 20 (Dexie v2). Lenas installierte App braucht also ggf. zwei, drei Starts.
+- **Qualität:** 258 Tests grün, zehn volle Durchläufe hintereinander stabil, `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde (CLI und Browser-Overlay auf vier Seiten).
+- **Design-Kritik (Verlauf):** 22 → 26 → 28 → 28 → 26 → **28/40** (Runde 5, 11.10., `.impeccable/critique/2026-10-11T11-54-08Z__src.md`). Ohne Sub-Agenten im selben Kontext gelaufen und im Bericht so gekennzeichnet. Der Befund „Rückgängig-Zeitfenster“ ist danach behoben.
+- **Branches:** nur `main`. `feature/pflegeetikett` und `feature/offene-punkte` sind gemergt und gelöscht. Neue Arbeit auf einem neuen Feature-Branch beginnen.
+- **Datenmodell:** unverändert Dexie **Version 2**, Backup **v1**.
+- **Abnahme auf echtem iPhone:** noch **nicht** erfolgt (Checkliste in [README.md](README.md), um die neuen Funktionen ergänzt).
 
 ### Was in der Runde „offene Punkte“ dazukam
 
@@ -79,7 +83,8 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 3. **Speichern und nächstes Teil fotografieren:** Das Formular für ein neues Teil speichert und öffnet direkt ein frisches Formular mit dem nächsten Foto.
 4. **Dynamic Type:** Alle Schriftgrößen in rem. Auf dem iPhone folgt die Grundgröße der iOS-Textgröße, feste Reihen sind gedeckelt. Getestet bis 28 px (erste Bedienungshilfen-Stufe) ohne seitlichen Überlauf.
 5. **Toast-Lage:** Der Toast schwebt über dem Plus-Knopf und über der Formularleiste.
-6. **Doku:** `DESIGN.md` aufgefrischt (rem-Stufen, neue Regel „The Growing Text Rule“, Toast mit Aktion, Namensfrage), `.impeccable/design.json` per Skript neu erzeugt.
+6. **Wackelige Tests behoben:** Zwei neue Tests fielen unter Last gelegentlich durch (Ansagebereich ist immer eingehängt; Kategorie-Anhänger „Hose“ im Formular). Siehe Abschnitt 6.
+7. **Doku:** `DESIGN.md` aufgefrischt (rem-Stufen, neue Regel „The Growing Text Rule“, Toast mit Aktion, Namensfrage), `.impeccable/design.json` per Skript neu erzeugt.
 
 ### Was am 11.10. dazukam (Überblick)
 
@@ -97,11 +102,12 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 4. Offene Aufgaben (in Reihenfolge)
 
-1. **Live-Seite nach dem Update einmal ansehen** (installierte App ggf. zweimal starten, der Service Worker liefert die alte Version noch einmal aus).
-2. **Aus Kritik Runde 5 (28/40), zur Auswahl durch den Nutzer:**
+1. **Abnahme auf Lenas iPhone** (siehe Punkt 3), danach erst weiterbauen. Empfehlung an den Nutzer war: die Kritikpunkte bis nach Lenas Test zurückstellen.
+2. **Aus Kritik Runde 5 (28/40), noch offen, zur Auswahl durch den Nutzer:**
    - Keine Suche nach Namen oder Notizen. Bei 100+ Teilen hilft nur der Filter.
    - Die Saison-Reihe auf dem Band ist als Regler nicht selbsterklärend.
    - Hilfe gibt es nur als Einzeiler (Installation, Backup).
+   - Unter „Heute“ wird der Name des angeschnittenen zweiten Looks mitten im Wort abgeschnitten (P3).
 3. **Abnahme auf Lenas iPhone** mit der Checkliste in `README.md`. Besonders: Hochformat- und HEIC-Fotos (Drehung), Kamera, Offline-Start, Backup nach iCloud Drive und zurück (inkl. Tragebild), Namensfrage, Saison-Regler, Tragebild als Spiegel-Selfie, **iOS-Textgröße**, **Rückgängig**, **mehrere Teile hintereinander**.
 4. **Nach Lenas Test klären:** „Heute“ nach Anlass/Vibe (Uni, Abends, Cozy …)? Fehlende Kategorien/Farben (Jeans, Blazer, Schmuck; Denim, Creme, Oliv, Bordeaux)? „Heute getragen“ / „Lange nicht getragen“? Eigene Saison für Looks? Jeweils Datenmodell-Änderung, deshalb erst mit ihren echten Wörtern. Die App ist ein Geschenk.
 5. Nach der Abnahme: Probleme beheben, `CLAUDE.md` und `DESIGN.md` nachziehen.
@@ -129,7 +135,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 | `src/App.tsx` | Routing, voreingestellte Saison, Foto-Entwurf, gemeinsamer Toast (`setNotice`) |
 | `src/db/` | Dexie-Schema und Datenzugriff (`items.ts`, `outfits.ts`, `meta.ts`). Bildschirme greifen nur hierüber zu. |
 | `src/lib/` | Logik: `filters` (inkl. `facetCounts`), `backup`, `image` (inkl. `topCrop`), `greeting` (Begrüßung/Saison), `today` (Looks zur Saison, `stitchSeason`), `route`, `describe` (`itemTitle`) |
-| `src/components/` | u. a. `LabelBand`, `SeasonSymbols`, `FilterTags`, `FilterSheet`, `SwatchGroup`, `Sheet`, `ConfirmSheet`, `ImportSheet`, `ItemGrid`, `OutfitLook`, `OutfitPhotoPicker`, `DetailBar`, `Toast`, `Icon` (eigene SVG-Symbole) |
+| `src/components/` | u. a. `Toast` (inkl. `useNoticeTimer`, Rückgängig), `NameAsk` (Namensfrage beim ersten Start), `LabelBand`, `SeasonSymbols`, `FilterTags`, `FilterSheet`, `SwatchGroup`, `Sheet`, `ConfirmSheet`, `ImportSheet`, `ItemGrid`, `OutfitLook`, `OutfitPhotoPicker`, `DetailBar`, `Toast`, `Icon` (eigene SVG-Symbole) |
 | `src/screens/` | Schrank, Teil-Formular/-Detail, Looks (Dateien heißen `Outfit…`), Look-Editor/-Detail, Einstellungen |
 | `src/styles.css` | Gesamte Gestaltung inkl. Dark Mode |
 | `.github/workflows/deploy.yml` | Test, Build, Deploy auf GitHub Pages |
@@ -163,4 +169,8 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 - **Alter Service Worker auf `localhost:4173`** (Preview) kann eine uralte Version ausliefern. Dann im Pane `navigator.serviceWorker.getRegistrations()` abmelden, `caches` leeren und neu laden. Der Preview-Port hat eine eigene, leere Datenbank – gut, um den ersten Start zu prüfen.
 - **Demo-Daten** liegen in der IndexedDB von `localhost:5173` (12 Teile, 3 Looks, ein Look mit Demo-Tragebild). Frische Demo-Daten erzeugt `node scripts/capture-review.mjs <ordner>` in einem eigenen Edge-Profil.
 - **Fest positionierte Leisten:** Detail-Leiste (über der Tab-Leiste) und Formular-Leiste (ganz unten) sind `position: fixed`; `.app` bzw. `.app--form` reservieren unten Platz. Neue Elemente am Seitenende darauf prüfen.
+- **Testlauf in Befehlsketten:** `npm test | grep …` meldet Erfolg, auch wenn Tests fehlschlagen (so ist am 11.10. einmal mit einem roten Test gepusht worden; der Deploy hat es abgefangen). Vor einem Push `npm test` allein laufen lassen oder `set -o pipefail` setzen und die Zeile „Tests … passed“ lesen.
+- **Ansagebereich in Tests:** `role="status"` ist immer eingehängt; `findByRole('status')` kehrt sofort zurück. Auf Text immer per `waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(…))` warten.
+- **Fokus im Browser-Pane:** Das Pane-Fenster hat keinen Fokus, ein programmatisches `focus()` löst dort keine Fokus-Ereignisse aus. Für Fokus-Verhalten Unit-Tests nutzen, im Pane per `hover` (echter Zeiger) prüfen.
+- **Impeccable-Live-Server** (`live-server --background`) meldet seinen Port nicht zuverlässig und blockiert die Bash; Port per `Get-NetTCPConnection` finden (zuletzt 8400), danach den Prozess beenden.
 - **Toasts:** nie direkt rendern, sondern über `notify` in `App.tsx` (eine Ansage-Region für VoiceOver). Bildschirme bekommen dafür einen Callback (z. B. `onNotice` im Look-Detail). Die Einstellungen haben ihre eigene Statuszeile.
