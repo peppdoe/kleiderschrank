@@ -1,6 +1,6 @@
 # Kleiderschrank-App (für Lena)
 
-Offline-fähige Web-App (PWA) für Lenas iPhone: Kleidungsstücke per Foto erfassen, filtern und zu Outfits kombinieren. **Kein Server, kein Login.** Alle Daten liegen nur in IndexedDB auf dem Gerät, gesichert wird per Backup-Datei.
+Offline-fähige Web-App (PWA) für Lenas iPhone: Kleidungsstücke per Foto erfassen, filtern und zu Looks kombinieren (im Code `outfit`), optional mit einem Foto, auf dem sie den Look trägt. **Kein Server, kein Login.** Alle Daten liegen nur in IndexedDB auf dem Gerät, gesichert wird per Backup-Datei.
 
 - Live: https://peppdoe.github.io/kleiderschrank/
 - Repo: https://github.com/peppdoe/kleiderschrank (öffentlich, enthält keine persönlichen Daten)
@@ -8,6 +8,8 @@ Offline-fähige Web-App (PWA) für Lenas iPhone: Kleidungsstücke per Foto erfas
 - Plan (umgesetzt): `docs/superpowers/plans/2026-10-10-kleiderschrank-app.md`
 - Anleitung für Lena + iPhone-Abnahme-Checkliste: `README.md`
 - Produktbeschreibung (Nutzerin, Zweck, Prinzipien): `PRODUCT.md`
+- **Übergabe/aktueller Stand und offene Aufgaben: `HANDOFF.md` (zuerst lesen)**
+- Spec/Plan Tragebild (umgesetzt): `docs/superpowers/specs/2026-10-11-outfit-tragebild-design.md`, `docs/superpowers/plans/2026-10-11-outfit-tragebild.md`
 - Gestaltungssystem „Pflegeetikett“ (Farben, Schrift, Komponenten, Regeln): `DESIGN.md` + `.impeccable/design.json`; Gestaltungsauftrag: `.impeccable/surfaces/src.md`
 
 ## Befehle
@@ -29,16 +31,16 @@ npm run preview    # gebaute App, http://localhost:4173/kleiderschrank/
 Vite 5 · React 18 · TypeScript (strict) · Dexie 4 (IndexedDB) + `dexie-react-hooks` · vite-plugin-pwa · Vitest + jsdom + fake-indexeddb + Testing Library. Alle Versionen sind exakt gepinnt (`npm install -E`).
 
 ```
-src/db/        schema.ts (Dexie-Tabellen items/photos/outfits/meta), items.ts, outfits.ts, meta.ts
+src/db/        schema.ts (Dexie v2: items/photos/outfits/meta/outfitPhotos), items.ts, outfits.ts (inkl. Tragebild), meta.ts
 src/lib/       constants (Kategorien/Farben/Saisons), filters, backup, backupReminder, image,
                errors, storage, files, route (Hash-Routing), id, describe, useObjectUrl,
-               greeting (Begrüßung + Saison nach Monat), today (Outfits zur Saison)
+               greeting (Begrüßung + Saison nach Monat), today (Looks zur Saison, stitchSeason)
 src/components/  ChipGroup, FilterBar, FilterSheet, FilterTags, ItemGrid, ItemPhoto, FilePicker,
                TabBar, NotFound, OutfitPreview, InstallNotice, ErrorBoundary, LabelBand,
-               SeasonSymbols, ImportSheet, OutfitSeasons, OutfitLook, OutfitPhotoPicker,
-               Icon (eigene SVG-Symbole, keine Emojis)
+               SeasonSymbols, ImportSheet, OutfitSeasons, OutfitLook, OutfitPhotoPicker, SwatchGroup,
+               DetailBar, Toast, Sheet, ConfirmSheet, Icon (eigene SVG-Symbole, keine Emojis)
 src/screens/   Wardrobe, ItemForm, ItemDetail, Outfits, OutfitEditor, OutfitDetail, Settings
-src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
+src/App.tsx    Routing-Switch; hält Schrank-Filter (Saison = Heute-Regler), Foto-Entwurf und den gemeinsamen Toast
 ```
 
 ## Gestaltung (vor UI-Änderungen `DESIGN.md` lesen)
@@ -48,13 +50,17 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
 - **Teile können einen Namen haben** (optionales Feld `name`, ohne Index wie `favorite`, Backup v1 über `parseItem`). Titel: Name, sonst Kategorie (`itemTitle` in `lib/describe.ts`); die Notiz wird nie zum Titel. Im Formular steht nach dem Foto zuerst die Pflicht-Kategorie, Name und Notiz kommen zuletzt.
 - **Lena ist 20.** Ton wie eine Freundin mit Gespür für Mode (siehe `PRODUCT.md`), nie wie Verkäuferin, Amt oder Eltern. Ein Test in `lib/greeting.test.ts` sperrt typische Eltern-/Verkäufer-Floskeln.
 - **Fadenrot nur für:** die eine Hauptaktion (Hinzufügen, Speichern, Backup erstellen), den aktiven Tab, zerstörerische Aktionen, Fehler und Fokus. Nichts anderes wird rot.
-- **Saisonfaden:** Nähte (Namensband, Etiketten), Herz und gewählte Saison tragen die Farbe der gewählten Saison (`--accent`, gesetzt als `data-season` am Root in `App.tsx`). Nie für Aktionen oder Text.
+- **Saisonfaden:** Nähte (Namensband, Etiketten), Herz und gewählte Saison tragen die Farbe der gewählten Saison (`--accent`/`--band`/`--stitch`, gesetzt als `data-season` am Root in `App.tsx`). Das Etikett eines Teils trägt dagegen ein eigenes `data-season` (seine Saison, `stitchSeason`). Nie für Aktionen oder Text.
+- **Pflegesymbole** (Waschbottich, Trockner-Quadrat, Bügeleisen, Bleich-Dreieck mit Saisonzeichen in `components/Icon.tsx`) stehen nie ohne ihren Saisonnamen.
 - Abschnittstitel in normaler Schreibweise; Versalien nur für Tabs und Pflegesymbol-Namen.
 - Keine Karten um Fotos/Outfits, keine Pillen-Chips, keine Emojis als Symbole (eigene SVGs in `components/Icon.tsx`), keine Kicker-/Eyebrow-Zeile über Überschriften.
-- In Formularen keine Tab-Leiste; Aktionen sitzen in einer festen Leiste unten (Daumenreichweite).
+- **Daumenreichweite:** In Formularen keine Tab-Leiste; eine feste Leiste ganz unten trägt Abbrechen/Zurück links und die Hauptaktion rechts, oben steht nur der Titel. Detailseiten (Teil, Look) haben `DetailBar` über der Tab-Leiste: ‹ Zurück links, Bearbeiten rechts; Löschen bleibt am Inhaltsende.
+- **Farben** wählt man als Farbfelder mit sichtbarem Namen (`SwatchGroup`), nicht als Anhänger. Das Filterblatt zeigt nur Kategorien/Farben, die es unter den übrigen Teilen gibt, mit Anzahl (`facetCounts`).
+- **Toasts** nur über `setNotice` in `App.tsx` (eine dauerhaft eingehängte Ansage-Region für VoiceOver, `components/Toast.tsx`); Bildschirme bekommen dafür einen Callback (`onNotice`).
+- **Erster Start:** leerer Schrank zeigt „Noch ganz viel Platz hier.“ mit „Erstes Teil fotografieren“; ohne Teile weder Plus-Knopf noch Saison-Wahl. Looks-Tab ohne Teile führt zum ersten Foto.
 - **Saison-Reihe = „Heute“-Regler:** Die aktuelle Saison ist beim Öffnen vorausgewählt (`App.tsx`), steuert „Heute“, Spruch und Fadenfarbe – **versteckt im Schrank aber nichts**: passende Teile stehen oben, die übrigen unter „Für andere Saisons“. Einfachauswahl über `chooseSeason`. Das Filter-Panel im Schrank hat bewusst keine Saison-Gruppe und setzt die Saison nie zurück. Teile ohne Saison gelten als ganzjährig (`lib/filters.ts`).
 - Rückfragen laufen über Bodenblätter (`components/Sheet.tsx`, `ConfirmSheet.tsx`), nie über `window.confirm`. Abbrechen mit ungespeicherten Änderungen fragt nach („Änderungen verwerfen?“).
-- Neues Teil passt nicht zum aktiven Filter → Filter wird gelöst, das Teil markiert und „Teil gespeichert“ angezeigt. Nach dem Speichern eines Outfits: Etikett wird eingenäht, „Look gespeichert“.
+- Neues Teil passt nicht zu Kategorie-/Farb-/Lieblingsfilter → diese Filter werden gelöst (die Saison bleibt), das Teil markiert und „Teil gespeichert“ angezeigt. Nach dem Speichern eines Looks: Etikett wird eingenäht, „Look gespeichert“.
 - Outfits erscheinen als Collage (`OutfitPreview`) oder, falls vorhanden, als Tragebild (`OutfitLook`: Foto von Lena im Look, Vorschau oben bündig zugeschnitten; im Detail oben, darunter die Teile), die Liste zweispaltig; ihre Saison ergibt sich aus den Teilen (`lib/today.ts`), Outfits haben keine eigene Saison.
 - **Lieblingsteile:** optionales Feld `favorite` am Teil, ohne Index (daher keine neue Schema-Version). `setFavorite` in `db/items.ts`; das Backup übernimmt es in `parseItem` (Format bleibt v1). Anhänger „Lieblinge“ filtert (`FilterState.favorites`).
 - Name für die Begrüßung: Meta-Schlüssel `userName` (Einstellungen). Grußsprüche nennen nie konkrete Kleidungsstücke (Test erzwingt das).
@@ -65,9 +71,9 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
 
 - **Bildschirme greifen nie direkt auf `db` zu**, sondern nur über `db/items.ts`, `db/outfits.ts`, `db/meta.ts` und `lib/backup.ts`.
 - Gespeichert werden stabile englische IDs (`top`, `blue`, `winter`). Deutsche Labels kommen aus `lib/constants.ts`. Die Oberfläche ist komplett auf Deutsch.
-- Schreibvorgänge über mehrere Tabellen laufen immer in **einer** Dexie-Transaktion: Teil + Foto anlegen, Teil löschen inkl. Entfernen aus Outfits, Backup-Import.
+- Schreibvorgänge über mehrere Tabellen laufen immer in **einer** Dexie-Transaktion: Teil + Foto anlegen, Teil löschen inkl. Entfernen aus Looks, Look + Tragebild anlegen/ändern/löschen, Backup-Import.
 - **Backup-Format v1** (nicht ohne Migration ändern): `{ app: "kleiderschrank", version: 1, exportedAt, items, outfits, photos: [{ itemId, full: <base64> }], outfitPhotos: [{ outfitId, full: <base64> }] }`. `outfitPhotos` ist optional (ältere Sicherungen haben es nicht, Version bleibt 1). Der Import prüft alles **vor** dem Ersetzen.
-- Fotos: Vollbild-JPEG mit max. 1200 px an der langen Kante, Qualität 0.85. Vorschaubild 300×300, mittig zugeschnitten. EXIF-Drehung über `imageOrientation: 'from-image'`.
+- Fotos: Vollbild-JPEG mit max. 1200 px an der langen Kante, Qualität 0.85. Vorschaubild 360×480 (3:4), bei Teilen mittig, bei Tragebildern **oben bündig** zugeschnitten (`processPhoto(file, { anchor: 'top' })`). EXIF-Drehung über `imageOrientation: 'from-image'`.
 - Schema-Änderungen nur über eine neue `this.version(n)` in `db/schema.ts` (aktuell Version 2: Tabelle `outfitPhotos` für Tragebilder). Bestehende Daten auf Lenas iPhone müssen erhalten bleiben.
 - Vite `base` ist `/kleiderschrank/`. Wird das Repo umbenannt, muss auch `base` angepasst werden.
 
@@ -97,4 +103,9 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter und Foto-Entwurf
 
 ## Offen
 
-- Abnahme auf Lenas echtem iPhone: Checkliste in `README.md`, besonders Hochformat-/HEIC-Fotos und Backup über iCloud Drive.
+Die vollständige, geordnete Liste steht in `HANDOFF.md` (Abschnitt 4). Kurz:
+
+- Live-Seite einmal im Browser-Pane prüfen (Datenbank Version 2 / IndexedDB-Version 20).
+- Abnahme auf Lenas echtem iPhone: Checkliste in `README.md`, besonders Hochformat-/HEIC-Fotos, Tragebild als Spiegel-Selfie und Backup über iCloud Drive.
+- Aus der Kritik offen: Schrift wächst nicht mit der iOS-Textgröße (px), kein Rückgängig nach Löschen, Name wird beim ersten Start nicht abgefragt.
+- `.impeccable/design.json` ist älter als `DESIGN.md` (`/impeccable document`).

@@ -1,12 +1,12 @@
 # Übergabe: Kleiderschrank-App für Lena
 
-Stand: 11.10.2026. Diese Datei richtet sich an einen neuen Chat ohne Vorwissen. Lies zuerst diese Datei, dann [CLAUDE.md](CLAUDE.md) (Befehle, Regeln, Stolperfallen) und vor jeder Änderung an der Oberfläche [DESIGN.md](DESIGN.md).
+Stand: 11.10.2026 (abends). Diese Datei richtet sich an einen neuen Chat ohne Vorwissen. Lies zuerst diese Datei, dann [CLAUDE.md](CLAUDE.md) (Befehle, Regeln, Stolperfallen) und vor jeder Änderung an der Oberfläche [DESIGN.md](DESIGN.md).
 
 ---
 
 ## 1. Ziel des Projekts
 
-Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt jedem Teil eine Kategorie, Farben, Saisons und eine Notiz, findet Teile über Filter wieder und stellt daraus benannte **Outfits** zusammen. Typischer Moment: **morgens vor dem Schrank, mit einer Hand**, Frage „Was ziehe ich heute an?“.
+Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt jedem Teil eine Kategorie, Farben, Saisons und eine Notiz, findet Teile über Filter wieder und stellt daraus benannte **Looks** zusammen (im Code: `outfit`), optional mit einem Foto, auf dem sie den Look trägt. Typischer Moment: **morgens vor dem Schrank, mit einer Hand**, Frage „Was ziehe ich heute an?“.
 
 - **Nutzerin:** genau eine Person (Lena). Der Auftraggeber (GitHub `peppdoe`) baut die App für sie.
 - **Kein Server, kein Login, keine Cloud:** Alle Daten liegen lokal in IndexedDB auf dem iPhone. Gesichert wird über eine JSON-Backup-Datei, die Lena per Teilen-Menü in iCloud Drive ablegt.
@@ -46,7 +46,14 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 | **In Formularen keine Tab-Leiste; Aktionen fest unten** | Ein versehentlicher Tipp auf die Tab-Leiste hätte Eingaben verworfen. Speichern liegt in Daumenreichweite. |
 | **Rückfragen per Bodenblatt** (Verwerfen, Löschen, Import) statt `window.confirm` | Passt zur Gestaltung, hält den Fokus und setzt den sicheren Weg als Standard. |
 | **Import zeigt** Inhalt des Backups und aktuellen Stand im Vergleich, mit „Erst aktuellen Stand sichern“ | Ein Import ersetzt alles, das Risiko von Datenverlust soll sichtbar sein. |
-| **Höchstens ein Hinweis auf der Startseite**, das Backup geht vor dem Installationstipp | Die Kleidung soll im Vordergrund stehen. |
+| **Höchstens ein Hinweis auf der Startseite**, das Backup geht vor dem Installationstipp; der Installationstipp steht unter dem Schrank | Die Kleidung soll im Vordergrund stehen. |
+| **Saison steuert nur „Heute“**, Spruch und Fadenfarbe; der Schrank zeigt immer alle Teile (passende oben, Rest unter „Für andere Saisons“) | Kritik Runde 4: Ein gefilterter Schrank wirkte morgens, als fehlten Teile. Nutzerwahl am 11.10. |
+| **Tragebild für Looks** in eigener Tabelle `outfitPhotos` (Dexie v2), Backup v1 mit optionalem Schlüssel | Wunsch des Nutzers; eigene Tabelle hält Teil- und Look-Fotos sauber getrennt, alte Backups bleiben einspielbar. |
+| **„Look“ statt „Outfit“** in der Oberfläche | So spricht Lena; im Code bleibt `outfit`. |
+| **Teile mit optionalem Namen**; Titel = Name oder Kategorie, nie die Notiz | Vorher wurde die erste Notizzeile heimlich zum Titel. |
+| **Feste Leisten unten** auf Detailseiten und in Formularen; oben nur der Titel | Einhandbedienung; die installierte iPhone-App hat keine Wischgeste zurück. |
+| **Saisons als echte Pflegesymbole**, immer mit Namen; Etikett eines Teils in seiner eigenen Saison | „Etikett-Welt ganz durchziehen“ (Nutzerwahl); ohne Namen liest niemand ein Bügeleisen als Herbst. |
+| **Farben als Farbfelder mit Namen**, Filterblatt nur mit vorhandenen Werten und Anzahl | Keine Anhänger-Wand, kein Filter führt ins Leere, Farbenblinde lesen den Namen. |
 
 ### Arbeitsweise
 - **TDD:** Erst ein fehlschlagender Test, dann der Code. Vor jedem Commit laufen `npm test` und `npx tsc --noEmit`.
@@ -55,51 +62,44 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ---
 
-## 3. Aktueller Stand
+## 3. Aktueller Stand (11.10.2026, abends)
 
-- **`main` = `origin/main` = `feature/pflegeetikett`** (Commit `453ac87`). Die neue Gestaltung mit allen Kritik-Runden, Saison-Anzeige für Outfits, Looks und Lieblingsteilen ist gemergt und gepusht. Der Deploy vom 11.10.2026 war erfolgreich, und die Live-Seite zeigt den neuen Stand (am 11.10. im Browser geprüft). Bereits installierte Apps holen sich das Update beim nächsten Start. Im Browser kann dafür ein zweites Neuladen nötig sein, weil der Service Worker die alte Version noch einmal ausliefert.
-- **Qualität:**
-  - 183 Tests grün, `tsc --noEmit` sauber.
-  - `impeccable detect --json src index.html` meldet 0 Befunde.
-  - Der letzte Finish-Review endete mit **ship**. Er hat aber nur die letzten Korrekturen bewertet, keine komplett neue Gesamtprüfung.
-- **Design-Kritik:** 22/40 (Ausgangsstand) → 26/40 (nach dem ersten Umbau). Die zweite Runde ist umgesetzt, aber noch nicht neu bewertet.
-- **Entwicklungsserver:** War für den Nutzer im Browser-Fenster offen (Dark Mode, iPhone-Größe). Im neuen Chat neu starten: Konfiguration `dev` in `.claude/launch.json`.
+- **`main` = `origin/main` = Live** (Commit `1650d75`). Alles ist gemergt, gepusht und deployt (Deploy-Lauf vom 11.10., erfolgreich). Im ausgelieferten Bundle der Live-Seite sind die neuen Texte per `curl` bestätigt. Die Live-Seite selbst im Browser-Pane zu öffnen wurde beim letzten Mal abgelehnt; beim nächsten Mal dort einmal ansehen. Bereits installierte Apps holen sich das Update beim nächsten Start (im Browser ggf. zweimal laden, der Service Worker liefert die alte Version noch einmal aus).
+- **Branches:** nur `main` und der alte, voll gemergte `feature/pflegeetikett` (kann gelöscht werden). Neue Arbeit auf einem neuen Feature-Branch beginnen.
+- **Qualität:** 247 Tests grün, `tsc --noEmit` sauber, Build sauber, `impeccable detect --json src index.html` → 0 Befunde.
+- **Design-Kritik (Verlauf):** 22 → 26 → 28 → 28 → **26/40** (Runde 4, 11.10., Bericht `.impeccable/critique/2026-10-11T02-38-09Z__src.md`). Alle Befunde aus Runde 4 sind danach umgesetzt, aber **noch nicht neu bewertet**. Die 26 lag teils an strengeren Maßstäben, teils an Ungereimtheiten, die inzwischen behoben sind.
+- **Datenmodell heute:** Dexie **Version 2** (`items`, `photos`, `outfits`, `meta`, neu `outfitPhotos`). Teile haben optional `favorite` und `name` (beide ohne Index). Backup bleibt **v1** mit optionalem Schlüssel `outfitPhotos`.
 - **Abnahme auf echtem iPhone:** noch **nicht** erfolgt (Checkliste in [README.md](README.md)).
+
+### Was am 11.10. dazukam (Überblick)
+
+1. **Tragebild für Looks:** optionales Foto von Lena im Look. Ersetzt überall die Collage (Heute, Liste, Detail oben), darunter die Teile. Vorschau oben bündig zugeschnitten (Spiegel-Selfies behalten den Kopf). Spec und Plan: `docs/superpowers/specs/2026-10-11-outfit-tragebild-design.md`, `docs/superpowers/plans/2026-10-11-outfit-tragebild.md`.
+2. **Schrank:** Saison-Reihe auf das Namensband gedruckt (wie Pflegesymbole auf einem Etikett), Datum neben „Heute“. **Die Saison steuert nur noch „Heute“**, Spruch und Fadenfarbe; der Schrank zeigt immer alle Teile, passende oben, der Rest unter „Für andere Saisons“ (Nutzerentscheidung).
+3. **Teile:** optionales Namensfeld; Titel = Name, sonst Kategorie (die Notiz wird nie zum Titel). Formular-Reihenfolge: Foto (kleiner, als antippbarer Rahmen) → Kategorie → Farbe → Saison → Name → Notiz.
+4. **Sprache:** überall „Look“ statt „Outfit“ (Tab „Looks“); Ton wie eine Freundin.
+5. **Filter:** Filterblatt zeigt nur vorhandene Kategorien/Farben mit Anzahl; Farben als Farbfelder mit Namen (Filter und Formular).
+6. **Daumenreichweite:** Detailseiten mit fester Leiste unten (‹ Zurück | Bearbeiten), Formulare mit fester Leiste unten (Abbrechen/Zurück | Hauptaktion). Oben bleibt nur der Titel. Unter einer Collage stehen die Teile als kleiner Streifen.
+7. **Erster Start:** „Noch ganz viel Platz hier.“ + „Erstes Teil fotografieren“; ohne Teile kein Plus-Knopf und keine Saison-Wahl; Looks-Tab ohne Teile führt zum ersten Foto.
+8. **Etikett-Welt:** Saisons als echte Pflegesymbole (Waschbottich mit Spross, Trockner-Quadrat als Sonne, Bügeleisen mit Blatt, Bleich-Dreieck mit Schneeflocke), immer mit Namen; das Etikett eines Teils ist in seiner eigenen Saison genäht.
+9. **Barrierefreiheit/Fehler:** Herz mit navy Kontur (≥ 3:1), ein fester Ansagebereich für VoiceOver (`components/Toast.tsx`), „Filter lösen“ behält die Saison.
 
 ---
 
 ## 4. Offene Aufgaben (in Reihenfolge)
 
-1. **Nutzer schaut sich das Design an und gibt Rückmeldung.** Wünsche umsetzen, dabei die Regeln aus `DESIGN.md` einhalten.
-   - Erledigt (11.10.): Outfits zeigen, in welchen Saisons sie unter „Heute“ erscheinen (Liste, Detail, live im Editor; `lib/today.ts` `outfitSeasons`, `components/OutfitSeasons.tsx`). Bewusst **keine** eigene Saison-Auswahl für Outfits: Die Saison ergibt sich aus den Teilen, ein Sonderfall wird über die Saisons des Teils gelöst. Falls Lena bei der Abnahme doch selbst festlegen will, als optionales Feld nachrüsten (Backup v1 bleibt kompatibel).
-2. **Erledigt (11.10.): Gestaltungswelt weitertragen.** Outfit-Namen als gewebtes Etikett in der Liste, Outfit-Detail als eingenähtes Etikett, Live-Vorschau des Namensbands unter dem Namensfeld in den Einstellungen. Finish-Review: alle vier Befunde behoben. Ursprüngliche Idee: Der Reviewer nannte das als Idee, nicht als Fehler:
-   - Outfit-Liste: Namen als gewebtes Etikett (Pflegesymbole pro Outfit sind erledigt).
-   - Outfit-Detailansicht: wie die Teil-Detailansicht als Etikett.
-   - Einstellungen: das Namensband dort zeigen, wo Lena ihren Namen einträgt.
-3. **Erledigt (11.10.): neue Kritik mit Fokus „Lena ist 20“** → 28/40 (vorher 26). Danach alle fünf Befunde umgesetzt, ohne Rückfrage am Stück: Sprache wie eine Freundin, Saisonfaden-Farben und Blush-Kraft, Abschnittstitel ohne Versalien und flacheres Band, Outfits als Collage/Looks, Lieblingsteile mit Herz und „Lieblinge“-Filter, Speicher-Moment beim Outfit. Ursprünglich: **Optional: neue Kritik** mit `/impeccable critique`, um zu messen, wo die App nach Runde 2 steht (zuletzt 26/40).
-4. **Erledigt (11.10.): hochgeladen.** `feature/pflegeetikett` ist per Fast-Forward in `main`, gepusht und deployt. Die Live-Seite ist kontrolliert. Künftige Änderungen weiterhin erst nach ausdrücklicher Freigabe pushen.
-4b. **Erledigt (11.10.): Tragebild für Outfits** (gemergt in `main`, am 11.10. gepusht und live; Datenbank-Umstellung auf Version 2 in der Live-Seite geprüft). Optionales Foto von Lena im Look; ersetzt die Collage unter „Heute“, in der Liste und oben im Detail, darunter die Teile. Schema-Version 2 (`outfitPhotos`), Backup v1 mit optionalem `outfitPhotos`. Spec: `docs/superpowers/specs/2026-10-11-outfit-tragebild-design.md`, Plan: `docs/superpowers/plans/2026-10-11-outfit-tragebild.md`.
-4c. **Erledigt (11.10.): Kritik vom 11.10. (28/40) abgearbeitet** auf Branch `feature/kritik-runde-3` (nicht gemergt, nicht gepusht). Alle 5 Punkte plus „Etikett-Welt ganz durchziehen“:
-   - Saison-Reihe auf dem Namensband, Datum neben „Heute“, Installationshinweis unter dem Schrank → Raster beginnt bei ~537 statt 634 px (375×812).
-   - Optionaler Name für Teile (`name`, ohne Index, Backup v1); überall „Look“ statt „Outfit“ (Tab „Looks“), freundlichere Systemsätze.
-   - Filterblatt zeigt nur vorhandene Werte mit Anzahl; Farben als Farbfelder (Filter und Formular).
-   - Detailseiten: Zurück + Bearbeiten in einer Leiste unten; Teile unter einer Collage als Streifen.
-   - Erster Start: Einladung mit „Erstes Teil fotografieren“, kein Plus-Knopf und keine Saison-Wahl ohne Teile; Looks-Tab ohne Teile führt zum ersten Foto.
-   - Saisons als echte Pflegesymbole; Etikett eines Teils in seiner eigenen Saison; Spruch folgt gewählter Saison; Herz-Kontur navy (≥ 3:1); fester Ansagebereich für VoiceOver; „Filter lösen“ behält die Saison.
-4d. **Erledigt (11.10.): Polish + Kritik Runde 4** (26/40, Bericht `.impeccable/critique/2026-10-11T02-38-09Z__src.md`) und alle Befunde umgesetzt (gleicher Branch):
-   - **Saison steuert nur noch „Heute“** (Nutzerwahl): der Schrank zeigt immer alle Teile, passende oben, der Rest unter „Für andere Saisons“.
-   - Teil-Formular: Kategorie direkt nach dem (kleineren) Foto, Name/Notiz zuletzt; die Notiz wird nie mehr zum Titel (Titel = Name oder Kategorie).
-   - Formulare mit fester Leiste unten (Abbrechen/Zurück links, Hauptaktion rechts), Editor mit Anleitung „Tipp die Teile an, die zusammengehören.“
-   - Saison-Symbole und Farbfelder immer mit Namen; Rest-Texte („Looks“, Saison-Satz, Backup-Zeile), „Neuer Look“ als Hauptaktion, Heute-Namen mit Auslassung, dunkles Herbst-Band wärmer.
-4e. **Als Nächstes:** nach Freigabe `feature/kritik-runde-3` per Fast-Forward in `main` und hochladen; optional erneute Kritik. Offen aus der Kritik: Schrift wächst nicht mit der iOS-Textgröße (px statt rem), kein Rückgängig nach Löschen, Name wird beim ersten Start nicht abgefragt.
-5. **Nach Lenas Test klären:** Möchte sie „Heute“ nach Anlass/Vibe (Uni, Abends, Cozy …) statt nur nach Saison? Fehlen ihr Kategorien oder Farben (z. B. Jeans, Blazer, Schmuck; Denim, Creme, Oliv, Bordeaux)? Will sie „Heute getragen“ / „Lange nicht getragen“? Braucht jeweils eine Datenmodell-Änderung, deshalb bewusst erst mit ihren echten Wörtern. Die App ist ein Geschenk.
-6. **Abnahme auf Lenas iPhone** mit der Checkliste in `README.md`. Besonders prüfen:
-   - Hochformat- und HEIC-Fotos (richtige Drehung)
-   - Kamera
-   - Offline-Start vom Home-Bildschirm
-   - Backup nach iCloud Drive und wieder einspielen
-   - Begrüßung mit Namen und Saison-Regler
-7. Nach der Abnahme: gefundene Probleme beheben, gegebenenfalls `CLAUDE.md` und `DESIGN.md` nachziehen.
+1. **Live-Seite einmal im Browser ansehen** (Handy-Größe, hell/dunkel) und prüfen, dass die Datenbank dort auf Version 2 läuft (`indexedDB.open('kleiderschrank')` → Version 20, Tabelle `outfitPhotos`).
+2. **Optional: neue Kritik** (`/impeccable critique`), um die Wirkung der Runde-4-Korrekturen zu messen (zuletzt 26/40).
+3. **Noch offen aus der Kritik (bewusst nicht angefasst):**
+   - Schrift wächst nicht mit der iOS-Textgröße (alles in px; Umstellung auf rem / Dynamic Type wäre ein größerer Umbau).
+   - Kein Rückgängig nach dem Löschen eines Teils (Idee: Toast „Teil gelöscht – Rückgängig“).
+   - Der Name wird beim ersten Start nicht abgefragt (steht nur in den Einstellungen).
+   - Kein „Speichern und nächstes Teil“ für mehrere Teile hintereinander.
+   - `.impeccable/design.json` ist älter als `DESIGN.md`; bei Gelegenheit `/impeccable document` laufen lassen.
+4. **Abnahme auf Lenas iPhone** mit der Checkliste in `README.md`. Besonders: Hochformat- und HEIC-Fotos (Drehung), Kamera, Offline-Start, Backup nach iCloud Drive und zurück (inkl. Tragebild), Begrüßung mit Namen, Saison-Regler, Tragebild als Spiegel-Selfie.
+5. **Nach Lenas Test klären:** „Heute“ nach Anlass/Vibe (Uni, Abends, Cozy …)? Fehlende Kategorien/Farben (Jeans, Blazer, Schmuck; Denim, Creme, Oliv, Bordeaux)? „Heute getragen“ / „Lange nicht getragen“? Eigene Saison für Looks? Jeweils Datenmodell-Änderung, deshalb erst mit ihren echten Wörtern. Die App ist ein Geschenk.
+6. Nach der Abnahme: Probleme beheben, `CLAUDE.md` und `DESIGN.md` nachziehen.
+
+**Arbeitsweise, die sich bewährt hat:** Feature-Branch → TDD (erst fehlschlagender Test) → Sichtprüfung im Browser-Pane (375×812, hell und dunkel) → `impeccable detect` → DESIGN.md/CLAUDE.md nachziehen → Commit. Größere Features über Brainstorming → Spec → Plan → Umsetzung. **Mergen und Pushen nach `main` nur nach ausdrücklicher Freigabe** („hochladen“).
 
 ---
 
@@ -113,16 +113,17 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 | `PRODUCT.md` | Nutzerin, Zweck, Prinzipien (Impeccable-Produktbeschreibung) |
 | `DESIGN.md` + `.impeccable/design.json` | Gestaltungssystem „Pflegeetikett“: Farben hell/dunkel, Schriftgrößen, Radien, Komponenten, benannte Regeln |
 | `.impeccable/surfaces/src.md` | Gestaltungsauftrag (Direction Contract), auf den gebauten Stand synchronisiert |
-| `.impeccable/critique/` | Kritik-Berichte (22/40, 26/40) |
+| `.impeccable/critique/` | Kritik-Berichte (22, 26, 28, 28, 26 von 40; neuester `2026-10-11T02-38-09Z__src.md`) |
 | `.impeccable/mocks/decision/` | Skizzen der Entscheidungsrunde (`model-pick.html` = gewählte Richtung) |
 | `README.md` | Anleitung für Lena + Abnahme-Checkliste fürs iPhone |
 | `docs/superpowers/specs/2026-10-10-kleiderschrank-app-design.md` | Ursprüngliche Spec |
 | `docs/superpowers/plans/2026-10-10-kleiderschrank-app.md` | Ursprünglicher Umsetzungsplan (erledigt) |
-| `src/App.tsx` | Routing, voreingestellte Saison, Foto-Entwurf, „Teil gespeichert“ |
+| `docs/superpowers/specs/2026-10-11-outfit-tragebild-design.md`, `docs/superpowers/plans/2026-10-11-outfit-tragebild.md` | Spec und Plan Tragebild (erledigt) |
+| `src/App.tsx` | Routing, voreingestellte Saison, Foto-Entwurf, gemeinsamer Toast (`setNotice`) |
 | `src/db/` | Dexie-Schema und Datenzugriff (`items.ts`, `outfits.ts`, `meta.ts`). Bildschirme greifen nur hierüber zu. |
-| `src/lib/` | Logik: `filters`, `backup`, `image`, `greeting` (Begrüßung/Saison), `today` (Outfits zur Saison), `route`, `describe` |
-| `src/components/` | u. a. `LabelBand`, `SeasonSymbols`, `FilterTags`, `FilterSheet`, `Sheet`, `ConfirmSheet`, `ImportSheet`, `ItemGrid`, `Icon` (eigene SVG-Symbole) |
-| `src/screens/` | Schrank, Teil-Formular/-Detail, Outfits, Outfit-Editor/-Detail, Einstellungen |
+| `src/lib/` | Logik: `filters` (inkl. `facetCounts`), `backup`, `image` (inkl. `topCrop`), `greeting` (Begrüßung/Saison), `today` (Looks zur Saison, `stitchSeason`), `route`, `describe` (`itemTitle`) |
+| `src/components/` | u. a. `LabelBand`, `SeasonSymbols`, `FilterTags`, `FilterSheet`, `SwatchGroup`, `Sheet`, `ConfirmSheet`, `ImportSheet`, `ItemGrid`, `OutfitLook`, `OutfitPhotoPicker`, `DetailBar`, `Toast`, `Icon` (eigene SVG-Symbole) |
+| `src/screens/` | Schrank, Teil-Formular/-Detail, Looks (Dateien heißen `Outfit…`), Look-Editor/-Detail, Einstellungen |
 | `src/styles.css` | Gesamte Gestaltung inkl. Dark Mode |
 | `.github/workflows/deploy.yml` | Test, Build, Deploy auf GitHub Pages |
 | `.claude/launch.json` | Dev-/Preview-Server für das Browser-Fenster |
@@ -132,7 +133,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 - Node 24: `C:\Program Files\nodejs`. In Bash bei Bedarf `export PATH="/c/Program Files/nodejs:$PATH"`.
 - GitHub CLI: `C:\Program Files\GitHub CLI`, angemeldet als `peppdoe` (Scopes: repo, workflow).
 - Impeccable-CLI: `C:/Users/harin/.claude/plugins/cache/impeccable/impeccable/4.5.2/skills/impeccable/scripts/impeccable` (z. B. `detect --json src index.html`).
-- Review-Screenshots in exakter Größe: ein Hilfsskript steuert Edge headless über das DevTools-Protokoll. Es lag im Scratchpad der alten Sitzung und ist **nicht** im Repo. Liegt jetzt im Repo: `node scripts/capture-review.mjs .impeccable/review` (Dev-Server muss laufen; legt in einem frischen Edge-Profil Demo-Daten an und nimmt Schrank, Outfits, Outfit-Detail und Einstellungen hell/dunkel auf). Technik: Edge unter `C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe`, `--headless=new --remote-debugging-port`, `Emulation.setDeviceMetricsOverride` 375×812 bzw. 1280×800, `Page.captureScreenshot`. Demo-Daten im Browser über `await import('/kleiderschrank/src/db/items.ts')` anlegen.
+- Review-Screenshots in exakter Größe: ein Hilfsskript steuert Edge headless über das DevTools-Protokoll. Es lag im Scratchpad der alten Sitzung und ist **nicht** im Repo. Liegt jetzt im Repo: `node scripts/capture-review.mjs .impeccable/review` (Dev-Server muss laufen, Zielordner vorher anlegen; legt in einem frischen Edge-Profil Demo-Daten an und nimmt Schrank, Looks, Look-Detail, Teil-Detail, Teil-Formular und Einstellungen hell/dunkel auf). Technik: Edge unter `C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe`, `--headless=new --remote-debugging-port`, `Emulation.setDeviceMetricsOverride` 375×812 bzw. 1280×800, `Page.captureScreenshot`. Demo-Daten im Browser über `await import('/kleiderschrank/src/db/items.ts')` anlegen.
 
 ---
 
@@ -149,4 +150,10 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 - **npm 11 blockiert Install-Skripte** (esbuild, sharp). Bisher ohne Folgen. Falls Vite oder der Icon-Generator streiken: `npm install-scripts approve <paket>`.
 - **Browser-Fenster in Claude:** Eine eingestellte Handy-Größe oder der Dark Mode wird nach jedem Zug bzw. bei Größenänderung zurückgesetzt. Bei Bedarf neu setzen.
 - **Vite `base` ist `/kleiderschrank/`.** Wird das Repo umbenannt, muss `base` mit.
-- **Backup-Format v1** (`{ app, version: 1, exportedAt, items, outfits, photos }`) nicht ohne Migration ändern. Schema-Änderungen nur über eine neue Dexie-Version in `src/db/schema.ts`.
+- **Backup-Format v1** (`{ app, version: 1, exportedAt, items, outfits, photos, outfitPhotos? }`) nicht ohne Migration ändern. Schema-Änderungen nur über eine neue Dexie-Version in `src/db/schema.ts` (aktuell Version 2).
+- **Bash-Heredocs mit `\n` in Template-Strings** gehen in Node-Skripten oft schief (der Ersatztext passt dann nicht). Mehrzeilige Code-Ersetzungen mit dem Edit-Werkzeug machen oder Zeilen per `[...].join('\n')` zusammensetzen.
+- **Screenshots im Browser-Pane hinken manchmal einen Schritt hinterher** (zeigen noch die vorige Seite). Nach `navigate` kurz warten oder den Screenshot einzeln wiederholen.
+- **Alter Service Worker auf `localhost:4173`** (Preview) kann eine uralte Version ausliefern. Dann im Pane `navigator.serviceWorker.getRegistrations()` abmelden, `caches` leeren und neu laden. Der Preview-Port hat eine eigene, leere Datenbank – gut, um den ersten Start zu prüfen.
+- **Demo-Daten** liegen in der IndexedDB von `localhost:5173` (12 Teile, 3 Looks, ein Look mit Demo-Tragebild). Frische Demo-Daten erzeugt `node scripts/capture-review.mjs <ordner>` in einem eigenen Edge-Profil.
+- **Fest positionierte Leisten:** Detail-Leiste (über der Tab-Leiste) und Formular-Leiste (ganz unten) sind `position: fixed`; `.app` bzw. `.app--form` reservieren unten Platz. Neue Elemente am Seitenende darauf prüfen.
+- **Toasts:** nie direkt rendern, sondern über `setNotice` in `App.tsx` (eine Ansage-Region für VoiceOver). Bildschirme bekommen dafür einen Callback (z. B. `onNotice` im Look-Detail). Die Einstellungen haben ihre eigene Statuszeile.
