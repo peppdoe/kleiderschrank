@@ -107,7 +107,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 
 ## 4. Offene Aufgaben (in Reihenfolge)
 
-1. **Übergabe an Lena** (macht der Auftraggeber): Anleitungsbild `docs/uebergabe/Kleiderschrank-Anleitung.png` und den Link `https://peppdoe.github.io/kleiderschrank/` per WhatsApp schicken. Danach erst weiterbauen, mit ihren echten Rückmeldungen.
+1. **Übergabe an Lena** (macht der Auftraggeber): die beiden Bilder in `docs/uebergabe/` (Installation, „So funktioniert’s“) und den Link `https://peppdoe.github.io/kleiderschrank/` per WhatsApp schicken. Danach erst weiterbauen, mit ihren echten Rückmeldungen.
 2. **Aus Kritik Runde 5 (28/40), noch offen, zur Auswahl durch den Nutzer:**
    - Keine Suche nach Namen oder Notizen. Bei 100+ Teilen hilft nur der Filter.
    - Die Saison-Reihe auf dem Band ist als Regler nicht selbsterklärend.
@@ -144,7 +144,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 | `src/components/` | u. a. `Toast` (inkl. `useNoticeTimer`, Rückgängig), `NameAsk` (Namensfrage beim ersten Start), `LabelBand`, `SeasonSymbols`, `FilterTags`, `FilterSheet`, `SwatchGroup`, `Sheet`, `ConfirmSheet`, `ImportSheet`, `ItemGrid`, `OutfitLook`, `OutfitPhotoPicker`, `DetailBar`, `Toast`, `Icon` (eigene SVG-Symbole) |
 | `src/screens/` | Schrank, Teil-Formular/-Detail, Looks (Dateien heißen `Outfit…`), Look-Editor/-Detail, Einstellungen |
 | `src/styles.css` | Gesamte Gestaltung inkl. Dark Mode |
-| `docs/uebergabe/` | Anleitungsbild für Lena (PNG, 1080×1920) und seine Quelle `anleitung.html` (Pflegeetikett-Stil, Jost über den Dev-Server). Neu aufnehmen: Dev-Server starten, dann `node scripts/shot.mjs "http://localhost:5173/kleiderschrank/@fs/<absoluter Pfad>/docs/uebergabe/anleitung.html" <ziel.png> 540 960 2` |
+| `docs/uebergabe/` | Bilder für Lena (PNG, 1080×1920): `Kleiderschrank-Anleitung.png` (Installation) und `Kleiderschrank-So-gehts.png` (Bedienung), Quellen `anleitung.html` und `so-gehts.html` (Pflegeetikett-Stil, Jost über den Dev-Server). Neu aufnehmen: Dev-Server starten, dann `node scripts/shot.mjs "http://localhost:5173/kleiderschrank/@fs/<absoluter Pfad>/docs/uebergabe/anleitung.html" <ziel.png> 540 960 2` |
 | `scripts/demo-backup.mjs` | Erzeugt eine Demo-Sicherung mit Schaubild-Fotos (14 Teile, 5 Looks, 1 Tragebild) zum Testen auf dem iPhone: `node scripts/demo-backup.mjs "$(pwd)" <ziel.json>`. Braucht `sharp` (liegt in `node_modules`). |
 | `scripts/shot.mjs` | Nimmt eine Seite mit Edge headless in exakter Größe auf (`<url> <out.png> <breite> <höhe> <skalierung>`). |
 | `.github/workflows/deploy.yml` | Test, Build, Deploy auf GitHub Pages |
