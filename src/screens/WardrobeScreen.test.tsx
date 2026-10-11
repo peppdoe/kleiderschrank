@@ -51,7 +51,7 @@ describe('Schrank', () => {
 
     await user.click(screen.getByRole('button', { name: /^Filter/ }));
     const sheet = await screen.findByRole('dialog', { name: 'Filter' });
-    await user.click(within(within(sheet).getByRole('group', { name: 'Kategorie' })).getByRole('button', { name: 'Hose' }));
+    await user.click(within(within(sheet).getByRole('group', { name: 'Kategorie' })).getByRole('button', { name: /^Hose/ }));
     expect(within(sheet).getByRole('button', { name: 'Zurücksetzen' })).toBeInTheDocument();
     await user.click(within(sheet).getByRole('button', { name: '1 Teil zeigen' }));
     expect(screen.getByRole('button', { name: /^Filter, \d aktiv$/ })).toHaveFocus();
@@ -123,19 +123,36 @@ describe('Schrank', () => {
     vi.useFakeTimers({ toFake: ['Date'] });
     vi.setSystemTime(new Date('2026-10-10T07:40:00'));
     await seedItem({ category: 'top', colors: ['blue'], seasons: ['autumn'] });
+    await seedItem({ category: 'pants', colors: ['red'], seasons: ['autumn'], favorite: true });
     const user = userEvent.setup();
     render(<App />);
-    await user.click(await screen.findByRole('button', { name: 'Lieblinge' }));
-    await user.click(await screen.findByRole('button', { name: 'Lieblinge aus' }));
-    await user.click(screen.getByRole('button', { name: /^Filter/ }));
+    await user.click(await screen.findByRole('button', { name: /^Filter/ }));
     const sheet = await screen.findByRole('dialog', { name: 'Filter' });
-    await user.click(within(within(sheet).getByRole('group', { name: 'Farbe' })).getByRole('button', { name: 'Rot' }));
+    await user.click(within(within(sheet).getByRole('group', { name: 'Farbe' })).getByRole('button', { name: /^Blau/ }));
     await user.click(within(sheet).getByRole('button', { name: /zeigen$/ }));
+    await user.click(screen.getByRole('button', { name: 'Lieblinge' }));
 
     await user.click(await screen.findByRole('button', { name: 'Filter lösen' }));
     expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
     const seasons = screen.getByRole('group', { name: 'Saison wählen' });
     expect(within(seasons).getByRole('button', { name: 'Herbst (aktuelle Saison)' })).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('offers only categories and colours that are in the wardrobe, with counts', async () => {
+    await seedItem({ category: 'top', colors: ['blue'] });
+    await seedItem({ category: 'top', colors: ['blue', 'white'] });
+    await seedItem({ category: 'pants', colors: ['black'] });
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(await screen.findByRole('button', { name: /^Filter/ }));
+    const sheet = await screen.findByRole('dialog', { name: 'Filter' });
+    const categories = within(sheet).getByRole('group', { name: 'Kategorie' });
+    expect(within(categories).getAllByRole('button')).toHaveLength(2);
+    expect(within(categories).getByRole('button', { name: 'Oberteil, 2 Teile' })).toBeInTheDocument();
+    expect(within(categories).queryByRole('button', { name: /Rock/ })).not.toBeInTheDocument();
+    const colors = within(sheet).getByRole('group', { name: 'Farbe' });
+    expect(within(colors).getAllByRole('button')).toHaveLength(3);
+    expect(within(colors).getByRole('button', { name: 'Blau, 2 Teile' })).toBeInTheDocument();
   });
 
   it('marks the current season by name, not only as "Jetzt"', async () => {
@@ -158,7 +175,7 @@ describe('Schrank', () => {
     expect(within(sheet).queryByRole('group', { name: 'Saison' })).not.toBeInTheDocument();
     expect(within(sheet).queryByRole('button', { name: 'Zurücksetzen' })).not.toBeInTheDocument();
 
-    await user.click(within(within(sheet).getByRole('group', { name: 'Farbe' })).getByRole('button', { name: 'Blau' }));
+    await user.click(within(within(sheet).getByRole('group', { name: 'Farbe' })).getByRole('button', { name: /^Blau/ }));
     await user.click(within(sheet).getByRole('button', { name: 'Zurücksetzen' }));
     await user.click(within(sheet).getByRole('button', { name: /zeigen$/ }));
     const seasons = screen.getByRole('group', { name: 'Saison wählen' });

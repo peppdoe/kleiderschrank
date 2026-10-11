@@ -401,8 +401,14 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - **"Lieblinge" tag:** sits next to "Filter" in the tag row; a toggle (`aria-pressed`) with an 18px heart (filled when on) that narrows the grid to favorites; active in kraft like any active tag.
 - **Selected / active:** kraft fill (chips go to 600). Active filter tags carry a 16px close mark; the "Filter" tag carries a navy count badge (22px capsule, Caption at 600, tabular).
 - **Focus:** inset 2px thread-red ring (the clip-path would cut an outline).
-- Color chips add a 16px garment swatch with a 1px `line-strong` ring.
+- **In the filter sheet** only categories that exist among the pieces the other filters leave are offered, each with its count (13px, 0.7 opacity, tabular; announced as "Hose, 2 Teile"). A chosen value always stays so it can be undone. No filter can lead into an empty grid.
 - Transition: background-color 140ms ease-out.
+- The swing tag is reserved for categories, the "Filter"/"Lieblinge" tags and active filters, so it stays special.
+
+### Color Swatches
+- Colors are chosen as swatches, not tags (item form and filter sheet): a grid of 7 per row, 44px round tap targets 4px apart, a 30px garment dot with a 1px `line-strong` ring.
+- **Chosen:** a 2px ink ring 3px outside the dot (gap in the surface or ground color); the chosen names follow below in muted 15px ("Grün, Blau"). Buttons are named by color (in the filter sheet with the count: "Blau, 2 Teile"), `aria-pressed`.
+- **Focus:** 2px thread-red outline. In the filter sheet only colors present among the remaining pieces show, plus chosen ones.
 
 ### Photo Tiles
 - Frameless 3:4, 4px corners, chip fill while loading.

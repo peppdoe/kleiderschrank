@@ -117,7 +117,7 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
         </div>
       ) : (
         <>
-          <FilterTags value={filter} onChange={onFilterChange} resultCount={visible.length} excludeSeasons />
+          <FilterTags value={filter} onChange={onFilterChange} resultCount={visible.length} excludeSeasons items={items} />
           {visible.length === 0 ? (
             filter.favorites && !items.some((item) => item.favorite) ? (
               <div className="empty">

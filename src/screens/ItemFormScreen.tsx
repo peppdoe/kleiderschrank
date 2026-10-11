@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChipGroup } from '../components/ChipGroup';
+import { SwatchGroup } from '../components/SwatchGroup';
 import { ConfirmSheet } from '../components/ConfirmSheet';
 import { FilePicker } from '../components/FilePicker';
 import { ItemPhoto } from '../components/ItemPhoto';
@@ -9,7 +10,7 @@ import { SeasonSymbols } from '../components/SeasonSymbols';
 import { createItem, getItem, updateItem, type PhotoBlobs } from '../db/items';
 import type { Item } from '../db/schema';
 import {
-  CATEGORIES, COLORS, type CategoryId, type ColorId, type SeasonId,
+  CATEGORIES, type CategoryId, type ColorId, type SeasonId,
 } from '../lib/constants';
 import { userMessage } from '../lib/errors';
 import { toggleValue } from '../lib/filters';
@@ -154,7 +155,7 @@ export function ItemFormScreen({ itemId, initialFile, onCreated }: ItemFormScree
       </h2>
       <ChipGroup label="Kategorie" options={CATEGORIES} selected={category ? [category] : []} onToggle={setCategory} />
       <h2 className="section-title">Farbe</h2>
-      <ChipGroup label="Farbe" options={COLORS} selected={colors} onToggle={(id) => setColors(toggleValue(colors, id))} />
+      <SwatchGroup label="Farbe" selected={colors} onToggle={(id) => setColors(toggleValue(colors, id))} />
       <h2 className="section-title">Saison</h2>
       <SeasonSymbols label="Saison" selected={seasons} onToggle={(id) => setSeasons(toggleValue(seasons, id))} />
       {seasons.length === 0 && <p className="field-hint">Ohne Saison passt das Teil das ganze Jahr.</p>}

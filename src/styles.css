@@ -209,6 +209,15 @@ p { margin: 0; }
 .chip--on { background: var(--kraft); color: var(--kraft-ink); font-weight: 600; }
 .chip:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--thread); }
 .chip__swatch { width: 16px; height: 16px; border-radius: 50%; box-shadow: 0 0 0 1px var(--line-strong); }
+.chip__count { font-size: 13px; font-variant-numeric: tabular-nums; opacity: 0.7; }
+/* Farben als Farbfelder: die Farbe ist das Erkennungszeichen; 44px Tippfläche, gewählt mit Tintenring */
+.swatch-group__grid { display: grid; grid-template-columns: repeat(7, 44px); gap: 4px; justify-content: start; }
+.swatch { width: 44px; height: 44px; padding: 0; border: none; border-radius: 50%; background: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.swatch__dot { width: 30px; height: 30px; border-radius: 50%; box-shadow: 0 0 0 1px var(--line-strong); transition: box-shadow 160ms ease-out; }
+.swatch--on .swatch__dot { box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--ink); }
+.form .swatch--on .swatch__dot { box-shadow: 0 0 0 3px var(--ground), 0 0 0 5px var(--ink); }
+.swatch:focus-visible { outline: 2px solid var(--thread); outline-offset: 0; }
+.swatch-group__picked { margin-top: 6px; font-size: 15px; color: var(--muted); }
 .filter-bar { display: flex; flex-direction: column; gap: 6px; }
 .filter-bar__group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
 .filter-bar__title { font-size: 17px; font-weight: 600; color: var(--ink); }

@@ -28,6 +28,22 @@ export function applyFilter(items: Item[], filter: FilterState): Item[] {
   return items.filter((item) => matchesFilter(item, filter));
 }
 
+/**
+ * Wie viele Teile jede Kategorie und Farbe hätte, gezählt unter den übrigen Filtern
+ * (die eigene Gruppe zählt nicht mit, sonst könnte man nichts dazuwählen). Nur Werte mit Treffern.
+ */
+export function facetCounts(items: Item[], filter: FilterState): { categories: Map<CategoryId, number>; colors: Map<ColorId, number> } {
+  const categories = new Map<CategoryId, number>();
+  for (const item of applyFilter(items, { ...filter, categories: [] })) {
+    categories.set(item.category, (categories.get(item.category) ?? 0) + 1);
+  }
+  const colors = new Map<ColorId, number>();
+  for (const item of applyFilter(items, { ...filter, colors: [] })) {
+    for (const color of item.colors) colors.set(color, (colors.get(color) ?? 0) + 1);
+  }
+  return { categories, colors };
+}
+
 export function toggleValue<T>(list: readonly T[], value: T): T[] {
   return list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
 }

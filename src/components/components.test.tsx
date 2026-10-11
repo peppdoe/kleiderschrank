@@ -9,6 +9,7 @@ import { FilePicker } from './FilePicker';
 import { FilterBar } from './FilterBar';
 import { ItemGrid } from './ItemGrid';
 import { ItemPhoto } from './ItemPhoto';
+import { SwatchGroup } from './SwatchGroup';
 
 describe('ChipGroup', () => {
   it('marks selected chips and reports taps', async () => {
@@ -78,5 +79,26 @@ describe('FilePicker', () => {
     const file = new File(['x'], 'shirt.jpg', { type: 'image/jpeg' });
     await userEvent.upload(screen.getByLabelText('Foto wählen'), file);
     expect(onPick).toHaveBeenCalledWith(file);
+  });
+});
+
+describe('SwatchGroup', () => {
+  it('offers colours as swatches named for screen readers and lists the picked ones', async () => {
+    const onToggle = vi.fn();
+    render(<SwatchGroup label="Farbe" selected={['green', 'blue']} onToggle={onToggle} />);
+    const group = screen.getByRole('group', { name: 'Farbe' });
+    expect(within(group).getAllByRole('button')).toHaveLength(14);
+    expect(within(group).getByRole('button', { name: 'Grün' })).toHaveAttribute('aria-pressed', 'true');
+    expect(within(group).getByRole('button', { name: 'Rot' })).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByText('Grün, Blau')).toBeInTheDocument();
+    await userEvent.click(within(group).getByRole('button', { name: 'Rot' }));
+    expect(onToggle).toHaveBeenCalledWith('red');
+  });
+
+  it('can be limited to some colours and show how many pieces each has', () => {
+    render(<SwatchGroup label="Farbe" selected={[]} onToggle={() => {}} counts={new Map([['blue', 3]])} />);
+    const group = screen.getByRole('group', { name: 'Farbe' });
+    expect(within(group).getAllByRole('button')).toHaveLength(1);
+    expect(within(group).getByRole('button', { name: 'Blau, 3 Teile' })).toBeInTheDocument();
   });
 });

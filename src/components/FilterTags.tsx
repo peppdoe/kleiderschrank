@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { Item } from '../db/schema';
 import { CATEGORIES, COLORS, SEASONS, labelOf } from '../lib/constants';
 import { toggleValue, type FilterState } from '../lib/filters';
 import { FilterSheet } from './FilterSheet';
@@ -10,10 +11,12 @@ interface FilterTagsProps {
   resultCount: number;
   /** Im Schrank zeigen die Pflegesymbole die Saison bereits; dann keine eigenen Saison-Anhänger. */
   excludeSeasons?: boolean;
+  /** Alle Teile, aus denen gefiltert wird (für die Auswahl im Filterblatt). */
+  items: Item[];
 }
 
 /** Ein Anhänger „Filter“ öffnet das Bodenblatt; jeder aktive Filter hängt als eigener Anhänger daneben. */
-export function FilterTags({ value, onChange, resultCount, excludeSeasons = false }: FilterTagsProps) {
+export function FilterTags({ value, onChange, resultCount, excludeSeasons = false, items }: FilterTagsProps) {
   const [open, setOpen] = useState(false);
   const active = [
     ...value.categories.map((id) => ({ key: `c-${id}`, label: labelOf(CATEGORIES, id), next: { ...value, categories: toggleValue(value.categories, id) } })),
@@ -58,7 +61,7 @@ export function FilterTags({ value, onChange, resultCount, excludeSeasons = fals
           </button>
         ))}
       </div>
-      {open && <FilterSheet value={value} onChange={onChange} onClose={() => setOpen(false)} resultCount={resultCount} withSeasons={!excludeSeasons} />}
+      {open && <FilterSheet value={value} onChange={onChange} onClose={() => setOpen(false)} resultCount={resultCount} withSeasons={!excludeSeasons} items={items} />}
     </>
   );
 }

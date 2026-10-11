@@ -155,7 +155,7 @@ describe('Outfits', () => {
     await user.click(await screen.findByRole('button', { name: 'Oberteil, Blau' }));
     await user.click(screen.getByRole('button', { name: /^Filter/ }));
     const sheet = await screen.findByRole('dialog', { name: 'Filter' });
-    await user.click(within(within(sheet).getByRole('group', { name: 'Kategorie' })).getByRole('button', { name: 'Hose' }));
+    await user.click(within(within(sheet).getByRole('group', { name: 'Kategorie' })).getByRole('button', { name: /^Hose/ }));
     await user.click(within(sheet).getByRole('button', { name: '1 Teil zeigen' }));
     expect(screen.getByRole('button', { name: 'Oberteil, Blau abwählen' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Oberteil, Blau abwählen' }));

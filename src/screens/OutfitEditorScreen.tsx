@@ -179,7 +179,7 @@ export function OutfitEditorScreen({ outfitId, onSaved }: { outfitId?: string; o
         <div className="empty"><p>Du hast noch keine Teile im Schrank.</p></div>
       ) : (
         <>
-          <FilterTags value={filter} onChange={setFilter} resultCount={visible.length} />
+          <FilterTags value={filter} onChange={setFilter} resultCount={visible.length} items={items} />
           {selectedItems.length > 0 && (
             <ul className="selection-strip" aria-label="Ausgewählt">
               {selectedItems.map((item) => (

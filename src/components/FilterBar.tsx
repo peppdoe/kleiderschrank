@@ -1,7 +1,8 @@
-import { CATEGORIES, COLORS } from '../lib/constants';
+import { CATEGORIES, type CategoryId, type ColorId } from '../lib/constants';
 import { EMPTY_FILTER, isFilterActive, toggleValue, type FilterState } from '../lib/filters';
 import { ChipGroup } from './ChipGroup';
 import { SeasonSymbols } from './SeasonSymbols';
+import { SwatchGroup } from './SwatchGroup';
 
 interface FilterBarProps {
   value: FilterState;
@@ -10,22 +11,25 @@ interface FilterBarProps {
   wrap?: boolean;
   /** Im Schrank steuert die Saison-Reihe die Saison; dann keine eigene Saison-Gruppe. */
   withSeasons?: boolean;
+  /** Im Filterblatt: nur vorhandene Werte mit Anzahl (siehe `facetCounts`). */
+  counts?: { categories: ReadonlyMap<CategoryId, number>; colors: ReadonlyMap<ColorId, number> };
 }
 
-export function FilterBar({ value, onChange, wrap = false, withSeasons = true }: FilterBarProps) {
+export function FilterBar({ value, onChange, wrap = false, withSeasons = true, counts }: FilterBarProps) {
   const groups = [
     <ChipGroup
       key="cat"
       label="Kategorie"
       options={CATEGORIES}
       selected={value.categories}
+      counts={counts?.categories}
       onToggle={(id) => onChange({ ...value, categories: toggleValue(value.categories, id) })}
     />,
-    <ChipGroup
+    <SwatchGroup
       key="color"
       label="Farbe"
-      options={COLORS}
       selected={value.colors}
+      counts={counts?.colors}
       onToggle={(id) => onChange({ ...value, colors: toggleValue(value.colors, id) })}
     />,
     <SeasonSymbols

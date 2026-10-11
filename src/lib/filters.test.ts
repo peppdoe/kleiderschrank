@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { makeItem } from '../test/factories';
-import { EMPTY_FILTER, applyFilter, isFilterActive, matchesFilter, toggleValue } from './filters';
+import { EMPTY_FILTER, applyFilter, facetCounts, isFilterActive, matchesFilter, toggleValue } from './filters';
 
 const blueWinterTop = makeItem({ id: 'a', category: 'top', colors: ['blue'], seasons: ['winter'] });
 const redSummerTop = makeItem({ id: 'b', category: 'top', colors: ['red', 'white'], seasons: ['summer'] });
@@ -56,5 +56,20 @@ describe('favorites filter', () => {
     expect(applyFilter([fav, plain], filter)).toEqual([fav]);
     expect(isFilterActive(filter)).toBe(true);
     expect(isFilterActive(EMPTY_FILTER)).toBe(false);
+  });
+});
+
+describe('facetCounts', () => {
+  it('counts each category and colour among the pieces the other filters leave', () => {
+    const items = [
+      makeItem({ category: 'top', colors: ['blue', 'white'], seasons: ['autumn'] }),
+      makeItem({ category: 'top', colors: ['red'], seasons: ['summer'] }),
+      makeItem({ category: 'pants', colors: ['blue'], seasons: [] }),
+    ];
+    const counts = facetCounts(items, { ...EMPTY_FILTER, seasons: ['autumn'], colors: ['blue'] });
+    // Kategorien: Saison Herbst und Farbe Blau gelten → Oberteil (blau) und Hose (ganzjährig, blau).
+    expect(counts.categories).toEqual(new Map([['top', 1], ['pants', 1]]));
+    // Farben: nur die Saison gilt, die eigene Farbwahl nicht → blau 2, weiß 1, rot 0 (Sommer).
+    expect(counts.colors).toEqual(new Map([['blue', 2], ['white', 1]]));
   });
 });
