@@ -297,6 +297,8 @@ p { margin: 0; }
 /* Lieblingsteil: Herz im Saisonfaden, oben rechts im Etikett */
 .care-label__fav { position: absolute; top: 10px; right: 10px; z-index: 1; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; border: none; border-radius: 50%; background: none; color: var(--band-ink); cursor: pointer; transition: color 160ms ease-out, transform 160ms ease-out; }
 .care-label__fav--on { color: var(--stitch); }
+/* Gefülltes Herz: Füllung im Saisonfaden, Kontur in Bandtinte – so hebt sich die Form (≥ 3:1) auch auf hellem Gewebe ab. */
+.care-label__fav--on svg, .tile__fav svg { stroke: var(--band-ink); }
 .care-label__fav:active { transform: scale(0.9); }
 .care-label__fav--on svg { animation: fav-pop 420ms cubic-bezier(0.16, 1, 0.3, 1); }
 @keyframes fav-pop { from { transform: scale(0.6); } to { transform: scale(1); } }
