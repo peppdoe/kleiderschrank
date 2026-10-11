@@ -180,3 +180,44 @@ describe('Einstellungen', () => {
     expect(within(preview).getByText(/, Mia$/)).toBeInTheDocument();
   });
 });
+
+describe('Darstellung', () => {
+  const themeColor = () => document.querySelector('meta[name="theme-color"]')?.getAttribute('content');
+
+  it('starts on automatic and switches to dark and back', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    const group = await screen.findByRole('group', { name: 'Darstellung' });
+    expect(within(group).getByRole('button', { name: 'Automatisch' })).toHaveAttribute('aria-pressed', 'true');
+
+    await user.click(within(group).getByRole('button', { name: 'Dunkel' }));
+    expect(within(group).getByRole('button', { name: 'Dunkel' })).toHaveAttribute('aria-pressed', 'true');
+    expect(document.documentElement.dataset.theme).toBe('dark');
+    expect(localStorage.getItem('kleiderschrank-theme')).toBe('dark');
+    expect(themeColor()).toBe('#0f1524');
+
+    await user.click(within(group).getByRole('button', { name: 'Hell' }));
+    expect(document.documentElement.dataset.theme).toBe('light');
+    expect(themeColor()).toBe('#f5f6f8');
+
+    await user.click(within(group).getByRole('button', { name: 'Automatisch' }));
+    expect(localStorage.getItem('kleiderschrank-theme')).toBe('auto');
+  });
+
+  it('checks the iPhone setting again when the app comes back to the front', async () => {
+    render(<App />);
+    await screen.findByRole('group', { name: 'Darstellung' });
+    // Stand von vorhin, bevor das iPhone (in jsdom: hell) umgestellt wurde
+    document.documentElement.dataset.theme = 'dark';
+    document.dispatchEvent(new Event('visibilitychange'));
+    expect(document.documentElement.dataset.theme).toBe('light');
+  });
+
+  it('keeps the chosen look after a restart', async () => {
+    localStorage.setItem('kleiderschrank-theme', 'dark');
+    render(<App />);
+    const group = await screen.findByRole('group', { name: 'Darstellung' });
+    expect(within(group).getByRole('button', { name: 'Dunkel' })).toHaveAttribute('aria-pressed', 'true');
+    expect(document.documentElement.dataset.theme).toBe('dark');
+  });
+});

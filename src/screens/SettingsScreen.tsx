@@ -1,5 +1,6 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useRef, useState } from 'react';
+import { ChipGroup } from '../components/ChipGroup';
 import { FilePicker } from '../components/FilePicker';
 import { ImportSheet } from '../components/ImportSheet';
 import { InstallNotice } from '../components/InstallNotice';
@@ -14,6 +15,7 @@ import { userMessage } from '../lib/errors';
 import { readFileText, shareOrDownload } from '../lib/files';
 import { makeThumb } from '../lib/image';
 import { isStandalone, storageUsageMB } from '../lib/storage';
+import { THEME_CHOICES, getThemeChoice, setThemeChoice, type ThemeChoice } from '../lib/theme';
 
 type Message = { kind: 'ok' | 'error'; text: string };
 
@@ -28,6 +30,7 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
   const persist = useLiveQuery(async () => (await getMeta(META_PERSIST)) ?? null, []);
   const storedName = useLiveQuery(async () => (await getMeta(META_USER_NAME)) ?? '', []);
   const [nameDraft, setNameDraft] = useState<string | null>(null);
+  const [theme, setTheme] = useState<ThemeChoice>(getThemeChoice);
   const [nameSaved, setNameSaved] = useState(false);
   const [usage, setUsage] = useState<number>();
   const [prepared, setPrepared] = useState<{ json: string; fileName: string } | null>(null);
@@ -155,6 +158,20 @@ export function SettingsScreen({ prepareBackup = false }: { prepareBackup?: bool
           />
         </label>
         <LabelBand title={preview.title} line={preview.line} preview />
+      </div>
+
+      <div className="section">
+        <h2 className="section-title">Darstellung</h2>
+        <ChipGroup
+          label="Darstellung"
+          options={THEME_CHOICES}
+          selected={[theme]}
+          onToggle={(id) => {
+            setTheme(id);
+            setThemeChoice(id);
+          }}
+        />
+        <p className="field-hint">Automatisch folgt deinem iPhone.</p>
       </div>
 
       <div className="section">

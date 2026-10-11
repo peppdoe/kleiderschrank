@@ -34,7 +34,8 @@ Vite 5 · React 18 · TypeScript (strict) · Dexie 4 (IndexedDB) + `dexie-react-
 src/db/        schema.ts (Dexie v2: items/photos/outfits/meta/outfitPhotos), items.ts, outfits.ts (inkl. Tragebild), meta.ts
 src/lib/       constants (Kategorien/Farben/Saisons), filters, backup, backupReminder, image,
                errors, storage, files, route (Hash-Routing), id, describe, useObjectUrl,
-               greeting (Begrüßung + Saison nach Monat), today (Looks zur Saison, stitchSeason)
+               greeting (Begrüßung + Saison nach Monat), today (Looks zur Saison, stitchSeason),
+               theme (Hell/Dunkel/Automatisch, localStorage `kleiderschrank-theme`)
 src/components/  NameAsk (Namensfrage beim ersten Start), ChipGroup, FilterBar, FilterSheet, FilterTags, ItemGrid, ItemPhoto, FilePicker,
                TabBar, NotFound, OutfitPreview, InstallNotice, ErrorBoundary, LabelBand,
                SeasonSymbols, ImportSheet, OutfitSeasons, OutfitLook, OutfitPhotoPicker, SwatchGroup,
@@ -52,6 +53,7 @@ src/App.tsx    Routing-Switch; hält Schrank-Filter (Saison = Heute-Regler), Fot
 - **Fadenrot nur für:** die eine Hauptaktion (Hinzufügen, Speichern, Backup erstellen), den aktiven Tab, zerstörerische Aktionen, Fehler und Fokus. Nichts anderes wird rot.
 - **Saisonfaden:** Nähte (Namensband, Etiketten), Herz und gewählte Saison tragen die Farbe der gewählten Saison (`--accent`/`--band`/`--stitch`, gesetzt als `data-season` am Root in `App.tsx`). Das Etikett eines Teils trägt dagegen ein eigenes `data-season` (seine Saison, `stitchSeason`). Nie für Aktionen oder Text.
 - **Pflegesymbole** (Waschbottich, Trockner-Quadrat, Bügeleisen, Bleich-Dreieck mit Saisonzeichen in `components/Icon.tsx`) stehen nie ohne ihren Saisonnamen.
+- **Hell/Dunkel:** Einstellungen → „Darstellung“ (Automatisch · Hell · Dunkel, Anhänger über `ChipGroup`). Die Wahl ist eine Geräte-Einstellung im `localStorage` (nicht im Backup), gesetzt als `data-theme` am Root. Ein Inline-Skript in `index.html` setzt sie vor dem ersten Bild (sonst blitzt es); `lib/theme.ts` übernimmt danach, inkl. `meta theme-color` und Nachziehen bei „Automatisch“ (Systemwechsel und beim Zurückkehren in die App). Dunkel-CSS nur über `[data-theme='dark']`, nie über `@media (prefers-color-scheme)`.
 - Abschnittstitel in normaler Schreibweise; Versalien nur für Tabs und Pflegesymbol-Namen.
 - Keine Karten um Fotos/Outfits, keine Pillen-Chips, keine Emojis als Symbole (eigene SVGs in `components/Icon.tsx`), keine Kicker-/Eyebrow-Zeile über Überschriften.
 - **Daumenreichweite:** In Formularen keine Tab-Leiste; eine feste Leiste ganz unten trägt Abbrechen/Zurück links und die Hauptaktion rechts, oben steht nur der Titel. Detailseiten (Teil, Look) haben `DetailBar` über der Tab-Leiste: ‹ Zurück links, Bearbeiten rechts; Löschen bleibt am Inhaltsende.

@@ -21,6 +21,7 @@ Beim ersten Start fragt die App nach deinem Namen, damit sie dich richtig begrü
 - **Looks:** Im Tab **Looks** auf **+** tippen, die Teile antippen, die zusammengehören, **Weiter**, Namen geben, fertig. Wenn du magst, leg ein Foto von dir im Look dazu (z. B. ein Spiegel-Selfie) – auch später noch in der Look-Ansicht.
 - **Lieblinge:** In einem Teil auf das Herz tippen; der Anhänger „Lieblinge“ zeigt dann nur diese.
 - **Dein Name** für die Begrüßung: **Einstellungen** → **Du**.
+- **Hell oder dunkel:** **Einstellungen** → **Darstellung**. „Automatisch“ folgt deinem iPhone.
 - **Größere Schrift:** Die App folgt der Textgröße deines iPhones (Einstellungen → Anzeige & Helligkeit → Textgröße).
 
 ## Für Lena: Backup

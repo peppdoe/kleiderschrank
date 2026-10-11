@@ -258,7 +258,7 @@ The system refuses the iOS-settings grey grid: no pill chips, no emoji tabs, no 
 - Thread red reserved for the one primary action, the active tab, destructive actions, errors and the focus/caret affordance.
 - One 1.5px round-capped stroke system for all pictograms.
 - Frameless 3:4 photo tiles; the clothing is the star.
-- Full light and dark token sets driven by `prefers-color-scheme`; garment swatches are a separate data palette.
+- Full light and dark token sets, switched by `data-theme` on the root: Settings → "Darstellung" offers Automatisch (follows the iPhone), Hell, Dunkel; garment swatches are a separate data palette.
 
 ## Colors
 
@@ -278,7 +278,7 @@ A cool navy-and-porcelain base, warmed by blush kraft and a soft seasonal thread
 - **Kraft Ink** (`kraft-ink`): text on kraft surfaces.
 
 ### Tertiary
-- **Seasonal Weave** (`band`, `band-spring`, `band-summer`, `band-winter`; dark variants): the fabric of the name band, the care labels, the outfit name labels and the favorite disc on tiles. It follows the chosen season through `data-season` on the root (default: ochre, autumn). Light: pale season tints with navy `band-ink`; dark: deep tinted versions with warm `band-ink-dark`. Chosen by the user over navy (too heavy, too heritage) and blush. The light/dark switch stays automatic with the iPhone setting.
+- **Seasonal Weave** (`band`, `band-spring`, `band-summer`, `band-winter`; dark variants): the fabric of the name band, the care labels, the outfit name labels and the favorite disc on tiles. It follows the chosen season through `data-season` on the root (default: ochre, autumn). Light: pale season tints with navy `band-ink`; dark: deep tinted versions with warm `band-ink-dark`. Chosen by the user over navy (too heavy, too heritage) and blush. Light or dark follows the iPhone by default; Lena can pin either one in the settings.
 - **Band Ink / Stitch / Band Stitch** (`band-ink`, `stitch`, `band-stitch`): text on woven surfaces; `stitch` is the stronger season color of the inset dashed stitch and the favorite heart (sage #7fa06c, apricot #d98a55, ochre #c98a3e, ice blue #7b8fc9 in light; the pale season colors in dark); `band-stitch` rings garment swatches sitting on the care label.
 
 ### Neutral
@@ -495,7 +495,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - **Do** draw new pictograms on the 24px grid with a 1.5px round-capped stroke.
 - **Do** keep photos frameless at 3:4 with 4px corners.
 - **Do** keep every interactive target at 44px or more and put the primary action in thumb reach.
-- **Do** define every new UI color in both the light and the dark token set; garment swatches stay theme-independent.
+- **Do** define every new UI color in both the light and the dark token set; garment swatches stay theme-independent. Dark rules hang on `[data-theme='dark']`, never on `@media (prefers-color-scheme: dark)` (the media query would ignore Lena's choice).
 - **Do** confirm destructive steps in a confirm sheet with a danger-solid button and the safe action focused.
 - **Do** honor `prefers-reduced-motion` for the stitch-in, the sheet rise and the new-tile settle.
 - **Do** write font sizes as rem steps of the 17px ramp and cap only rows that cannot wrap.

@@ -1,6 +1,6 @@
 /* Pflegeetikett: gewebtes Namensband, Karton-Anhänger, Pflegesymbole. */
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   --ground: #f5f6f8;
   --surface: #ffffff;
   --ink: #1f2a44;
@@ -46,8 +46,9 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
+/* Dunkel: gesetzt über data-theme am Root (Einstellungen → Darstellung; „Automatisch“ folgt dem iPhone, siehe lib/theme.ts). */
+:root[data-theme='dark'] {
+    color-scheme: dark;
     --ground: #0f1524;
     --surface: #182036;
     --ink: #e9ecf3;
@@ -67,20 +68,18 @@
     --danger-solid: #e8706a;
     --success: #6fcf97;
     --shadow: rgba(0, 0, 0, 0.45);
-  }
-  .swing-tag:not(.swing-tag--active), .chip:not(.chip--on) { color: #f2e4db; }
 }
+[data-theme='dark'] .swing-tag:not(.swing-tag--active), [data-theme='dark'] .chip:not(.chip--on) { color: #f2e4db; }
 /* Gewebte Flächen in der Farbe der gewählten Saison: helles Band, kräftigerer Faden */
 [data-season='spring'] { --accent: var(--spring); --band: #e4eedb; --stitch: #7fa06c; }
 [data-season='summer'] { --accent: var(--summer); --band: #fde3d0; --stitch: #d98a55; }
 [data-season='autumn'] { --accent: var(--autumn); --band: #f6e3c8; --stitch: #c98a3e; }
 [data-season='winter'] { --accent: var(--winter); --band: #e3e9f9; --stitch: #7b8fc9; }
-@media (prefers-color-scheme: dark) {
-  [data-season='spring'] { --band: #2b3627; --stitch: var(--spring); }
-  [data-season='summer'] { --band: #3d2c22; --stitch: var(--summer); }
-  [data-season='autumn'] { --band: #47351d; --stitch: var(--autumn); }
-  [data-season='winter'] { --band: #262f47; --stitch: var(--winter); }
-}
+/* Am Root stehen data-theme und data-season zusammen, das Etikett eines Teils trägt sein eigenes data-season. */
+[data-theme='dark'][data-season='spring'], [data-theme='dark'] [data-season='spring'] { --band: #2b3627; --stitch: var(--spring); }
+[data-theme='dark'][data-season='summer'], [data-theme='dark'] [data-season='summer'] { --band: #3d2c22; --stitch: var(--summer); }
+[data-theme='dark'][data-season='autumn'], [data-theme='dark'] [data-season='autumn'] { --band: #47351d; --stitch: var(--autumn); }
+[data-theme='dark'][data-season='winter'], [data-theme='dark'] [data-season='winter'] { --band: #262f47; --stitch: var(--winter); }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--ground); color: var(--ink); -webkit-text-size-adjust: 100%; }
@@ -343,7 +342,8 @@ p { margin: 0; }
 .outfit-preview__more { display: flex; align-items: center; justify-content: center; background: var(--kraft-soft); color: var(--kraft-ink); font-weight: 600; }
 .outfit-look { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 4px; background: var(--chip); }
 .text-button--center { align-self: center; }
-@media (prefers-color-scheme: dark) { .swing-tag:not(.swing-tag--active) .swing-tag__count { color: var(--ground); } .outfit-preview__more { color: #eee2d2; } }
+[data-theme='dark'] .swing-tag:not(.swing-tag--active) .swing-tag__count { color: var(--ground); }
+[data-theme='dark'] .outfit-preview__more { color: #f2e4db; }
 
 /* Hinweise unter Feldern */
 .field-hint { margin-top: 6px; font-size: 0.8824rem; color: var(--muted); }

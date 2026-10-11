@@ -37,7 +37,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 ### Gestaltung
 | Entscheidung | Begründung |
 |---|---|
-| **Gestaltungswelt „Pflegeetikett“**: flaches Namensband mit gestrichelter Naht (zuerst navyblau, am 11.10. auf Wunsch des Nutzers auf die Saisonfarbe umgestellt; Hell/Dunkel bleibt automatisch nach iPhone-Einstellung), Karton-Anhänger (Kraftpapier) mit Lochung für Filter und Auswahl, Saisons als Pflegesymbole, Porzellan-Grund `#f5f6f8` | Vom Nutzer auf der Impeccable-Entscheidungsseite gewählt (gegen den ausgelosten „Abholschein“). Wunsch: „warm & persönlich“ statt neutralem iOS-Look. |
+| **Gestaltungswelt „Pflegeetikett“**: flaches Namensband mit gestrichelter Naht (zuerst navyblau, am 11.10. auf Wunsch des Nutzers auf die Saisonfarbe umgestellt; Hell/Dunkel folgt dem iPhone, seit 11.10. in den Einstellungen auch fest wählbar), Karton-Anhänger (Kraftpapier) mit Lochung für Filter und Auswahl, Saisons als Pflegesymbole, Porzellan-Grund `#f5f6f8` | Vom Nutzer auf der Impeccable-Entscheidungsseite gewählt (gegen den ausgelosten „Abholschein“). Wunsch: „warm & persönlich“ statt neutralem iOS-Look. |
 | **Persönliche Begrüßung** („Guten Morgen, Lena“ + wechselnder Spruch zu Kleidung und Saison), **Name in den Einstellungen wählbar** | Ausdrücklicher Wunsch des Nutzers, „wie bei Claude im Hauptfenster“. Die Sprüche sind höchstens 30 Zeichen lang (eine Zeile) und nennen nie konkrete Kleidungsstücke, weil Lena sie vielleicht nicht besitzt. Ein Test erzwingt beides. |
 | **Saison-Reihe = „Heute“-Regler**: Die aktuelle Saison ist beim Öffnen vorausgewählt und steuert „Heute“ (seit Runde 4 nicht mehr den Schrank, siehe unten). Einfachauswahl: ein zweiter Tipp zeigt alles. | Nutzerwahl in der zweiten Kritik („Heute-Regler“). Passt zum Morgen-Moment. |
 | **Teile ohne Saison gelten als ganzjährig** | Sonst würden Taschen, Accessoires usw. beim voreingestellten Saisonfilter verschwinden. |
@@ -60,6 +60,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 | **Schrift in rem, Wurzel = iOS-Textgröße** (`-apple-system-body`, nur auf Apple-Touch-Geräten), feste Reihen gedeckelt, Eingaben ≥ 16 px | Kritik: Schrift wuchs nicht mit. Auf dem Mac wäre die Systemgröße 13 px, daher die Einschränkung; unter 16 px zoomt iOS beim Antippen. |
 
 | **Alte Backups löscht die App nicht automatisch**; Dateiname bleibt mit Datum (`kleiderschrank-backup-JJJJ-MM-TT.json`) | Technisch nicht möglich: Nach dem Teilen-Menü hat eine Web-App keinen Zugriff mehr auf die Datei in iCloud Drive. Ein fester Dateiname würde beim Sichern „Ersetzen“ anbieten, aber ein kaputtes Backup könnte das gute überschreiben. Ein Backup mit 100 Teilen ist grob 30–50 MB (geschätzt, nicht mit echten Fotos gemessen). Lena räumt bei Bedarf in der Dateien-App auf. Nutzer am 11.10.: „passt so erstmal“ (auch kein Hinweis in den Einstellungen). |
+| **Hell/Dunkel wählbar** (Einstellungen → „Darstellung“: Automatisch · Hell · Dunkel), Voreinstellung Automatisch; gespeichert im `localStorage`, nicht im Backup | Wunsch des Nutzers vor der Übergabe. Gerätewahl statt Schrank-Inhalt, deshalb kein Datenmodell und kein Backup-Feld. Ein Inline-Skript in `index.html` verhindert das Aufblitzen der falschen Darstellung. |
 | **Übergabe per WhatsApp**: Anleitungsbild + Link statt QR-Code | Wunsch des Nutzers. Das Bild (`docs/uebergabe/Kleiderschrank-Anleitung.png`) zeigt Installation, „Erst installieren, dann loslegen“ und das erste Backup nach 10 Teilen. |
 
 ### Arbeitsweise
@@ -143,7 +144,8 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 | `src/lib/` | Logik: `filters` (inkl. `facetCounts`), `backup`, `image` (inkl. `topCrop`), `greeting` (Begrüßung/Saison), `today` (Looks zur Saison, `stitchSeason`), `route`, `describe` (`itemTitle`) |
 | `src/components/` | u. a. `Toast` (inkl. `useNoticeTimer`, Rückgängig), `NameAsk` (Namensfrage beim ersten Start), `LabelBand`, `SeasonSymbols`, `FilterTags`, `FilterSheet`, `SwatchGroup`, `Sheet`, `ConfirmSheet`, `ImportSheet`, `ItemGrid`, `OutfitLook`, `OutfitPhotoPicker`, `DetailBar`, `Toast`, `Icon` (eigene SVG-Symbole) |
 | `src/screens/` | Schrank, Teil-Formular/-Detail, Looks (Dateien heißen `Outfit…`), Look-Editor/-Detail, Einstellungen |
-| `src/styles.css` | Gesamte Gestaltung inkl. Dark Mode |
+| `src/styles.css` | Gesamte Gestaltung inkl. Dunkel (`[data-theme='dark']`) |
+| `src/lib/theme.ts` | Hell/Dunkel/Automatisch: Wahl lesen/speichern, `data-theme` und Statusleistenfarbe setzen, System beobachten |
 | `docs/uebergabe/` | Bilder für Lena (PNG, 1080×1920): `Kleiderschrank-Anleitung.png` (Installation) und `Kleiderschrank-So-gehts.png` (Bedienung), Quellen `anleitung.html` und `so-gehts.html` (Pflegeetikett-Stil, Jost über den Dev-Server). Neu aufnehmen: Dev-Server starten, dann `node scripts/shot.mjs "http://localhost:5173/kleiderschrank/@fs/<absoluter Pfad>/docs/uebergabe/anleitung.html" <ziel.png> 540 960 2` |
 | `scripts/demo-backup.mjs` | Erzeugt eine Demo-Sicherung mit Schaubild-Fotos (14 Teile, 5 Looks, 1 Tragebild) zum Testen auf dem iPhone: `node scripts/demo-backup.mjs "$(pwd)" <ziel.json>`. Braucht `sharp` (liegt in `node_modules`). |
 | `scripts/shot.mjs` | Nimmt eine Seite mit Edge headless in exakter Größe auf (`<url> <out.png> <breite> <höhe> <skalierung>`). |
@@ -170,7 +172,7 @@ Eine Web-App (PWA) für **Lenas iPhone**. Sie fotografiert ihre Kleidung, gibt j
 - **jsdom:** `Blob` wird im Test-Setup durch Nodes `Blob` ersetzt (fake-indexeddb). Canvas und `createImageBitmap` fehlen, `lib/image.ts` wird in Screen-Tests gemockt.
 - **In Testdateien mit `vi.mock(..., vi.fn())` kein `vi.restoreAllMocks()`**: Das leert die Mock-Implementierungen.
 - **npm 11 blockiert Install-Skripte** (esbuild, sharp). Bisher ohne Folgen. Falls Vite oder der Icon-Generator streiken: `npm install-scripts approve <paket>`.
-- **Browser-Fenster in Claude:** Eine eingestellte Handy-Größe oder der Dark Mode wird nach jedem Zug bzw. bei Größenänderung zurückgesetzt. Bei Bedarf neu setzen.
+- **Browser-Fenster in Claude:** Eine eingestellte Handy-Größe oder der Dark Mode wird nach jedem Zug bzw. bei Größenänderung zurückgesetzt. Bei Bedarf neu setzen. Ein Wechsel der emulierten Farbwahl löst im Pane **kein** `change`-Ereignis von `matchMedia` aus; „Automatisch“ zieht dort erst nach Neuladen mit (auf dem iPhone sorgt zusätzlich `visibilitychange` dafür).
 - **Vite `base` ist `/kleiderschrank/`.** Wird das Repo umbenannt, muss `base` mit.
 - **Backup-Format v1** (`{ app, version: 1, exportedAt, items, outfits, photos, outfitPhotos? }`) nicht ohne Migration ändern. Schema-Änderungen nur über eine neue Dexie-Version in `src/db/schema.ts` (aktuell Version 2).
 - **Bash-Heredocs mit `\n` in Template-Strings** gehen in Node-Skripten oft schief (der Ersatztext passt dann nicht). Mehrzeilige Code-Ersetzungen mit dem Edit-Werkzeug machen oder Zeilen per `[...].join('\n')` zusammensetzen.

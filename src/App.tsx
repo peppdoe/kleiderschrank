@@ -6,6 +6,7 @@ import { EMPTY_FILTER, matchesFilter, type FilterState } from './lib/filters';
 import { seasonOf } from './lib/greeting';
 import { navigate, tabOf, useRoute } from './lib/route';
 import { requestPersistence } from './lib/storage';
+import { applyTheme, getThemeChoice, watchSystemTheme } from './lib/theme';
 import { ItemDetailScreen } from './screens/ItemDetailScreen';
 import { ItemFormScreen } from './screens/ItemFormScreen';
 import { OutfitDetailScreen } from './screens/OutfitDetailScreen';
@@ -36,6 +37,12 @@ export default function App() {
 
   useEffect(() => {
     requestPersistence().catch(() => undefined);
+  }, []);
+
+  // Hell/Dunkel aus den Einstellungen; „Automatisch“ zieht mit, wenn das iPhone wechselt.
+  useEffect(() => {
+    applyTheme(getThemeChoice());
+    return watchSystemTheme();
   }, []);
 
   // Die Fadenfarbe der Nähte folgt der gewählten Saison (ohne Wahl: der aktuellen).

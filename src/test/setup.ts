@@ -15,5 +15,10 @@ if (typeof window !== 'undefined') {
 }
 
 beforeEach(async () => {
+  // Darstellung ist eine Geräte-Einstellung im localStorage; jeder Test beginnt auf „Automatisch“.
+  if (typeof window !== 'undefined') {
+    localStorage.clear();
+    delete document.documentElement.dataset.theme;
+  }
   await Promise.all(db.tables.map((table) => table.clear()));
 });

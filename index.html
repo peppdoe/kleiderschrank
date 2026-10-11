@@ -8,6 +8,18 @@
     <meta name="apple-mobile-web-app-title" content="Kleiderschrank" />
     <meta name="theme-color" content="#f5f6f8" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#0f1524" media="(prefers-color-scheme: dark)" />
+    <script>
+      // Hell/Dunkel vor dem ersten Bild setzen, sonst blitzt die falsche Darstellung auf (gleiche Logik wie src/lib/theme.ts).
+      try {
+        var choice = localStorage.getItem('kleiderschrank-theme');
+        var dark = choice === 'dark' || (choice !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        document.querySelectorAll('meta[name="theme-color"]').forEach(function (meta) {
+          meta.removeAttribute('media');
+          meta.setAttribute('content', dark ? '#0f1524' : '#f5f6f8');
+        });
+      } catch (e) {}
+    </script>
     <title>Kleiderschrank</title>
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
