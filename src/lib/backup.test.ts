@@ -132,3 +132,54 @@ describe('favorites in the backup', () => {
     expect((await db.items.get(a))!.favorite).toBe(true);
   });
 });
+
+describe('wear photos in the backup', () => {
+  const anchorThumb = async (full: Blob, options?: { anchor?: string }) =>
+    new Blob([`thumb-${options?.anchor ?? 'center'}-of-${await full.text()}`], { type: 'image/jpeg' });
+
+  it('exports outfitPhotos and restores them with a top-anchored thumbnail, still as version 1', async () => {
+    const { a } = await seedWardrobe();
+    const look = await createOutfit('Spiegel', [a], fakePhoto('look'));
+    const json = await exportBackup();
+    const raw = JSON.parse(json);
+    expect(raw.version).toBe(1);
+    expect(raw.outfitPhotos).toHaveLength(1);
+    expect(raw.outfitPhotos[0].outfitId).toBe(look);
+    await clearAll();
+
+    await importBackup(json, anchorThumb);
+    const photo = await db.outfitPhotos.get(look);
+    expect(await photo!.full.text()).toBe('look-full');
+    expect(await photo!.thumb.text()).toBe('thumb-top-of-look-full');
+    expect(await (await db.photos.get(a))!.thumb.text()).toBe('thumb-center-of-a-full');
+  });
+
+  it('accepts an older backup without outfitPhotos and clears local wear photos', async () => {
+    const { a } = await seedWardrobe();
+    const raw = JSON.parse(await exportBackup());
+    delete raw.outfitPhotos;
+    await createOutfit('Lokal', [a], fakePhoto('lokal'));
+    expect(await db.outfitPhotos.count()).toBe(1);
+
+    expect(await importBackup(JSON.stringify(raw), fakeThumb)).toEqual({ items: 2, outfits: 1 });
+    expect(await db.outfitPhotos.count()).toBe(0);
+    expect(parseBackup(JSON.stringify(raw)).outfitPhotos).toEqual([]);
+  });
+
+  it('drops wear photos of outfits that are not in the backup', async () => {
+    await seedWardrobe();
+    const raw = JSON.parse(await exportBackup());
+    raw.outfitPhotos = [{ outfitId: 'gibt-es-nicht', full: raw.photos[0].full }];
+    await clearAll();
+    await importBackup(JSON.stringify(raw), fakeThumb);
+    expect(await db.outfitPhotos.count()).toBe(0);
+  });
+
+  it('rejects broken outfitPhotos without touching the data', async () => {
+    const { outfit } = await seedWardrobe();
+    const raw = JSON.parse(await exportBackup());
+    await expectRejectedWithoutChanges(JSON.stringify({ ...raw, outfitPhotos: 'kaputt' }));
+    await expectRejectedWithoutChanges(JSON.stringify({ ...raw, outfitPhotos: [{ outfitId: outfit }] }));
+    await expectRejectedWithoutChanges(JSON.stringify({ ...raw, outfitPhotos: [{ outfitId: outfit, full: '###' }] }));
+  });
+});

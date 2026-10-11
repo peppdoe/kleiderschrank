@@ -1,5 +1,6 @@
-import { db, type Item, type Outfit, type Photo } from '../db/schema';
+import { db, type Item, type Outfit, type OutfitPhoto, type Photo } from '../db/schema';
 import { isCategoryId, isColorId, isSeasonId } from './constants';
+import type { CropOptions } from './image';
 
 export const BACKUP_APP = 'kleiderschrank';
 export const BACKUP_VERSION = 1;
@@ -13,6 +14,8 @@ interface BackupFile {
   items: Item[];
   outfits: Outfit[];
   photos: { itemId: string; full: string }[];
+  /** Optional seit dem Tragebild; ältere Sicherungen haben den Schlüssel nicht. Version bleibt 1. */
+  outfitPhotos: { outfitId: string; full: string }[];
 }
 
 export interface ParsedBackup {
@@ -20,6 +23,7 @@ export interface ParsedBackup {
   items: Item[];
   outfits: Outfit[];
   photos: { itemId: string; full: Blob }[];
+  outfitPhotos: { outfitId: string; full: Blob }[];
 }
 
 export async function blobToBase64(blob: Blob): Promise<string> {
@@ -40,15 +44,21 @@ export function base64ToBlob(b64: string, type = 'image/jpeg'): Blob {
 }
 
 export async function exportBackup(now = new Date()): Promise<string> {
-  const [items, outfits, photos] = await db.transaction('r', db.items, db.outfits, db.photos, () =>
-    Promise.all([db.items.toArray(), db.outfits.toArray(), db.photos.toArray()]),
+  const [items, outfits, photos, outfitPhotos] = await db.transaction(
+    'r', db.items, db.outfits, db.photos, db.outfitPhotos,
+    () => Promise.all([db.items.toArray(), db.outfits.toArray(), db.photos.toArray(), db.outfitPhotos.toArray()]),
   );
   const encoded: BackupFile['photos'] = [];
   for (const photo of photos) {
     encoded.push({ itemId: photo.itemId, full: await blobToBase64(photo.full) });
   }
+  const encodedLooks: BackupFile['outfitPhotos'] = [];
+  for (const photo of outfitPhotos) {
+    encodedLooks.push({ outfitId: photo.outfitId, full: await blobToBase64(photo.full) });
+  }
   const file: BackupFile = {
-    app: BACKUP_APP, version: BACKUP_VERSION, exportedAt: now.toISOString(), items, outfits, photos: encoded,
+    app: BACKUP_APP, version: BACKUP_VERSION, exportedAt: now.toISOString(),
+    items, outfits, photos: encoded, outfitPhotos: encodedLooks,
   };
   return JSON.stringify(file);
 }
@@ -124,29 +134,53 @@ export function parseBackup(text: string): ParsedBackup {
   const outfits = raw.outfits.map((o) => parseOutfit(o, itemIds));
   if (new Set(outfits.map((o) => o.id)).size !== outfits.length) return fail('doppelte Outfit-IDs');
 
+  const outfitIds = new Set(outfits.map((o) => o.id));
+  const outfitPhotos = new Map<string, Blob>();
+  if (raw.outfitPhotos !== undefined) {
+    if (!Array.isArray(raw.outfitPhotos)) return fail('Outfit-Fotos sind keine Liste');
+    for (const p of raw.outfitPhotos) {
+      if (!isRecord(p) || !isText(p.outfitId) || !isText(p.full)) return fail('Outfit-Foto unvollständig');
+      if (!outfitIds.has(p.outfitId)) continue;
+      try {
+        outfitPhotos.set(p.outfitId, base64ToBlob(p.full));
+      } catch {
+        return fail('Foto beschädigt');
+      }
+    }
+  }
+
   const exportedAt = isText(raw.exportedAt) ? raw.exportedAt : '';
-  return { exportedAt, items, outfits, photos: [...photos].map(([itemId, full]) => ({ itemId, full })) };
+  return {
+    exportedAt, items, outfits,
+    photos: [...photos].map(([itemId, full]) => ({ itemId, full })),
+    outfitPhotos: [...outfitPhotos].map(([outfitId, full]) => ({ outfitId, full })),
+  };
 }
 
 export async function importBackup(
   text: string,
-  makeThumb: (full: Blob) => Promise<Blob>,
+  makeThumb: (full: Blob, options?: CropOptions) => Promise<Blob>,
 ): Promise<{ items: number; outfits: number }> {
   const parsed = parseBackup(text);
   const photos: Photo[] = [];
+  const outfitPhotos: OutfitPhoto[] = [];
   // Nacheinander statt parallel, um den Speicher auf dem iPhone zu schonen.
-  for (const photo of parsed.photos) {
-    try {
+  try {
+    for (const photo of parsed.photos) {
       photos.push({ itemId: photo.itemId, full: photo.full, thumb: await makeThumb(photo.full) });
-    } catch {
-      throw new BackupError('Ungültige Sicherung: Foto konnte nicht gelesen werden');
     }
+    for (const photo of parsed.outfitPhotos) {
+      outfitPhotos.push({ outfitId: photo.outfitId, full: photo.full, thumb: await makeThumb(photo.full, { anchor: 'top' }) });
+    }
+  } catch {
+    throw new BackupError('Ungültige Sicherung: Foto konnte nicht gelesen werden');
   }
-  await db.transaction('rw', db.items, db.photos, db.outfits, async () => {
-    await Promise.all([db.items.clear(), db.photos.clear(), db.outfits.clear()]);
+  await db.transaction('rw', [db.items, db.photos, db.outfits, db.outfitPhotos], async () => {
+    await Promise.all([db.items.clear(), db.photos.clear(), db.outfits.clear(), db.outfitPhotos.clear()]);
     await db.items.bulkAdd(parsed.items);
     await db.photos.bulkAdd(photos);
     await db.outfits.bulkAdd(parsed.outfits);
+    await db.outfitPhotos.bulkAdd(outfitPhotos);
   });
   return { items: parsed.items.length, outfits: parsed.outfits.length };
 }
