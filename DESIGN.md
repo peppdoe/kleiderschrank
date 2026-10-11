@@ -316,7 +316,7 @@ The `garment-*` colors are data, not interface: each names a clothing color Lena
 - **Group Label** (600, 17px): form group and filter-sheet group titles ("Kategorie", "Farbe", "Saison", "Notiz", "Name des Outfits").
 - **Body** (400, 17px, 1.45): base size; buttons, text buttons and link rows at 500, primary at 600. Outfit card names at 500.
 - **Body Small** (400, 15px): notices, chips and tags (tags at 500), section meta, action-bar hints, care-label lines, the toast (500).
-- **Caption** (400, 13px): band date meta, the tag count badge (600, tabular) and the inline "Gespeichert" confirmation.
+- **Caption** (400, 13px): the tag count badge (600, tabular) and the inline "Gespeichert" confirmation.
 - **Label** (uppercase): tab labels (12px, 0.08em) and care-symbol labels (12px, 0.12em) only. The `label` token (600, 12px, 0.2em) is no longer used for headings.
 - **Label Small** (400, 13px): the muted "wähl eine" marker beside a required form group.
 
@@ -331,7 +331,7 @@ The `garment-*` colors are data, not interface: each names a clothing color Lena
 
 Single column, max 720px centered, 16px side padding, top padding respecting the safe area plus 12px. Sections are separated by 22px above a section head and 10px below; settings sections use a 1px top hairline with 20px/24px padding. Spacing steps observed: 4, 8, 12, 16, 22px, with 6px and 14px as in-component gaps.
 
-The wardrobe grid is 3 columns at 8px gap (also for the pieces on the outfit detail); outfit previews are collages (see Outfit Look). "Heute" scrolls sideways with scroll-snap and 168px-high looks, bleeding to the screen edge. The tab bar is fixed at 62px plus the bottom safe area and centers its content to 720px on wide screens; the add button tracks the content column's right edge. Forms hide the tab bar and end in a sticky action bar on the ground color. Bottom sheets rise to 86dvh max.
+The wardrobe grid is 3 columns at 8px gap (also for the pieces on the outfit detail); outfit previews are collages (see Outfit Look). "Heute" scrolls sideways with scroll-snap and 148px-high looks, bleeding to the screen edge. The tab bar is fixed at 62px plus the bottom safe area and centers its content to 720px on wide screens; the add button tracks the content column's right edge. Forms hide the tab bar and end in a sticky action bar on the ground color. Bottom sheets rise to 86dvh max.
 
 **Section meta pattern.** A section head pairs the sentence-case title with a 15px muted, tabular meta on the same baseline, left-aligned beside the title. In the wardrobe it reads "N von M Teilen · Saison" when filters narrow the list and "M Teile · Saison" when they don't; the season clause joins with a middle dot. "Heute" uses a plain sentence ("2 Outfits passen zum Herbst"), Outfits a count ("3 gespeichert").
 
@@ -364,7 +364,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 
 ### Name Band (signature)
 - Seasonal woven band, 4px corners, 14px/20px/15px padding (slimmer, so the clothes start higher), centered; inset 1.5px dashed stitch in `stitch` 7px from the edge.
-- Contents: greeting at Display, one rotating line at 17px (0.92 opacity, single line, ellipsis), date meta at Caption (0.78 opacity).
+- Contents: greeting at Display, one rotating line at 17px (0.92 opacity, single line, ellipsis), then the Season Row printed onto the band like the symbols of a real care label (see Season Row). No date on the band: it moved to the "Heute" line, so the clothes start higher.
 - **Motion, the stitch-in:** whenever the greeting line changes it reveals left to right with `clip-path: inset(0 100% 0 0)` to `inset(0 0 0 0)`, 900ms, `cubic-bezier(0.16, 1, 0.3, 1)`, 150ms delay. Disabled under `prefers-reduced-motion`. This is the system's one expressive motion moment.
 - **Preview (settings):** below the name field in "Du" (input first, then result; the caps label never sits directly above the greeting) the band repeats as a live preview of the greeting (title updates while Lena types; fixed first line, no date). Same size as the real band, title at Display, so a long name wraps exactly as it will on the wardrobe; flat (no lift), no stitch-in. A group named "Vorschau der Begrüßung", not a heading.
 
@@ -379,6 +379,8 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 - Four care-symbol buttons: 44px circles with a 1.5px ink stroke and a 1.5px pictogram, 12px caps label below in muted, 12px apart, centered (left-aligned in forms and sheets).
 - **Chosen (filled):** filled in its own season color (sage, apricot, ochre, ice blue) with the ink stroke kept and an `on-season` navy mark; label in ink at 600, `aria-pressed`. Choosing a season also re-threads every stitch in that color.
 - **Current season, not chosen:** the ring turns to a 2px dashed stitch so "today" stays findable when Lena picks another season; announced as "(aktuelle Saison)".
+- **On the name band (wardrobe):** the row sits inside the band, 12px under the greeting line, 8px apart: 38px marks stroked in band ink, labels in band ink at 0.8 opacity (chosen: full). Greeting and "Heute" control read as one object: the band takes the chosen season's weave, its symbols say which.
+- **"Heute" line:** for the current season the meta beside "Heute" is the date ("Sonntag, 11. Oktober"); for another season the heading already names it ("Für den Sommer"), so the meta only counts the looks ("2 Looks").
 - On the wardrobe the current season is preselected on launch, and the choice filters both Heute and the wardrobe grid. In the item form the same row is a plain multi-select without a current mark.
 - Transition: background-color and color 160ms ease-out.
 
@@ -420,11 +422,11 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 
 ### Outfit Look (collage)
 - An outfit is shown as one look, not a row of boxes: 1 piece fills the frame; 2 sit side by side; 3 or more become a hero piece (2/3 width, full height) with two stacked pieces beside it, the last turning into a kraft-soft "+N" cell when more remain. 3px gaps, 4px outer corners, chip fill behind.
-- The look's ratio follows the piece count so every cell stays 3:4 and sleeves and shoulders stay visible: 1 piece 3:4, 2 pieces 3:2, 3+ pieces 9:8. In "Heute" looks share a fixed 168px height and take their width from the ratio (no dead gap); in the outfit list they fill the column (two columns, 22px/10px gaps, top-aligned); on the editor's naming step 62% width, max 260px.
+- The look's ratio follows the piece count so every cell stays 3:4 and sleeves and shoulders stay visible: 1 piece 3:4, 2 pieces 3:2, 3+ pieces 9:8. In "Heute" looks share a fixed 148px height and take their width from the ratio (no dead gap); in the outfit list they fill the column (two columns, 22px/10px gaps, top-aligned); on the editor's naming step 62% width, max 260px.
 - **Outfit detail:** the look opens the page full width under the back link, the outfit's care label is sewn onto its lower edge (14px overlap, 8px in from each side), then the pieces as a 3-column grid under the sentence-case title "Teile".
 
 ### Outfit Look (wear photo)
-- An outfit may carry one photo of Lena wearing it. Where it exists it replaces the collage everywhere: a frameless 3:4 thumbnail (360×480, cropped **top-anchored** so a mirror selfie keeps the head) in "Heute" (168px high) and the outfit list (column width), 4px corners, chip fill while loading.
+- An outfit may carry one photo of Lena wearing it. Where it exists it replaces the collage everywhere: a frameless 3:4 thumbnail (360×480, cropped **top-anchored** so a mirror selfie keeps the head) in "Heute" (148px high) and the outfit list (column width), 4px corners, chip fill while loading.
 - **Outfit detail with photo:** the full photo opens the page, full width and uncropped (contain, at most 70vh); the care label is sewn onto its lower edge exactly as on the collage; below it two quiet links "Foto ändern" · "Foto entfernen" (removing asks in a sheet: "Foto entfernen?", "Entfernen" in thread red, "Behalten" focused); then the pieces once under "Teile". No collage, so nothing appears twice.
 - **Editor naming step:** the chosen or saved photo replaces the collage at its own ratio (max 62% width / 260px, 40vh, no letterbox); a field "Foto von dir im Look" with the muted note "optional" offers the look picker or, with a photo, the quiet links "Ändern" · "Entfernen" (effective only on "Speichern"; a changed photo counts as an unsaved change).
 
@@ -459,6 +461,7 @@ Mostly flat with hairlines; soft navy-tinted shadows lift only the objects that 
 
 ### Notice Line and Quiet Link
 - Notice: surface, 1px line border, 12px corners, muted text, 44px close icon button.
+- On the wardrobe at most one hint shows. The backup reminder (a quiet link) stays between "Heute" and the wardrobe because it protects Lena's data; the install hint sits after the grid, since it only matters until the app is installed and the clothes come first.
 - Quiet link: muted 15px with a dashed underline at 4px offset, 44px tall.
 
 ### Pictograms

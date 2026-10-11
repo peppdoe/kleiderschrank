@@ -91,10 +91,32 @@ describe('Schrank', () => {
     expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
     const today = screen.getByRole('region', { name: 'Für den Sommer' });
     expect(within(today).getByRole('button', { name: /Strandtag/ })).toBeInTheDocument();
+    // Die Saison steht schon in der Überschrift, die Zeile daneben zählt nur die Looks.
+    expect(within(today).getByText('1 Look')).toBeInTheDocument();
 
     await user.click(within(seasons).getByRole('button', { name: 'Sommer' }));
     expect(screen.getByRole('button', { name: 'Jacke & Mantel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Oberteil, Blau' })).toBeInTheDocument();
+  });
+
+  it('sews the season choice onto the name band and dates Heute instead', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-10T07:40:00'));
+    const coat = await seedItem({ category: 'jacket', seasons: ['autumn'] });
+    await createOutfit('Herbst-Look', [coat]);
+    render(<App />);
+    const seasons = await screen.findByRole('group', { name: 'Saison wählen' });
+    expect(seasons.closest('.label-band')).not.toBeNull();
+    const today = await screen.findByRole('region', { name: 'Heute' });
+    expect(within(today).getByText('Samstag, 10. Oktober')).toBeInTheDocument();
+  });
+
+  it('puts the install hint after the clothes', async () => {
+    await seedItem({ category: 'top' });
+    render(<App />);
+    const piece = await screen.findByRole('button', { name: 'Oberteil' });
+    const note = await screen.findByRole('note');
+    expect(piece.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it('marks the current season by name, not only as "Jetzt"', async () => {

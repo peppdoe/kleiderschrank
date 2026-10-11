@@ -105,10 +105,9 @@ p { margin: 0; }
 .label-band::before { content: ''; position: absolute; inset: 7px; border: 1.5px dashed var(--stitch); border-radius: 2px; pointer-events: none; }
 .label-band__title { font-size: 30px; line-height: 1.1; margin: 0 0 4px; letter-spacing: -0.01em; overflow-wrap: anywhere; }
 .label-band__line { font-size: 17px; opacity: 0.92; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; animation: stitch-in 900ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both; }
-.label-band__meta { margin-top: 5px; font-size: 13px; opacity: 0.78; }
 @keyframes stitch-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 @media (prefers-reduced-motion: reduce) { .label-band__line { animation: none; } }
-/* Vorschau in den Einstellungen: flach eingenäht, ohne Datum und ohne Einnähen-Animation */
+/* Vorschau in den Einstellungen: flach eingenäht, ohne Saison-Wahl und ohne Einnähen-Animation */
 .label-band--preview { box-shadow: none; }
 .label-band--preview .label-band__title { font-weight: 500; }
 .label-band--preview .label-band__line { animation: none; }
@@ -126,6 +125,12 @@ p { margin: 0; }
 .care-symbol__label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 .care-symbol--on .care-symbol__label { color: var(--ink); font-weight: 600; }
 .form .care-symbols, .filter-bar--wrap .care-symbols { justify-content: flex-start; }
+/* Auf das Namensband gedruckt: Bandtinte statt Seitentinte, etwas kleinere Marken, Tippfläche bleibt ≥ 44 px hoch */
+.label-band .care-symbols { margin: 12px 0 2px; gap: 8px; }
+.label-band .care-symbol { color: var(--band-ink); gap: 4px; }
+.label-band .care-symbol__mark { width: 38px; height: 38px; border-color: var(--band-ink); }
+.label-band .care-symbol__label { color: var(--band-ink); opacity: 0.8; }
+.label-band .care-symbol--on .care-symbol__label { opacity: 1; }
 
 /* Ruhige Hinweise */
 .notice-line { display: flex; align-items: center; gap: 4px; margin-top: 14px; padding: 0 0 0 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); font-size: 15px; color: var(--muted); }
@@ -316,8 +321,8 @@ p { margin: 0; }
 .outfit-seasons__marks { flex: none; display: inline-flex; gap: 4px; color: var(--ink); }
 .outfit-card .outfit-seasons { margin-top: -2px; }
 .outfit-seasons--compact { min-height: 22px; font-size: 13px; }
-.today__strip .outfit-preview { height: 168px; width: auto; }
-.today__strip .outfit-look { height: 168px; width: auto; }
+.today__strip .outfit-preview { height: 148px; width: auto; }
+.today__strip .outfit-look { height: 148px; width: auto; }
 .outfit-preview + .care-label--outfit { margin: -14px 8px 0; }
 .look-photo { width: 100%; max-height: 70vh; }
 .look-photo + .care-label--outfit { margin: -14px 8px 0; }

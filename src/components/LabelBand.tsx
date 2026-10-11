@@ -1,13 +1,16 @@
+import type { ReactNode } from 'react';
+
 interface LabelBandProps {
   title: string;
   line: string;
-  meta?: string;
   /** Vorschau in den Einstellungen: flach eingenäht, ohne eigene Seitenüberschrift. */
   preview?: boolean;
+  /** Auf das Band gedruckt wie die Pflegesymbole eines echten Etiketts, z. B. die Saison-Wahl. */
+  children?: ReactNode;
 }
 
 /** Das eingenähte Namensband: der persönliche Gruß oben im Schrank. */
-export function LabelBand({ title, line, meta, preview = false }: LabelBandProps) {
+export function LabelBand({ title, line, preview = false, children }: LabelBandProps) {
   if (preview) {
     return (
       <div className="label-band label-band--preview" role="group" aria-label="Vorschau der Begrüßung">
@@ -22,7 +25,7 @@ export function LabelBand({ title, line, meta, preview = false }: LabelBandProps
       <p className="label-band__line" key={line}>
         {line}
       </p>
-      {meta && <p className="label-band__meta">{meta}</p>}
+      {children}
     </header>
   );
 }

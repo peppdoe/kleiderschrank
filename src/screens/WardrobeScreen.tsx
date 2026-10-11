@@ -62,9 +62,10 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
 
   return (
     <section className="screen-content">
-      <LabelBand title={greeting.title} line={greeting.line} meta={dateFormat.format(now)} />
-
-      <SeasonSymbols label="Saison wählen" selected={filter.seasons} current={current} onToggle={chooseSeason} />
+      {/* Wie auf einem echten Pflegeetikett stehen die Saisons auf dem Band selbst: Gruß und Heute-Regler sind eins. */}
+      <LabelBand title={greeting.title} line={greeting.line}>
+        <SeasonSymbols label="Saison wählen" selected={filter.seasons} current={current} onToggle={chooseSeason} />
+      </LabelBand>
 
       {today.length > 0 && (
         <section className="today" aria-labelledby="today-title">
@@ -72,8 +73,9 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
             <h2 id="today-title" className="section-title">
               {todaySeason === current ? 'Heute' : `Für den ${todayLabel}`}
             </h2>
+            {/* Die Saison steht schon in der Überschrift; daneben das Datum oder, für eine andere Saison, die Anzahl. */}
             <span className="section-meta">
-              {plural(today.length, 'Outfit passt', 'Outfits passen')} zum {todayLabel}
+              {todaySeason === current ? dateFormat.format(now) : plural(today.length, 'Look', 'Looks')}
             </span>
           </div>
           <ul className="today__row">
@@ -94,15 +96,6 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
           Zeit für ein Backup – jetzt sichern
         </button>
       )}
-      {showInstallHint && (
-        <InstallNotice
-          onDismiss={() => {
-            setHintHidden(true);
-            void setMeta(META_INSTALL_HINT_DISMISSED, 'true');
-          }}
-        />
-      )}
-
       <div className="section-head section-head--start">
         <h2 className="section-title">Schrank</h2>
         <span className="section-meta">
@@ -142,6 +135,16 @@ export function WardrobeScreen({ filter, onFilterChange, onPickPhoto, highlightI
             <ItemGrid items={visible} highlightId={highlightId} onItemClick={(item) => navigate(`/item/${item.id}`)} />
           )}
         </>
+      )}
+
+      {/* Die Kleidung geht vor: der Installationstipp steht nach dem Schrank. */}
+      {showInstallHint && (
+        <InstallNotice
+          onDismiss={() => {
+            setHintHidden(true);
+            void setMeta(META_INSTALL_HINT_DISMISSED, 'true');
+          }}
+        />
       )}
 
       <FilePicker className="fab" label="Teil hinzufügen" accept="image/*" onPick={onPickPhoto}>
